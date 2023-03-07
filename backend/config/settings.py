@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     "health_check",
     "health_check.cache",
     # Apps
+    "apps.rotterdam_formulier_html",
     "apps.mbc",
 )
 
