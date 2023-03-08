@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     # Apps
     "apps.rotterdam_formulier_html",
     "apps.mbc",
+    "materializecssform",
 )
 
 MIDDLEWARE = (
