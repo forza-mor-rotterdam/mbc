@@ -11,7 +11,7 @@ server {
     client_max_body_size 11M; # 10MB for upload, 1MB for other data
 
     location / {
-        proxy_pass  ${FASTCGI_PASS};
+        proxy_pass  ${UPSTREAM};
         include     /etc/nginx/uwsgi_params;
     }
 
