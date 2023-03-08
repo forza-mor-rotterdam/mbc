@@ -1,7 +1,6 @@
 from django import forms
 
-class RadioSelect(forms.RadioSelect):
-    option_template_name = "widgets/radio_option.html"
+
 class MeldingAanmakenForm(forms.Form):
     fieldsets = (
         {
