@@ -108,7 +108,7 @@
     .map {
         height: 0;
         padding-bottom: 100%;
-        
+
         .map__overlay {
             color: $white;
             font-size: 1.5rem;
@@ -127,11 +127,11 @@
             opacity: 0;
             background: rgba(0, 0, 0, 0);
             transition: background .25s, opacity .25s;
-            transition-delay: .25s; 
+            transition-delay: .25s;
         }
-    
+
         &.swiping {
-            .map__overlay {    
+            .map__overlay {
                 right: 0;
                 bottom: 0;
                 padding: $alert-padding-x;
@@ -141,7 +141,7 @@
             }
         }
     }
-    
+
     .section--seperated & {
         margin-bottom: -16px !important;
     }
@@ -179,4 +179,3 @@
         display: inline-block;
     }
 }
-

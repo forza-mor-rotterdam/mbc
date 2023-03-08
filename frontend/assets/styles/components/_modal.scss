@@ -49,7 +49,7 @@ body.show-modal--first-filter {
         max-width: $modal-md;
         margin: 1.5rem auto;
     }
-    
+
     &-content {
         background: $white;
         position: relative;
@@ -68,7 +68,7 @@ body.show-modal--first-filter {
             padding: 25px 48px 0 0;
             margin: 0 0 1rem;
             font-size: calc(1.25rem + 1.5vw);
-            
+
             small {
                 display: block;
                 font-weight: 400;
@@ -102,5 +102,5 @@ body.show-modal--first-filter {
         opacity: 0;
         display: none;
     }
-    
+
 }
