@@ -16,4 +16,4 @@ COPY ./public /srv/web/public
 # Copy build result of node build step
 COPY --from=node_step /srv/web/public/build /srv/web/public/build
 
-CMD envsubst '$FASTCGI_PASS' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'
+CMD envsubst '$UPSTREAM' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'

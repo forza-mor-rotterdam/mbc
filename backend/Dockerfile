@@ -1,5 +1,7 @@
 FROM python:3.9.15-slim-buster
 
+EXPOSE 8000
+
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app/
@@ -19,8 +21,8 @@ ENV LANG=nl_NL.UTF-8 \
 
 COPY . /app/
 
-RUN mkdir -p /media && mkdir -p /static && chown 2000 /media && chown 2000 /static \
-    && mkdir -p /srv/web/var/cache && chown 2000 /srv/web/var/cache \
+RUN mkdir -p /media && mkdir -p /static && chown 2000 /media && chown 2000 /static && chmod 744 /media && chmod 744 /static \
+    && mkdir -p /srv/web/var/cache && chown 2000 /srv/web/var/cache && chmod -R ugo+rwx /srv/web/var/cache \
     && chmod +x /app/deploy/docker-entrypoint.sh && chown root:root /app/deploy/docker-entrypoint.sh \
     && pip install --no-cache-dir -r /app/requirements.txt
 
