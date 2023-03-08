@@ -2,6 +2,17 @@ from django import forms
 
 class RadioSelect(forms.RadioSelect):
     option_template_name = "widgets/radio_option.html"
+
+class Select(forms.Select):
+    def create_option(self, *args,**kwargs):
+        option = super().create_option(*args,**kwargs)
+        if not option.get('value'):
+            option['attrs']['disabled'] = 'disabled'
+
+        if option.get('value') == 2:
+            option['attrs']['disabled'] = 'disabled'
+
+        return option
 class MeldingAanmakenForm(forms.Form):
     fieldsets = (
         {
@@ -18,13 +29,14 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     begraafplaats = forms.ChoiceField(
-        widget=forms.Select(
+        widget=Select(
             attrs={
                 "class": "form-select",
             }
         ),
         label="Begraafplaats",
         choices=(
+            ("", "Selecteer een begraafplaats"),
             ("begraafplaats_crooswijk", "Begraafplaats Crooswijk"),
             ("begraafplaats_hoek_van_holland", "Begraafplaats Hoek van Holland"),
             ("begraafplaats_hofwijk", "Begraafplaats en crematorium Hofwijk"),
@@ -121,13 +133,14 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     aannemer = forms.ChoiceField(
-        widget=forms.Select(
+        widget=Select(
             attrs={
                 "class": "form-select",
             }
         ),
         label="Aannemer verzoek",
         choices=(
+            ("", "Selecteer een collega"),
             ("collega_a", "Collega A"),
             ("collega_b", "Collega B"),
             ("collega_c", "Collega C"),
@@ -181,6 +194,7 @@ class MeldingAanmakenForm(forms.Form):
         choices=[
             ["1", "Ja"],
             ["0", "Nee"],
+            ["2", "Onbekend"],
         ],
         required=True,
     )

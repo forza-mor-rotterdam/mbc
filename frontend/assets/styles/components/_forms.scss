@@ -66,6 +66,7 @@ fieldset {
   line-height: 24px;
   width: 100%;
   margin: 0.5rem 0 1.5rem;
+  
   &:hover:not(:focus):not([disabled]) {
     border-color: $hover-border-color;
     box-shadow: 0 0 0 1px $hover-border-color;
@@ -74,7 +75,8 @@ fieldset {
     border-color: $focus-border-color;
     box-shadow: 0 0 0 1px $focus-border-color;
   }
-  &:disabled {
+  &:disabled,
+  option[disabled] {
     color: $text-muted;
   }
   &.search {
@@ -109,10 +111,7 @@ $form-search-indicator-position: left 10px center !default;
   &.search {
     background-image: escape-svg($form-search-indicator), escape-svg($form-select-indicator) !important;
     background-position: $form-search-indicator-position, $form-select-bg-position;
-  }
-  option {
-    color: $body-color;                           // Default color for select elements
-  }
+  } 
 }
 
 textarea {
@@ -269,5 +268,16 @@ textarea {
     }
     li {
         margin-right: $alert-padding-x;
+        line-height: 1.75;
+    }
+}
+
+.form__request {
+    h2 {
+        display: flex;
+
+        svg {
+            margin-right: 12px;
+        }
     }
 }
