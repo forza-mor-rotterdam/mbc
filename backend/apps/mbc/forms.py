@@ -1,5 +1,7 @@
 from django import forms
 
+class RadioSelect(forms.RadioSelect):
+    option_template_name = "widgets/radio_option.html"
 class MeldingAanmakenForm(forms.Form):
     fieldsets = (
         {
@@ -97,12 +99,14 @@ class MeldingAanmakenForm(forms.Form):
     categorie_omschrijving = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
+                "class": "form-control hidden",
                 "data-request-target": "categoryDescription",
             }
         ),
         label="Overig",
-        required=True
+        required=True,
+        show_hidden_initial=True,
+
     )
 
     toelichting = forms.CharField(
@@ -114,6 +118,85 @@ class MeldingAanmakenForm(forms.Form):
         ),
         label="Toelichting",
         required=False
+    )
+
+    aannemer = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+            }
+        ),
+        label="Aannemer verzoek",
+        choices=(
+            ("collega_a", "Collega A"),
+            ("collega_b", "Collega B"),
+            ("collega_c", "Collega C"),
+            ("collega_d", "Collega D"),
+            ("collega_e", "Collega E"),
+            ("collega_f", "Collega F"),
+            ("collega_g", "Collega G"),
+        ),
+        required=False,
+    )
+
+    naam_melder = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+            }
+        ),
+        label="Naam",
+        required=True
+    )
+
+    telefoon_melder = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "tel"
+            }
+        ),
+        label="Telefoonnummer",
+        required=False
+    )
+
+    email_melder = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "type": "email"
+            }
+        ),
+        label="E-mailadres",
+        required=False
+    )
+
+    rechthebbende = forms.ChoiceField(
+        widget=RadioSelect(
+            attrs={
+                "class": "list--form-radio-input",
+            }
+        ),
+        label="Is deze persoon de rechthebbende?",
+        choices=[
+            ["1", "Ja"],
+            ["0", "Nee"],
+        ],
+        required=True,
+    )
+
+    terugkoppeling_gewenst = forms.ChoiceField(
+        widget=RadioSelect(
+            attrs={
+                "class": "list--form-radio-input",
+            }
+        ),
+        label="Is terugkoppeling gewenst?",
+        choices=[
+            ["1", "Ja"],
+            ["0", "Nee"],
+        ],
+        required=True,
     )
 
     # def as_fieldsets(self):

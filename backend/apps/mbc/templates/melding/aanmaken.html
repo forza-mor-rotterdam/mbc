@@ -2,12 +2,11 @@
 {% load rotterdam_formulier_html %}
 
 {% block body %}
-<form>
-    {{ form|render_rotterdam_formulier }}
+{% comment %} <form> {% endcomment %}
+    {% comment %} {{ form|render_rotterdam_formulier }} {% endcomment %}
 
 <h1>Serviceverzoek</h1>
 <form data-controller="request">
-
     <fieldset>
         <legend class="divided">
             <h2>
@@ -17,12 +16,11 @@
                 Locatie
             </h2>
         </legend>
-        {{ form.begraafplaats|materializecss }}
-        {{ form.grafnummer|materializecss }}
-        {{ form.vak|materializecss }}
-        {{ form.naam_overledene|materializecss }}
+        {{ form.begraafplaats|render_rotterdam_formulier }}
+        {{ form.grafnummer|render_rotterdam_formulier }}
+        {{ form.vak|render_rotterdam_formulier }}
+        {{ form.naam_overledene|render_rotterdam_formulier }}
     </fieldset> 
-
     <fieldset>
         <legend class="divided">
             <h2>
@@ -41,27 +39,15 @@
             </h2>
         </legend>
         <div class="form-row">
-            {{ form.categorie|materializecss }}
+            {{ form.categorie|render_rotterdam_formulier }}
+            <div class="hidden" data-request-target="categoryDescription">
+                <label for="_521">Omschrijving overig</label>
+                <input class="form-control" type="text" name="_521" id="_521" value="">
+            </div>
         </div>
-            {{ form.categorie_omschrijving|materializecss }}
-        
-        {% comment %} <div class="form-row hidden" data-request-target="categoryDescription">
-            <label for="_521">Omschrijving</label>
-            <input class="form-control" type="text" name="_521" id="_521" value="">
-        </div> {% endcomment %}
-        {{ form.toelichting|materializecss }}
-
-        <div class="form-row">
-            <label for="_7">Aannemer verzoek</label>
-            <select class="form-select" name="_7" id="_7" value="">
-                <option value="">Collage A</option>
-                <option value="">Collage B</option>
-                <option value="">Collage C</option>
-                <option value="">Collage D</option>
-                <option value="">Collage E</option>
-                <option value="">Collage F</option>
-            </select>
-        </div>
+        {% comment %} {{ form.categorie_omschrijving|render_rotterdam_formulier }} {% endcomment %}
+        {{ form.toelichting|render_rotterdam_formulier }}
+        {{ form.aannemer|render_rotterdam_formulier }}
     </fieldset> 
     <fieldset>
         <legend class="divided">
@@ -72,46 +58,12 @@
                 Melder
             </h2>
         </legend>
-        <div class="form-row">
-            <label for="_8">Naam</label>
-            <input class="form-control" type="text" name="_8" id="_8" value="">
-        </div>
-        <div class="form-row">
-            <label for="_9">Telefoonnummer<span> (Niet verplicht)</span></label>
-            <input class="form-control" type="tel" name="_9" id="_9" value="">
-        </div>
-        <div class="form-row">
-            <label for="_10">E-mailadres<span> (Niet verplicht)</span></label>
-            <input class="form-control" type="text" name="_10" id="_10" value="">
-        </div>
-        <div class="form-row">
-            <h3 class="label">Is deze persoon de rechthebbende?</h3>
-            <div class="wrapper-horizontal">
-                <div class="form-radio">
-                    <input class="form-check-input" type="radio" name="_11" id="_111" value="True">
-                    <label class="form-check-label" for="_111">Ja</label>
-                </div>
-                <div class="form-radio">
-                    <input class="form-check-input" type="radio" name="_11" id="_112" value="False">
-                    <label class="form-check-label" for="_112">Nee</label>
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <h3 class="label">Is terugkoppeling gewenst?</h3>
-            <div class="wrapper-horizontal">
-                <div class="form-radio">
-                    <input class="form-check-input" type="radio" name="_12" id="_121" value="True">
-                    <label class="form-check-label" for="_121">Ja</label>
-                </div>
-                <div class="form-radio">
-                    <input class="form-check-input" type="radio" name="_12" id="_122" value="False">
-                    <label class="form-check-label" for="_122">Nee</label>
-                </div>
-            </div>
-        </div>
+        {{ form.naam_melder|render_rotterdam_formulier }}
+        {{ form.telefoon_melder|render_rotterdam_formulier }}
+        {{ form.email_melder|render_rotterdam_formulier }}
+        {{ form.rechthebbende|render_rotterdam_formulier }}
+        {{ form.terugkoppeling_gewenst|render_rotterdam_formulier }}
     </fieldset> 
-
     <div class="form-row container__button">
         <button
             class="btn btn-action"

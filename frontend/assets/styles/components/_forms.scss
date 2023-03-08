@@ -191,13 +191,15 @@ textarea {
             opacity: 1;
         }
 
-        ~ .form-check-label {
+        ~ .form-check-label,
+        ~ .form-radio-label {
             line-height: 1.5rem;
             font-weight: 400;
         }
 }
 
-.list--form-check-input {
+.list--form-check-input,
+.list--form-radio-input {
     @include list-clean();
     li {
         margin-bottom: 0.25rem;
@@ -205,6 +207,9 @@ textarea {
     input {
         @include form-check-input();
     }
+}
+
+.list--form-check-input {
     @media (min-width: map-get($grid-breakpoints, sm)) {
         display: flex;
         flex-wrap: wrap;
@@ -214,7 +219,8 @@ textarea {
     }
 }
 
-.form-check-input {
+.form-check-input,
+.form-radio-input {
     @include form-check-input();
 }
 
@@ -257,7 +263,11 @@ textarea {
 }
 
 .wrapper-horizontal {
-    .form-radio {
+    ul {
+        display: flex;
+        margin: 0;
+    }
+    li {
         margin-right: $alert-padding-x;
     }
 }
