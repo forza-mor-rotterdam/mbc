@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
 from apps.mbc.forms import MeldingAanmakenForm
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
 
 def http_404(request):
@@ -29,8 +29,5 @@ def melding_aanmaken(request):
     return render(
         request,
         "melding/aanmaken.html",
-        {
-            "form": form
-        },
+        {"form": form},
     )
-

@@ -1,9 +1,4 @@
-from apps.mbc.views import (
-    melding_aanmaken,
-    http_404,
-    http_500,
-    root,
-)
+from apps.mbc.views import http_404, http_500, melding_aanmaken, root
 from django.conf import settings
 from django.urls import path
 
