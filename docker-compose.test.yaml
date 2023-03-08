@@ -11,16 +11,16 @@ services:
     depends_on:
       - redis
     networks:
-      - profilr_network
+      - mor_network
     command: ["bash", "/app/deploy/docker-entrypoint.development.sh"]
 
   redis:
     image: redis
     networks:
-      - profilr_network
+      - mor_network
     ports:
       - "6379:6379"
 
 networks:
-  profilr_network:
+  mor_network:
     external: true

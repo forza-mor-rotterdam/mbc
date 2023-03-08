@@ -1,20 +1,17 @@
 from django import forms
 
-class RadioSelect(forms.RadioSelect):
-    option_template_name = "widgets/radio_option.html"
+
 class MeldingAanmakenForm(forms.Form):
     fieldsets = (
         {
             "titel": "Fieldset naam",
             "icon": "Fieldset icon",
             "fields": (
-            "begraafplaats",
-            "naam_melder",
-            )
+                "begraafplaats",
+                "naam_melder",
+            ),
         },
-        {
-        
-        }
+        {},
     )
 
     begraafplaats = forms.ChoiceField(
@@ -38,7 +35,6 @@ class MeldingAanmakenForm(forms.Form):
             ("begraafplaats_zuiderbegraafplaats", "De Zuiderbegraafplaats"),
         ),
         required=True,
-
     )
 
     grafnummer = forms.CharField(
@@ -48,7 +44,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Grafnummer of colombarium",
-        required=False
+        required=False,
     )
 
     vak = forms.CharField(
@@ -58,7 +54,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Vak",
-        required=False
+        required=False,
     )
 
     naam_overledene = forms.CharField(
@@ -68,14 +64,14 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Naam overledene",
-        required=False
+        required=False,
     )
 
     categorie = forms.ChoiceField(
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                 "data-action": "request#toggleInputOtherCategory",
+                "data-action": "request#toggleInputOtherCategory",
             }
         ),
         label="Categorie",
@@ -93,7 +89,7 @@ class MeldingAanmakenForm(forms.Form):
             ("categorie_zerk_reinigen", "Zerk reinigen"),
             ("categorie_overig", "Overig"),
         ),
-        required=True
+        required=True,
     )
 
     categorie_omschrijving = forms.CharField(
@@ -106,7 +102,6 @@ class MeldingAanmakenForm(forms.Form):
         label="Overig",
         required=True,
         show_hidden_initial=True,
-
     )
 
     toelichting = forms.CharField(
@@ -117,7 +112,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Toelichting",
-        required=False
+        required=False,
     )
 
     aannemer = forms.ChoiceField(
@@ -146,58 +141,47 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Naam",
-        required=True
+        required=True,
     )
 
     telefoon_melder = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "type": "tel"
-            }
-        ),
+        widget=forms.TextInput(attrs={"class": "form-control", "type": "tel"}),
         label="Telefoonnummer",
-        required=False
+        required=False,
     )
 
     email_melder = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "type": "email"
-            }
-        ),
+        widget=forms.TextInput(attrs={"class": "form-control", "type": "email"}),
         label="E-mailadres",
-        required=False
+        required=False,
     )
 
     rechthebbende = forms.ChoiceField(
-        widget=RadioSelect(
+        widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
             }
         ),
         label="Is deze persoon de rechthebbende?",
-        choices=[
-            ["1", "Ja"],
-            ["0", "Nee"],
-        ],
+        choices=(
+            ("1", "Ja"),
+            ("0", "Nee"),
+        ),
         required=True,
     )
 
     terugkoppeling_gewenst = forms.ChoiceField(
-        widget=RadioSelect(
+        widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
             }
         ),
         label="Is terugkoppeling gewenst?",
-        choices=[
-            ["1", "Ja"],
-            ["0", "Nee"],
-        ],
+        choices=(
+            ("1", "Ja"),
+            ("0", "Nee"),
+        ),
         required=True,
     )
 
     # def as_fieldsets(self):
-

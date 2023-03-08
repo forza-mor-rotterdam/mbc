@@ -1,17 +1,17 @@
 .list__mutations {
     @include list-clean;
-    border-top: 1px solid $gray-tint04; 
+    border-top: 1px solid $gray-tint04;
     >li {
         margin: 0 calc(-1 * (map-get($container-margin, md)));
         padding: 0 map-get($container-margin, md);
         &:nth-child(even) {
             background-color: $gray-tint02;
         }
-        
+
         p {
             margin: 8px 0 0;
         }
-        
+
         &:last-child {
             details {
                 &::before {
@@ -32,7 +32,7 @@
             top: 23px;
             background-color: $gray-tint11;
         }
-        
+
         summary {
             padding: 16px 0 16px 24px;
             border: 0;
