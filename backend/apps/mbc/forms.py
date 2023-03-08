@@ -171,7 +171,7 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     rechthebbende = forms.ChoiceField(
-        widget=forms.RadioSelect(
+        widget=RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
             }
@@ -180,13 +180,13 @@ class MeldingAanmakenForm(forms.Form):
         choices=(
             ("1", "Ja"),
             ("0", "Nee"),
-            ("2", "Onekend"),
+            ("2", "Onbekend"),
         ),
         required=True,
     )
 
     terugkoppeling_gewenst = forms.ChoiceField(
-        widget=forms.RadioSelect(
+        widget=RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
             }
