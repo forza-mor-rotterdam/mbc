@@ -1,5 +1,7 @@
 FROM python:3.9.15-slim-buster
 
+EXPOSE 8000
+
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app/
