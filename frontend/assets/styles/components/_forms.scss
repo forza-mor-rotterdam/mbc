@@ -268,14 +268,13 @@ textarea {
     }
     li {
         margin-right: $alert-padding-x;
-        line-height: 1.75;
     }
 }
 
 .form__request {
     h2 {
         display: flex;
-
+        align-items: center;
         svg {
             margin-right: 12px;
         }

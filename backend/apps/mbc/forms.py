@@ -137,6 +137,7 @@ class MeldingAanmakenForm(forms.Form):
         label="Aannemer verzoek",
         choices=(
             ("", "Selecteer een collega"),
+            ("collega_onbekend", "Onbekend"),
             ("collega_a", "Collega A"),
             ("collega_b", "Collega B"),
             ("collega_c", "Collega C"),
