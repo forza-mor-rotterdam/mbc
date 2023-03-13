@@ -6,7 +6,7 @@
     {% comment %} {{ form|render_rotterdam_formulier }} {% endcomment %}
 
 <h1>Serviceverzoek</h1>
-<form class="form__request" data-controller="request">
+<form class="form__request" data-controller="request" enctype="multipart/form-data" method="post">
     <fieldset>
         <legend class="divided">
             <h2>
@@ -41,13 +41,44 @@
         <div class="form-row">
             {{ form.categorie|render_rotterdam_formulier }}
             <div class="hidden" data-request-target="categoryDescription">
-                <label for="omschrijving_overig">Omschrijving overig</label>
-                <input class="form-control" type="text" name="omschrijving_overig" id="omschrijving_overig" value="">
+                <label for="omschrijving_andere_oorzaken">Omschrijving andere oorzaken</label>
+                <input class="form-control" type="text" name="omschrijving_andere_oorzaken" id="omschrijving_andere_oorzaken" value="">
             </div>
         </div>
         {% comment %} {{ form.categorie_omschrijving|render_rotterdam_formulier }} {% endcomment %}
         {{ form.toelichting|render_rotterdam_formulier }}
-        {{ form.aannemer|render_rotterdam_formulier }}
+
+        <div class="form-row">
+            <label class="">Foto's</label>
+            <div class="">
+                <button type="button" class="btn btn-secondary" id="buttonFile" data-action="request#showFileInput">
+                    
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M17 6H15V15H6V17H15V26H17V17H26V15H17V6Z" fill="#fff"/>
+                        </svg>
+                        <span>Foto toevoegen</span>
+                    
+                </button>
+                <div class="file-upload multiple hidden" tabindex="0">
+                    <div class="file-upload-mask">
+                        Sleep één of meer bestanden hier naartoe, of klik hier om bestanden te uploaden
+                    </div>
+                    <input
+                        id="bestanden"
+                        name="bestanden"
+                        type="file"
+                        accept=".jpg, .jpeg, .png"
+                        class="file-upload-input"
+                        multiple
+                        data-action="change->request#updateImageDisplay"
+                    >
+                    <div id="imagesPreview" class="preview"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            {{ form.aannemer|render_rotterdam_formulier }}
+        </div>
     </fieldset>
     <fieldset>
         <legend class="divided">
@@ -64,6 +95,7 @@
         {{ form.rechthebbende|render_rotterdam_formulier }}
         {{ form.terugkoppeling_gewenst|render_rotterdam_formulier }}
     </fieldset>
+
     <div class="form-row container__button">
         <button
             class="btn btn-action"
@@ -73,5 +105,21 @@
             <span>Verzoek indienen</span>
         </button>
     </div>
+
+<div class="modal">
+<div class="modal-dialog">
+<div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title" id="staticBackdropLabel">Bestanden toevoegen</h1>
+            <button type="button" class="btn-close" data-action="request#closeModal" aria-label="Dialoog sluiten"></button>
+        </div>
+        <div class="modal-body">
+            
+        </div>
+    </div>
+</div>
+</div>
+
 </form>
 {% endblock %}

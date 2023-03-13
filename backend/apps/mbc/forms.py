@@ -100,7 +100,7 @@ class MeldingAanmakenForm(forms.Form):
             ("categorie_konijnen", "Konijnen"),
             ("categorie_muizen", "Muizen"),
             ("categorie_zerk_reinigen", "Zerk reinigen"),
-            ("categorie_overig", "Overig"),
+            ("categorie_andere_oorzaken", "Andere oorzaken"),
         ),
         required=True,
     )
@@ -112,7 +112,7 @@ class MeldingAanmakenForm(forms.Form):
                 "data-request-target": "categoryDescription",
             }
         ),
-        label="Overig",
+        label="Andere oorzaken",
         required=True,
         show_hidden_initial=True,
     )
