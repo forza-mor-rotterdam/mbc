@@ -79,22 +79,22 @@ export default class extends Controller {
         
             for (const file of currentFiles) {
               const listItem = document.createElement('li');
-              const para = document.createElement('p');
+              const content = document.createElement('span');
               const remove = document.createElement('button');
               remove.setAttribute('type', "button")
-              remove.classList.add('btn-remove')
+              remove.classList.add('btn-close')
 
               if (validFileType(file)) {
-                para.textContent = `${file.name} (${returnFileSize(file.size)})`;
+                content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
                 const image = document.createElement('img');
                 image.src = URL.createObjectURL(file);
         
                 listItem.appendChild(image);
-                listItem.appendChild(para);
-                // listItem.appendChild(remove);
+                listItem.appendChild(content);
+                listItem.appendChild(remove);
               } else {
-                para.textContent = `Het bestand "${file.name}" is geen geldig bestandstype. Selecteer alleen bestanden van het type "jpg, jpeg of png"`;
-                listItem.appendChild(para);
+                content.textContent = `Het bestand "${file.name}" is geen geldig bestandstype. Selecteer alleen bestanden van het type "jpg, jpeg of png"`;
+                listItem.appendChild(content);
               }
         
               list.appendChild(listItem);
