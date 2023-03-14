@@ -95,7 +95,7 @@
                 {% if field.auto_id %}
                     <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}">{{ field.label }}</label>
                 {% endif %}
-                <select multiple name="{{ field.html_name }}" {% render_attrs field class="test testing" test="nog een test" %} >
+                <select multiple name="{{ field.html_name }}" {% render_attrs field class="test testing" test="nog een test" %} {% if field.field.required %}required{% endif %} >
                     {% for choice in field %}
                           {{ choice.tag }}
                     {% endfor %}
@@ -118,7 +118,7 @@
                 {% if field.auto_id %}
                     <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}">{{ field.label }}</label>
                 {% endif %}
-                <select name="{{ field.html_name }}" {% render_attrs field nog="jhgj" %}>
+                <select name="{{ field.html_name }}" {% render_attrs field nog="jhgj" %} {% if field.field.required %}required{% endif %}>
                     {% for choice in field %}
                           {{ choice.tag }}
                     {% endfor %}
