@@ -88,7 +88,9 @@ export default class extends Controller {
                 content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
                 const image = document.createElement('img');
                 image.src = URL.createObjectURL(file);
-
+                image.onload = () => {
+                    URL.revokeObjectURL(image.src);
+                  };
                 listItem.appendChild(image);
                 listItem.appendChild(content);
                 listItem.appendChild(remove);
