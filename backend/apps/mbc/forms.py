@@ -109,17 +109,17 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
 
-    categorie_omschrijving = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control hidden",
-                "data-request-target": "categoryDescription",
-            }
-        ),
-        label="Andere oorzaken",
-        required=True,
-        show_hidden_initial=True,
-    )
+    # categorie_omschrijving = forms.CharField(
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             "class": "form-control hidden",
+    #             "data-request-target": "categoryDescription",
+    #         }
+    #     ),
+    #     label="Andere oorzaken",
+    #     # required=True,
+    #     # show_hidden_initial=True,
+    # )
 
     toelichting = forms.CharField(
         widget=forms.Textarea(
