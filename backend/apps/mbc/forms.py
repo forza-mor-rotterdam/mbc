@@ -84,7 +84,7 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
 
-    categorie = forms.ChoiceField(
+    categorie = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
