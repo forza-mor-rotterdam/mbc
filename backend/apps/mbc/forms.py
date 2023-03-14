@@ -57,7 +57,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Grafnummer of colombarium",
-        required=False,
+        required=True,
     )
 
     vak = forms.CharField(
@@ -67,7 +67,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Vak",
-        required=False,
+        required=True,
     )
 
     naam_overledene = forms.CharField(
@@ -77,7 +77,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Naam overledene",
-        required=False,
+        required=True,
     )
 
     categorie = forms.ChoiceField(
@@ -134,7 +134,7 @@ class MeldingAanmakenForm(forms.Form):
                 "class": "form-select",
             }
         ),
-        label="Aannemer verzoek",
+        label="Wie heeft het verzoek aangenomen?",
         choices=(
             ("", "Selecteer een collega"),
             ("collega_onbekend", "Onbekend"),
@@ -146,7 +146,7 @@ class MeldingAanmakenForm(forms.Form):
             ("collega_f", "Collega F"),
             ("collega_g", "Collega G"),
         ),
-        required=False,
+        required=True,
     )
 
     naam_melder = forms.CharField(
@@ -162,7 +162,7 @@ class MeldingAanmakenForm(forms.Form):
     telefoon_melder = forms.CharField(
         widget=forms.TextInput(attrs={"class": "form-control", "type": "tel"}),
         label="Telefoonnummer",
-        required=False,
+        required=True,
     )
 
     email_melder = forms.CharField(
