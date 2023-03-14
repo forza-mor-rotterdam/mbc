@@ -25,13 +25,24 @@ export default class extends Controller {
         console.log('preview', preview)
     }
 
+    removeFile (e) {
+        const index = e.params.index;
+        const input = document.getElementById('bestanden')
+        const fileListArr = [...input.files]
+        fileListArr.splice(index, 1)
+        /** Code from: https://stackoverflow.com/a/47172409/8145428 */
+        const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+        new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+
+        for (let file of fileListArr) { dT.items.add(file); }
+        input.files = dT.files;
+        this.updateImageDisplay();
+
+    }
     updateImageDisplay() {
         const input = document.getElementById('bestanden')
         const preview = document.getElementById('imagesPreview');
         const currentFiles = input.files;
-
-
-        input.addEventListener('change', removeFile)
 
         const fileTypes = [
             "image/apng",
@@ -60,13 +71,6 @@ export default class extends Controller {
             }
         }
 
-        const removeFile = () => {
-            console.log(fileListArr)
-
-            const fileListArr = [...input.files]
-            fileListArr.splice(1, 1)
-        }
-
         while(preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
@@ -77,28 +81,32 @@ export default class extends Controller {
             list.classList.add('list-clean')
             preview.appendChild(list);
 
-            for (const file of currentFiles) {
-              const listItem = document.createElement('li');
-              const content = document.createElement('span');
-              const remove = document.createElement('button');
-              remove.setAttribute('type', "button")
-              remove.classList.add('btn-close')
+            for (const [index, file] of [...currentFiles].entries()) {
+                const listItem = document.createElement('li');
+                const content = document.createElement('span');
+                const remove = document.createElement('button');
+                remove.setAttribute('type', "button")
+                remove.setAttribute('data-action', "request#removeFile")
+                remove.setAttribute('data-request-index-param', index)
+                remove.classList.add('btn-close')
 
-              if (validFileType(file)) {
-                content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
-                const image = document.createElement('img');
-                image.src = URL.createObjectURL(file);
+                if (validFileType(file)) {
+                    content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
+                    const image = document.createElement('img');
+                    image.src = URL.createObjectURL(file);
+                    image.onload = () => {
+                        URL.revokeObjectURL(image.src);
+                    };
+                    listItem.appendChild(image);
+                    listItem.appendChild(content);
+                    listItem.appendChild(remove);
+                } else {
+                    content.textContent = `Het bestand "${file.name}" is geen geldig bestandstype. Selecteer alleen bestanden van het type "jpg, jpeg of png"`;
+                    listItem.appendChild(content);
+                }
 
-                listItem.appendChild(image);
-                listItem.appendChild(content);
-                listItem.appendChild(remove);
-              } else {
-                content.textContent = `Het bestand "${file.name}" is geen geldig bestandstype. Selecteer alleen bestanden van het type "jpg, jpeg of png"`;
-                listItem.appendChild(content);
-              }
-
-              list.appendChild(listItem);
+                list.appendChild(listItem);
             }
-          }
+        }
     }
 }
