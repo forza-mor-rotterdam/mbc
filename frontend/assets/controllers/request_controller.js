@@ -17,10 +17,10 @@ export default class extends Controller {
 
     showFileInput() {
         const inputContainer = document.getElementById('bestanden').parentElement;
-        
+
         inputContainer.classList.remove('hidden');
         const preview = document.getElementById('imagesPreview');
-        
+
 
         console.log('preview', preview)
     }
@@ -45,7 +45,7 @@ export default class extends Controller {
             "image/webp",
             "image/x-icon"
         ];
-        
+
         function validFileType(file) {
             return fileTypes.includes(file.type);
         }
@@ -66,17 +66,17 @@ export default class extends Controller {
             const fileListArr = [...input.files]
             fileListArr.splice(1, 1)
         }
-        
+
         while(preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
 
         if (currentFiles.length > 0) {
-            
+
             const list = document.createElement('ul');
             list.classList.add('list-clean')
             preview.appendChild(list);
-        
+
             for (const file of currentFiles) {
               const listItem = document.createElement('li');
               const content = document.createElement('span');
@@ -88,7 +88,7 @@ export default class extends Controller {
                 content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
                 const image = document.createElement('img');
                 image.src = URL.createObjectURL(file);
-        
+
                 listItem.appendChild(image);
                 listItem.appendChild(content);
                 listItem.appendChild(remove);
@@ -96,7 +96,7 @@ export default class extends Controller {
                 content.textContent = `Het bestand "${file.name}" is geen geldig bestandstype. Selecteer alleen bestanden van het type "jpg, jpeg of png"`;
                 listItem.appendChild(content);
               }
-        
+
               list.appendChild(listItem);
             }
           }

@@ -1,18 +1,22 @@
 from django import forms
 
+
 class RadioSelect(forms.RadioSelect):
     option_template_name = "widgets/radio_option.html"
 
-class Select(forms.Select):
-    def create_option(self, *args,**kwargs):
-        option = super().create_option(*args,**kwargs)
-        if not option.get('value'):
-            option['attrs']['disabled'] = 'disabled'
 
-        if option.get('value') == 2:
-            option['attrs']['disabled'] = 'disabled'
+class Select(forms.Select):
+    def create_option(self, *args, **kwargs):
+        option = super().create_option(*args, **kwargs)
+        if not option.get("value"):
+            option["attrs"]["disabled"] = "disabled"
+
+        if option.get("value") == 2:
+            option["attrs"]["disabled"] = "disabled"
 
         return option
+
+
 class MeldingAanmakenForm(forms.Form):
     fieldsets = (
         {
@@ -199,5 +203,3 @@ class MeldingAanmakenForm(forms.Form):
         ),
         required=True,
     )
-
-    # def as_fieldsets(self):
