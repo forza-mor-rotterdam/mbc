@@ -22,13 +22,13 @@ def root(request):
 
 
 def melding_aanmaken(request):
-    form = MeldingAanmakenForm()
     if request.POST:
         form = MeldingAanmakenForm(request.POST)
         is_valid = form.is_valid()
-        print(form.errors)
         if is_valid:
             return redirect("melding_verzonden")
+    else:
+        form = MeldingAanmakenForm()
 
     return render(
         request,

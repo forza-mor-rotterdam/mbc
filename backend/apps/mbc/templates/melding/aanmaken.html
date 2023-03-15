@@ -2,15 +2,12 @@
 {% load rotterdam_formulier_html %}
 
 {% block body %}
-{% comment %} <form> {% endcomment %}
-    {% comment %} {{ form|render_rotterdam_formulier }} {% endcomment %}
-
 <h1>Serviceverzoek</h1>
 
-
+<turbo-frame id="melding_aanmaken">
 <form class="form__request" data-controller="request" enctype="multipart/form-data" method="post" novalidate>
     {% csrf_token %}
-    -  {{ form.errors }} -
+    {{ form.errors }}
     <fieldset>
         <legend class="divided">
             <h2>
@@ -126,4 +123,5 @@
 </div>
 
 </form>
+</turbo-frame>
 {% endblock %}

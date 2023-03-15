@@ -1,129 +1,132 @@
-BEGRAAFPLAATS_CROOSWIJK = ("begraafplaats_crooswijk", "Begraafplaats Crooswijk")
-BEGRAAFPLAATS_HOEK_VAN_HOLLAND = (
-    "begraafplaats_hoek_van_holland",
-    "Begraafplaats Hoek van Holland",
-)
-BEGRAAFPLAATS_HOFWIJK = (
-    "begraafplaats_hofwijk",
-    "Begraafplaats en crematorium Hofwijk",
-)
-BEGRAAFPLAATS_OUDE_LAND = (
-    "begraafplaats_oude_land",
-    "Begraafplaats Oudeland, Hoogvliet",
-)
-BEGRAAFPLAATS_OUD_HOOGVLIET = (
-    "begraafplaats_oud_hoogvliet",
-    "Begraafplaats Oud-Hoogvliet",
-)
-BEGRAAFPLAATS_OUD_OVERSCHIE = (
-    "begraafplaats_oud_overschie",
-    "Begraafplaats Oud-Overschie",
-)
-BEGRAAFPLAATS_OUD_PERNIS = ("begraafplaats_oud_pernis", "Begraafplaats Oud-Pernis")
-BEGRAAFPLAATS_OUD_SCHIEBROEK = (
-    "begraafplaats_oud_schiebroek",
-    "Begraafplaats Oud-Schiebroek",
-)
-BEGRAAFPLAATS_PERNIS = ("begraafplaats_pernis", "Begraafplaats Pernis")
-BEGRAAFPLAATS_ROZENBURG = ("begraafplaats_rozenburg", "Begraafplaats Rozenburg")
-BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS = (
-    "begraafplaats_zuiderbegraafplaats",
-    "De Zuiderbegraafplaats",
-)
+from apps.mbc.utils import snake_case
 
-BEGRAAFPLAATSEN = (
+BEGRAAFPLAATS_CROOSWIJK = "Begraafplaats Crooswijk"
+BEGRAAFPLAATS_HOEK_VAN_HOLLAND = "Begraafplaats Hoek van Holland"
+BEGRAAFPLAATS_HOFWIJK = "Begraafplaats en crematorium Hofwijk"
+BEGRAAFPLAATS_OUDE_LAND = "Begraafplaats Oudeland, Hoogvliet"
+BEGRAAFPLAATS_OUD_HOOGVLIET = "Begraafplaats Oud-Hoogvliet"
+BEGRAAFPLAATS_OUD_OVERSCHIE = "Begraafplaats Oud-Overschie"
+BEGRAAFPLAATS_OUD_PERNIS = "Begraafplaats Oud-Pernis"
+BEGRAAFPLAATS_OUD_SCHIEBROEK = "Begraafplaats Oud-Schiebroek"
+BEGRAAFPLAATS_PERNIS = "Begraafplaats Pernis"
+BEGRAAFPLAATS_ROZENBURG = "Begraafplaats Rozenburg"
+BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS = "De Zuiderbegraafplaats"
+
+BEGRAAFPLAATSEN_SOURCE = (
     (
         BEGRAAFPLAATS_CROOSWIJK,
         (
-            ("Collega_A_Crooswijk", "Collega A Crooswijk"),
-            ("Collega_B_Crooswijk", "Collega B Crooswijk"),
-            ("Collega_C_Crooswijk", "Collega C Crooswijk"),
+            "Collega A Crooswijk",
+            "Collega B Crooswijk",
+            "Collega C Crooswijk",
         ),
     ),
     (
         BEGRAAFPLAATS_HOEK_VAN_HOLLAND,
         (
-            "Collega A HvH",
-            "Collega B",
-            "Collega C",
+            "Collega D",
+            "Collega E",
+            "Collega F",
         ),
     ),
     (
         BEGRAAFPLAATS_HOFWIJK,
         (
-            "Collega A Hofwijk",
-            "Collega B",
-            "Collega C",
+            "Collega G",
+            "Collega H",
+            "Collega I",
         ),
     ),
     (
         BEGRAAFPLAATS_OUDE_LAND,
         (
-            "Collega A Oude Land",
-            "Collega B",
-            "Collega C",
+            "Collega J",
+            "Collega K",
+            "Collega L",
         ),
     ),
     (
         BEGRAAFPLAATS_OUD_HOOGVLIET,
         (
-            "Collega A Oud Hoogvliet",
-            "Collega B",
-            "Collega C",
+            "Collega M",
+            "Collega N",
+            "Collega O",
         ),
     ),
     (
         BEGRAAFPLAATS_OUD_OVERSCHIE,
         (
-            "Collega A Oud Overschie",
-            "Collega B",
-            "Collega C",
+            "Collega P",
+            "Collega Q",
+            "Collega R",
         ),
     ),
     (
         BEGRAAFPLAATS_OUD_PERNIS,
         (
-            "Collega A Oud Pernis",
-            "Collega B",
-            "Collega C",
+            "Collega S",
+            "Collega T",
+            "Collega U",
         ),
     ),
     (
         BEGRAAFPLAATS_OUD_SCHIEBROEK,
         (
-            "Collega A Oud Schiebroek",
-            "Collega B",
-            "Collega C",
+            "Collega V",
+            "Collega W",
+            "Collega X",
         ),
     ),
     (
         BEGRAAFPLAATS_PERNIS,
         (
-            "Collega A Pernis",
-            "Collega B",
-            "Collega C",
+            "Collega Y",
+            "Collega Z",
+            "Collega AA",
         ),
     ),
     (
         BEGRAAFPLAATS_ROZENBURG,
         (
-            "Collega A Rozenburg",
-            "Collega B",
-            "Collega C",
+            "Collega BB",
+            "Collega CC",
+            "Collega DD",
         ),
     ),
     (
         BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS,
         (
-            "Collega A Zuiderbegraafplaats",
-            "Collega B",
-            "Collega C",
+            "Collega EE",
+            "Collega FF",
+            "Collega GG",
         ),
     ),
 )
-
-BEGRAAFPLAATS_MEDEWERKERS = {b[0][0]: b[1] for b in BEGRAAFPLAATSEN}
-
-BEGRAAFPLAATS_SELECT = [b[0] for b in BEGRAAFPLAATSEN]
-
-# crooswijk_medewerkers = BEGRAAFPLAATS_MEDEWERKERS[BEGRAAFPLAATS_CROOSWIJK]
+CATEGORIE_SOURCE = [
+    "Verzakking eigen graf",
+    "Verzakking algemeen",
+    "Snoeien",
+    "Beplanting",
+    "Schoonmaken",
+    "Verdwenen materiaal",
+    "Gaten",
+    "Wespennest",
+    "Konijnen",
+    "Muizen",
+    "Zerk reinigen",
+    "Andere oorzaken",
+]
+CATEGORIE = [[snake_case(c), c] for c in CATEGORIE_SOURCE]
+BEGRAAFPLAATSEN = [
+    [[snake_case(b[0]), b[0]], [[snake_case(c), c] for c in b[1]]]
+    for b in BEGRAAFPLAATSEN_SOURCE
+]
+ALLE_MEDEWERKERS = [["", "Selecteer een medewerker"]] + [
+    m for b in BEGRAAFPLAATSEN for m in b[1]
+]
+BEGRAAFPLAATS_MEDEWERKERS = {
+    b[0][0]: [["", "Selecteer een medewerker"]] + b[1] for b in BEGRAAFPLAATSEN
+}
+BEGRAAFPLAATS_SELECT = [["", "Selecteer een begraafplaats"]] + [
+    b[0] for b in BEGRAAFPLAATSEN
+]
