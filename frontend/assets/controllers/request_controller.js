@@ -20,7 +20,7 @@ export default class extends Controller {
     }
 
     showFileInput() {
-        const inputContainer = document.getElementById('bestanden').parentElement;
+        const inputContainer = document.getElementById('id_fotos').parentElement;
 
         inputContainer.classList.remove('hidden');
         const preview = document.getElementById('imagesPreview');
@@ -31,7 +31,7 @@ export default class extends Controller {
 
     removeFile (e) {
         const index = e.params.index;
-        const input = document.getElementById('bestanden')
+        const input = document.getElementById('id_fotos')
         const fileListArr = [...input.files]
         fileListArr.splice(index, 1)
         /** Code from: https://stackoverflow.com/a/47172409/8145428 */
@@ -45,7 +45,7 @@ export default class extends Controller {
     }
 
     updateImageDisplay() {
-        const input = document.getElementById('bestanden')
+        const input = document.getElementById('id_fotos')
         const preview = document.getElementById('imagesPreview');
         const currentFiles = input.files;
 
