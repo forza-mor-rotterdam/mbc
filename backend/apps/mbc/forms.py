@@ -85,6 +85,16 @@ class MeldingAanmakenForm(forms.Form):
         required=False,
     )
 
+    fotos = forms.FileField(
+        widget=forms.widgets.FileInput(
+            attrs={
+                "accept": ".jpg, .jpeg, .png",
+                "data-action": "change->request#updateImageDisplay",
+            }
+        ),
+        label="Foto's",
+        required=False,
+    )
     aannemer = forms.ChoiceField(
         widget=Select(
             attrs={

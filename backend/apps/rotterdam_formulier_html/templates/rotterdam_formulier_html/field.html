@@ -193,25 +193,30 @@
         </div>
 
     {% elif field|is_file %}
-        <div class="col {{ classes.label }} {{ classes.value }} {{ classes.single_value }}">
+        <div class="form-row {{ classes.label }} {{ classes.value }} {{ classes.single_value }}">
+            {% if field.auto_id %}
+                <label class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}" for="{{ field.auto_id }}">{{ field.field.label }}{% if not field.field.required %} <small>(Niet verplicht)</small>{% endif %}</label>
+            {% endif %}
+            <div class="">
+                <button type="button" class="btn btn-secondary" id="buttonFile" data-action="request#showFileInput">
 
-            {% for error in field.errors %}
-                <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
-            {% endfor %}
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M17 6H15V15H6V17H15V26H17V17H26V15H17V6Z" fill="#fff"/>
+                        </svg>
+                        <span>Foto toevoegen</span>
 
-            <div class="file-field input-field">
-                <div class="btn">
-                    <span>{{ field.label }}</span>
-                    {% if classes.icon %}
-                        {% include 'rotterdam_formulier_html/field_icon.html' %}
-                    {% endif %}
-                    {{ field }}
-                </div>
-                <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text">
+                </button>
+                <div class="file-upload multiple hidden" tabindex="1">
+                    <div class="file-upload-mask">
+                        Sleep één of meer bestanden hier naartoe, of klik hier om bestanden te uploaden
+                    </div>
+                    {% comment %} {{ field }} {% endcomment %}
+                    <input id="{{ field.auto_id }}" name="{{ field.html_name }}" type="file"
+                        {% render_attrs field class="file-upload-input" multiple="multiple" %}
+                    >
+                    <div id="imagesPreview" class="preview"></div>
                 </div>
             </div>
-
         </div>
     {% else %}
 
