@@ -32,7 +32,7 @@ class MeldingAanmakenForm(forms.Form):
     )
     grafnummer = forms.CharField(
         widget=forms.TextInput(),
-        label="Grafnummer of colombarium",
+        label="Grafnummer",
         required=True,
     )
     vak = forms.CharField(

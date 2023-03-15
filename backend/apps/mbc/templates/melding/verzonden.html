@@ -1,1 +1,10 @@
-verzonden
+{% extends "base.html" %}
+{% load rotterdam_formulier_html %}
+
+{% block body %}
+    <h1>Bedankt</h1>
+    <p>Het serviceverzoek is ingediend</p>
+    <a href="{% url 'melding_aanmaken' %}" class="btn btn-action">
+        <span>Nog een verzoek indienen</span>
+    </a>
+{% endblock %}
