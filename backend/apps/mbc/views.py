@@ -1,4 +1,6 @@
 from apps.mbc.forms import MeldingAanmakenForm
+from django.conf import settings
+from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -28,6 +30,16 @@ def melding_aanmaken(request):
         is_valid = form.is_valid()
         print(form.errors)
         if is_valid:
+            send_to = ["maurice@tiltshift.nl"]
+            if form.cleaned_data.get("email_melder"):
+                send_to.append(form.cleaned_data.get("email_melder"))
+            send_mail(
+                "Begraven & cremeren Service aanvraag",
+                "Dit is een standaard tekst voor B&C",
+                settings.DEFAULT_FROM_EMAIL,
+                send_to,
+                fail_silently=False,
+            )
             return redirect("melding_verzonden")
 
     return render(
