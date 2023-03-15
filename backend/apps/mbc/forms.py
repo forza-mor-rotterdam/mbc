@@ -1,4 +1,12 @@
+from apps.mbc.constanten import (
+    BEGRAAFPLAATS_MEDEWERKERS,
+    BEGRAAFPLAATS_SELECT,
+    BEGRAAFPLAATSEN,
+)
 from django import forms
+
+print(BEGRAAFPLAATS_SELECT)
+print(BEGRAAFPLAATSEN)
 
 
 class RadioSelect(forms.RadioSelect):
@@ -37,20 +45,8 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Begraafplaats",
-        choices=(
-            ("", "Selecteer een begraafplaats"),
-            ("begraafplaats_crooswijk", "Begraafplaats Crooswijk"),
-            ("begraafplaats_hoek_van_holland", "Begraafplaats Hoek van Holland"),
-            ("begraafplaats_hofwijk", "Begraafplaats en crematorium Hofwijk"),
-            ("begraafplaats_oude_land", "Begraafplaats Oudeland, Hoogvliet"),
-            ("begraafplaats_oud_hoogvliet", "Begraafplaats Oud-Hoogvliet"),
-            ("begraafplaats_oud_overschie", "Begraafplaats Oud-Overschie"),
-            ("begraafplaats_oud_pernis", "Begraafplaats Oud-Pernis"),
-            ("begraafplaats_oud_schiebroek", "Begraafplaats Oud-Schiebroek"),
-            ("begraafplaats_pernis", "Begraafplaats Pernis"),
-            ("begraafplaats_rozenburg", "Begraafplaats Rozenburg"),
-            ("begraafplaats_zuiderbegraafplaats", "De Zuiderbegraafplaats"),
-        ),
+        choices=BEGRAAFPLAATS_SELECT,
+        # [["", "Selecteer een begraafplaats"] + *BEGRAAFPLAATS_SELECT],
         required=True,
     )
 
@@ -139,17 +135,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Wie heeft het verzoek aangenomen?",
-        choices=(
-            ("", "Selecteer een collega"),
-            ("collega_onbekend", "Onbekend"),
-            ("collega_a", "Collega A"),
-            ("collega_b", "Collega B"),
-            ("collega_c", "Collega C"),
-            ("collega_d", "Collega D"),
-            ("collega_e", "Collega E"),
-            ("collega_f", "Collega F"),
-            ("collega_g", "Collega G"),
-        ),
+        choices=(("1", "Ja"), ("0", "Nee"), ("2", "Onbekend")),
         required=True,
     )
 
@@ -203,3 +189,12 @@ class MeldingAanmakenForm(forms.Form):
         ),
         required=True,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(self.data)
+        if self.data.get("begraafplaats"):
+            print(BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]])
+            self.fields["aannemer"].choices = BEGRAAFPLAATS_MEDEWERKERS[
+                self.data["begraafplaats"]
+            ]
