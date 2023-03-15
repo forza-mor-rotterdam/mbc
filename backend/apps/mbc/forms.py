@@ -25,39 +25,23 @@ class Select(forms.Select):
 
 class MeldingAanmakenForm(forms.Form):
     begraafplaats = forms.ChoiceField(
-        widget=Select(
-            attrs={
-                "class": "form-select",
-            }
-        ),
+        widget=Select(attrs={"data-action": "change->request#onChangeBegraafplaats"}),
         label="Begraafplaats",
         choices=BEGRAAFPLAATS_SELECT,
         required=True,
     )
     grafnummer = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-            }
-        ),
+        widget=forms.TextInput(),
         label="Grafnummer of colombarium",
         required=True,
     )
     vak = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-            }
-        ),
+        widget=forms.TextInput(),
         label="Vak",
         required=True,
     )
     naam_overledene = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-            }
-        ),
+        widget=forms.TextInput(),
         label="Naam overledene",
         required=True,
     )
@@ -87,45 +71,32 @@ class MeldingAanmakenForm(forms.Form):
     # )
 
     toelichting = forms.CharField(
-        widget=forms.Textarea(
-            attrs={
-                "class": "form-control",
-                "rows": "4",
-            }
-        ),
+        widget=forms.Textarea(),
         label="Toelichting",
         required=False,
     )
 
     aannemer = forms.ChoiceField(
-        widget=Select(
-            attrs={
-                "class": "form-select",
-            }
-        ),
+        widget=Select(),
         label="Wie heeft het verzoek aangenomen?",
         choices=ALLE_MEDEWERKERS,
         required=False,
     )
 
     naam_melder = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-            }
-        ),
+        widget=forms.TextInput(),
         label="Naam",
         required=True,
     )
 
     telefoon_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control", "type": "tel"}),
+        widget=forms.TextInput(attrs={"type": "tel"}),
         label="Telefoonnummer",
         required=True,
     )
 
     email_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control", "type": "email"}),
+        widget=forms.TextInput(attrs={"type": "email"}),
         label="E-mailadres",
         required=False,
     )

@@ -15,6 +15,10 @@ export default class extends Controller {
         }
     }
 
+    onChangeBegraafplaats(e) {
+        document.getElementById('requestForm').requestSubmit()
+    }
+
     showFileInput() {
         const inputContainer = document.getElementById('bestanden').parentElement;
 
@@ -39,6 +43,7 @@ export default class extends Controller {
         this.updateImageDisplay();
 
     }
+
     updateImageDisplay() {
         const input = document.getElementById('bestanden')
         const preview = document.getElementById('imagesPreview');
