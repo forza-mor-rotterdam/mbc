@@ -1,12 +1,10 @@
 from apps.mbc.constanten import (
+    ALLE_MEDEWERKERS,
     BEGRAAFPLAATS_MEDEWERKERS,
     BEGRAAFPLAATS_SELECT,
-    BEGRAAFPLAATSEN,
+    CATEGORIE,
 )
 from django import forms
-
-print(BEGRAAFPLAATS_SELECT)
-print(BEGRAAFPLAATSEN)
 
 
 class RadioSelect(forms.RadioSelect):
@@ -26,18 +24,6 @@ class Select(forms.Select):
 
 
 class MeldingAanmakenForm(forms.Form):
-    fieldsets = (
-        {
-            "titel": "Fieldset naam",
-            "icon": "Fieldset icon",
-            "fields": (
-                "begraafplaats",
-                "naam_melder",
-            ),
-        },
-        {},
-    )
-
     begraafplaats = forms.ChoiceField(
         widget=Select(
             attrs={
@@ -46,10 +32,8 @@ class MeldingAanmakenForm(forms.Form):
         ),
         label="Begraafplaats",
         choices=BEGRAAFPLAATS_SELECT,
-        # [["", "Selecteer een begraafplaats"] + *BEGRAAFPLAATS_SELECT],
         required=True,
     )
-
     grafnummer = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -59,7 +43,6 @@ class MeldingAanmakenForm(forms.Form):
         label="Grafnummer of colombarium",
         required=True,
     )
-
     vak = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -69,7 +52,6 @@ class MeldingAanmakenForm(forms.Form):
         label="Vak",
         required=True,
     )
-
     naam_overledene = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -88,20 +70,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Categorie",
-        choices=(
-            ("categorie_verzakking_eigen_graf", "Verzakking eigen graf"),
-            ("categorie_verzakking_algemeen", "Verzakking algemeen"),
-            ("categorie_snoeien", "Snoeien"),
-            ("categorie_beplanting", "Beplanting"),
-            ("categorie_schoonmaken", "Schoonmaken"),
-            ("categorie_verdwenen_materiaal", "Verdwenen materiaal"),
-            ("categorie_gaten", "Gaten"),
-            ("categorie_wespennest", "Wespennest"),
-            ("categorie_konijnen", "Konijnen"),
-            ("categorie_muizen", "Muizen"),
-            ("categorie_zerk_reinigen", "Zerk reinigen"),
-            ("categorie_andere_oorzaken", "Andere oorzaken"),
-        ),
+        choices=CATEGORIE,
         required=True,
     )
 
@@ -135,8 +104,8 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Wie heeft het verzoek aangenomen?",
-        choices=(("1", "Ja"), ("0", "Nee"), ("2", "Onbekend")),
-        required=True,
+        choices=ALLE_MEDEWERKERS,
+        required=False,
     )
 
     naam_melder = forms.CharField(
@@ -192,9 +161,7 @@ class MeldingAanmakenForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print(self.data)
+        aannemer_choices = ALLE_MEDEWERKERS
         if self.data.get("begraafplaats"):
-            print(BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]])
-            self.fields["aannemer"].choices = BEGRAAFPLAATS_MEDEWERKERS[
-                self.data["begraafplaats"]
-            ]
+            aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]
+        self.fields["aannemer"].choices = aannemer_choices

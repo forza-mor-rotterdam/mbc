@@ -24,11 +24,9 @@ def root(request):
 
 
 def melding_aanmaken(request):
-    form = MeldingAanmakenForm()
     if request.POST:
         form = MeldingAanmakenForm(request.POST)
         is_valid = form.is_valid()
-        print(form.errors)
         if is_valid:
             send_to = ["maurice@tiltshift.nl"]
             if form.cleaned_data.get("email_melder"):
@@ -41,6 +39,8 @@ def melding_aanmaken(request):
                 fail_silently=False,
             )
             return redirect("melding_verzonden")
+    else:
+        form = MeldingAanmakenForm()
 
     return render(
         request,
