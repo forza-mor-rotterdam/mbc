@@ -12,6 +12,8 @@ BEGRAAFPLAATS_PERNIS = "Begraafplaats Pernis"
 BEGRAAFPLAATS_ROZENBURG = "Begraafplaats Rozenburg"
 BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS = "De Zuiderbegraafplaats"
 
+DEFAULT_BEGRAAFPLAATS_EMAIL = ""
+
 BEGRAAFPLAATS_MEDEWERKERS_ZUID = (
     "C.M. Hendriks",
     "A. van de Graaf",
@@ -28,6 +30,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega B Crooswijk",
             "Collega C Crooswijk",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_HOEK_VAN_HOLLAND,
@@ -36,6 +39,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega E",
             "Collega F",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_HOFWIJK,
@@ -44,10 +48,12 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega H",
             "Collega I",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_OUDE_LAND,
         BEGRAAFPLAATS_MEDEWERKERS_ZUID,
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_OUD_HOOGVLIET,
@@ -56,6 +62,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega N",
             "Collega O",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_OUD_OVERSCHIE,
@@ -64,6 +71,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega Q",
             "Collega R",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_OUD_PERNIS,
@@ -72,6 +80,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega T",
             "Collega U",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_OUD_SCHIEBROEK,
@@ -80,18 +89,22 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega W",
             "Collega X",
         ),
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_PERNIS,
         BEGRAAFPLAATS_MEDEWERKERS_ZUID,
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_ROZENBURG,
         BEGRAAFPLAATS_MEDEWERKERS_ZUID,
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
     (
         BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS,
         BEGRAAFPLAATS_MEDEWERKERS_ZUID,
+        DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
 )
 CATEGORIE_SOURCE = [
@@ -108,9 +121,9 @@ CATEGORIE_SOURCE = [
     "Zerk reinigen",
     "Andere oorzaken",
 ]
-CATEGORIE = [[snake_case(c), c] for c in CATEGORIE_SOURCE]
+CATEGORIE = [[f"categorie_{snake_case(c)}", c] for c in CATEGORIE_SOURCE]
 BEGRAAFPLAATSEN = [
-    [[snake_case(b[0]), b[0]], [[snake_case(c), c] for c in b[1]]]
+    [[snake_case(b[0]), b[0]], [[snake_case(c), c] for c in b[1]], b[2]]
     for b in BEGRAAFPLAATSEN_SOURCE
 ]
 ALLE_MEDEWERKERS = [["", "Selecteer een medewerker"]] + [
@@ -120,6 +133,7 @@ BEGRAAFPLAATS_MEDEWERKERS = {
     b[0][0]: [["", "Selecteer een medewerker"], ["onbekend", "Onbekend"]] + b[1]
     for b in BEGRAAFPLAATSEN
 }
+BEGRAAFPLAATS_EMAIL = {b[0][0]: b[2] for b in BEGRAAFPLAATSEN}
 BEGRAAFPLAATS_SELECT = [["", "Selecteer een begraafplaats"]] + [
     b[0] for b in BEGRAAFPLAATSEN
 ]
