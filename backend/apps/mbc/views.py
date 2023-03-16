@@ -1,6 +1,9 @@
 import json
 
+from apps.mbc.constanten import BEGRAAFPLAATS_EMAIL_ADRES
 from apps.mbc.forms import MeldingAanmakenForm
+from django.conf import settings
+from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -39,6 +42,22 @@ def melding_aanmaken(request):
         print(form.errors)
         dirty_fields_list = json.loads(form.data.get("dirty_fields", "[]"))
         if is_valid:
+            send_to = []
+            if BEGRAAFPLAATS_EMAIL_ADRES.get(form.cleaned_data.get("begraafplaats")):
+                send_to.append(
+                    BEGRAAFPLAATS_EMAIL_ADRES.get(
+                        form.cleaned_data.get("begraafplaats")
+                    )
+                )
+            if form.cleaned_data.get("email_melder"):
+                send_to.append(form.cleaned_data.get("email_melder"))
+            send_mail(
+                "Begraven & cremeren Service aanvraag",
+                "Dit is een standaard tekst voor B&C",
+                settings.DEFAULT_FROM_EMAIL,
+                send_to,
+                fail_silently=False,
+            )
             return redirect("melding_verzonden")
     else:
         form = MeldingAanmakenForm()

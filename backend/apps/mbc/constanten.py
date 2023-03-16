@@ -129,6 +129,7 @@ BEGRAAFPLAATSEN = [
 ALLE_MEDEWERKERS = [["", "Selecteer een medewerker"]] + [
     m for b in BEGRAAFPLAATSEN for m in b[1]
 ]
+BEGRAAFPLAATS_EMAIL_ADRES = {b[0][0]: b[2] for b in BEGRAAFPLAATSEN}
 BEGRAAFPLAATS_MEDEWERKERS = {
     b[0][0]: [["", "Selecteer een medewerker"], ["onbekend", "Onbekend"]] + b[1]
     for b in BEGRAAFPLAATSEN
