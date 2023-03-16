@@ -176,12 +176,62 @@
             <tr>
                 <td align="left" style="padding:0 20px;">
                     <table style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
-                        {% for key, value in formdata.items %}
                             <tr style="border-bottom: 1px solid #d3d3d3">
-                                <td style="padding: 8px 0 4px;">{{key}}<td>
-                                <td style="padding: 8px 0 4px;">{% if value %}{{value}} {%else%} - {% endif %}</td>
+                                <td style="padding: 8px 0 4px;">Begraafplaats<td>
+                                <td style="padding: 8px 0 4px;">{{ begraafplaats }}</td>
                             </tr>
-                        {% endfor %}
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Grafnummer<td>
+                                <td style="padding: 8px 0 4px;">{% if grafnummer %}{{ grafnummer }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Vak<td>
+                                <td style="padding: 8px 0 4px;">{% if vak %}{{ vak }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Naam overledene<td>
+                                <td style="padding: 8px 0 4px;">{% if naam_overledene %}{{ naam_overledene }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Categorie<td>
+                                <td style="padding: 8px 0 4px;">{{ categorie }}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Omschrijving andere oorzaken<td>
+                                <td style="padding: 8px 0 4px;">{% if omschrijving_andere_oorzaken %}{{ omschrijving_andere_oorzaken }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Toelichting<td>
+                                <td style="padding: 8px 0 4px;">{% if toelichting %}{{ toelichting }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Foto's<td>
+                                <td style="padding: 8px 0 4px;">{% if fotos %}{{ fotos }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Wie heeft het verzoek aangenomen?<td>
+                                <td style="padding: 8px 0 4px;">{% if aannemer %}{{ aannemer }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Naam<td>
+                                <td style="padding: 8px 0 4px;">{% if naam_melder %}{{ naam_melder }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Telefoonnummer<td>
+                                <td style="padding: 8px 0 4px;">{% if telefoon_melder %}{{ telefoon_melder }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">E-mailadres<td>
+                                <td style="padding: 8px 0 4px;">{% if email_melder %}{{ email_melder }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Is deze persoon de rechthebbende?<td>
+                                <td style="padding: 8px 0 4px;">{% if rechthebbende == "1" %}Ja{% elif rechthebbende == "2" %}Onbekend{% else %}Nee{% endif %}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #d3d3d3">
+                                <td style="padding: 8px 0 4px;">Is terugkoppeling gewenst?<td>
+                                <td style="padding: 8px 0 4px;">{% if terugkoppeling_gewenst == "1" %}Ja{% else %}Nee{% endif %}</td>
+                            </tr>
                     </table>
                 </td>
             <tr>

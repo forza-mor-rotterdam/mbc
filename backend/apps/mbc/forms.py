@@ -1,10 +1,17 @@
 from apps.mbc.constanten import (
     ALLE_MEDEWERKERS,
+    BEGRAAFPLAATS_EMAIL_ADRES,
+    BEGRAAFPLAATS_MEDEWERKER_NAAM,
     BEGRAAFPLAATS_MEDEWERKERS,
+    BEGRAAFPLAATS_NAAM,
     BEGRAAFPLAATS_SELECT,
     CATEGORIE,
+    CATEGORIE_NAAM,
 )
 from django import forms
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 # class RadioSelect(forms.RadioSelect):
 #     option_template_name = "widgets/radio_option.html"
@@ -188,3 +195,38 @@ class MeldingAanmakenForm(forms.Form):
         if self.data.get("begraafplaats"):
             aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]
         self.fields["aannemer"].choices = aannemer_choices
+
+    def send_mail(self, files=[]):
+        send_to = []
+        if BEGRAAFPLAATS_EMAIL_ADRES.get(self.cleaned_data.get("begraafplaats")):
+            send_to.append(
+                BEGRAAFPLAATS_EMAIL_ADRES.get(self.cleaned_data.get("begraafplaats"))
+            )
+        if self.cleaned_data.get("email_melder"):
+            send_to.append(self.cleaned_data.get("email_melder"))
+
+        email_context = self.cleaned_data
+        email_context["fotos"] = len(files)
+        email_context["categorie"] = ", ".join(
+            [CATEGORIE_NAAM[c] for c in email_context["categorie"]]
+        )
+        email_context["begraafplaats"] = BEGRAAFPLAATS_NAAM[
+            email_context["begraafplaats"]
+        ]
+        email_context["aannemer"] = BEGRAAFPLAATS_MEDEWERKER_NAAM[
+            email_context["aannemer"]
+        ]
+
+        text_template = get_template("email/email.txt")
+        html_template = get_template("email/email.html")
+        text_content = text_template.render(email_context)
+        html_content = html_template.render(email_context)
+        subject = "Serviceverzoek Begraven & Cremeren"
+        msg = EmailMultiAlternatives(
+            subject, text_content, settings.DEFAULT_FROM_EMAIL, send_to
+        )
+        msg.attach_alternative(html_content, "text/html")
+        for f in files:
+            msg.attach(f.name, f.read(), f.content_type)
+        if send_to and not settings.DEBUG:
+            msg.send()

@@ -1,9 +1,6 @@
 import json
 
-from apps.mbc.constanten import BEGRAAFPLAATS_EMAIL_ADRES
 from apps.mbc.forms import MeldingAanmakenForm
-from django.conf import settings
-from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -37,27 +34,11 @@ def melding_aanmaken(request):
     if request.POST:
         form = MeldingAanmakenForm(request.POST, request.FILES)
         is_valid = form.is_valid()
-        print(request.FILES)
         print(form.data)
         print(form.errors)
         dirty_fields_list = json.loads(form.data.get("dirty_fields", "[]"))
         if is_valid:
-            send_to = []
-            if BEGRAAFPLAATS_EMAIL_ADRES.get(form.cleaned_data.get("begraafplaats")):
-                send_to.append(
-                    BEGRAAFPLAATS_EMAIL_ADRES.get(
-                        form.cleaned_data.get("begraafplaats")
-                    )
-                )
-            if form.cleaned_data.get("email_melder"):
-                send_to.append(form.cleaned_data.get("email_melder"))
-            send_mail(
-                "Begraven & cremeren Service aanvraag",
-                "Dit is een standaard tekst voor B&C",
-                settings.DEFAULT_FROM_EMAIL,
-                send_to,
-                fail_silently=False,
-            )
+            form.send_mail(request.FILES.getlist("fotos", []))
             return redirect("melding_verzonden")
     else:
         form = MeldingAanmakenForm()
@@ -77,20 +58,19 @@ def melding_email(request):
         request,
         "email/email.html",
         {
-            "formdata": {
-                "begraafplaats": "Zuiderbegraafplaats",
-                "Grafnummer": "18",
-                "Vak": "C",
-                "Naam overledene": "A. Jansen",
-                "categorie": ", ".join(["Snoeien"]),
-                "Andere oorzaken": "",
-                "Toelichting": "Graag de overhangende takken verwijderen.",
-                "Medewerker": "A. van de Graaf",
-                "Naam melder": "D. Melder",
-                "Telefoonnummer melder": "06-12345678",
-                "E-mailadres": "",
-                "Rechthebbende": "Ja",
-                "Terugkoppeling gewenst?": "Ja",
-            }
+            "begraafplaats": "De Zuiderbegraafplaats",
+            "grafnummer": "42",
+            "vak": "F",
+            "naam_overledene": "John Doe",
+            "categorie": "Muizen, Andere oorzaken",
+            "omschrijving_andere_oorzaken": "Andere oorzaak",
+            "toelichting": "Toelichting...",
+            "fotos": 0,
+            "aannemer": "A.J. Verhoeven",
+            "naam_melder": "Donald",
+            "telefoon_melder": "0601234567",
+            "email_melder": "",
+            "rechthebbende": "2",
+            "terugkoppeling_gewenst": "1",
         },
     )
