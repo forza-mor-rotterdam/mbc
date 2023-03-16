@@ -31,17 +31,17 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
     grafnummer = forms.CharField(
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={"class": "form-control"}),
         label="Grafnummer",
         required=True,
     )
     vak = forms.CharField(
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={"class": "form-control"}),
         label="Vak",
         required=True,
     )
     naam_overledene = forms.CharField(
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={"class": "form-control"}),
         label="Naam overledene",
         required=True,
     )
@@ -50,26 +50,18 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                "data-action": "request#toggleInputOtherCategory",
+                # "data-action": "request#toggleInputOtherCategory",
             }
         ),
         label="Categorie",
         choices=CATEGORIE,
         required=True,
     )
-
-    # categorie_omschrijving = forms.CharField(
-    #     widget=forms.TextInput(
-    #         attrs={
-    #             "class": "form-control hidden",
-    #             "data-request-target": "categoryDescription",
-    #         }
-    #     ),
-    #     label="Andere oorzaken",
-    #     # required=True,
-    #     # show_hidden_initial=True,
-    # )
-
+    omschrijving_andere_oorzaken = forms.CharField(
+        widget=forms.HiddenInput(),
+        label="Omschrijving andere oorzaken",
+        required=False,
+    )
     toelichting = forms.CharField(
         widget=forms.Textarea(),
         label="Toelichting",
@@ -94,19 +86,19 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     naam_melder = forms.CharField(
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={"class": "form-control"}),
         label="Naam",
         required=True,
     )
 
     telefoon_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"type": "tel"}),
+        widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
         label="Telefoonnummer",
         required=True,
     )
 
     email_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"type": "email"}),
+        widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
         label="E-mailadres",
         required=False,
     )
@@ -143,6 +135,12 @@ class MeldingAanmakenForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         aannemer_choices = ALLE_MEDEWERKERS
+        if "categorie_andere_oorzaken" in self.data.get("categorie", []):
+            self.fields["omschrijving_andere_oorzaken"].widget = forms.TextInput(
+                attrs={"class": "form-control", "required": "required"}
+            )
+            self.fields["omschrijving_andere_oorzaken"].required = True
+
         if self.data.get("begraafplaats"):
             aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]
         self.fields["aannemer"].choices = aannemer_choices
