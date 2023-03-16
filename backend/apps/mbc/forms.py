@@ -25,7 +25,7 @@ class Select(forms.Select):
 
 class MeldingAanmakenForm(forms.Form):
     begraafplaats = forms.ChoiceField(
-        widget=Select(attrs={"data-action": "change->request#onChangeBegraafplaats"}),
+        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
         label="Begraafplaats",
         choices=BEGRAAFPLAATS_SELECT,
         required=True,
@@ -50,7 +50,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                # "data-action": "request#toggleInputOtherCategory",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Categorie",

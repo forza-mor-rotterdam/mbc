@@ -15,7 +15,7 @@ export default class extends Controller {
         }
     }
 
-    onChangeBegraafplaats(e) {
+    onChangeSendForm(e) {
         document.getElementById('requestForm').requestSubmit()
     }
 
