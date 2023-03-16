@@ -15,7 +15,7 @@
                         <span>{{ field.label }}</span>
                     {% endif %}
                     {% for error in field.errors %}
-                        <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+                        <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
                     {% endfor %}
 
             </label>
@@ -38,7 +38,7 @@
             {{ field }}
         </div>
         {% for error in field.errors %}
-            <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+            <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
         {% endfor %}
         {% if field.help_text %}
             <p class="help-block">
@@ -56,7 +56,7 @@
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
 
         {% for error in field.errors %}
-            <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+            <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
         {% endfor %}
 
         {% if field.help_text %}
@@ -76,7 +76,7 @@
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
 
         {% for error in field.errors %}
-            <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+            <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
         {% endfor %}
 
         {% if field.help_text %}
@@ -102,7 +102,7 @@
                 </select>
 
                 {% for error in field.errors %}
-                    <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+                    <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
                 {% endfor %}
 
                 {% if field.help_text %}
@@ -125,7 +125,7 @@
                 </select>
 
                 {% for error in field.errors %}
-                    <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+                    <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
                 {% endfor %}
 
                 {% if field.help_text %}
@@ -158,7 +158,7 @@
 
             </ul>
             {% for error in field.errors %}
-                <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+                <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
             {% endfor %}
 
             {% if field.help_text %}
@@ -181,7 +181,7 @@
             <textarea id="{{ field.auto_id }}" class="form-control" rows="4" name="{{field.html_name}}" {% render_attrs field class="test testing" test="nog een test" %} >{% if field.value %}{{ field.value }}{% endif %}</textarea>
 
             {% for error in field.errors %}
-                <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
+                <p class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</p>
                 {% endfor %}
 
             {% if field.help_text %}
@@ -229,7 +229,7 @@
             <input type="text" id="{{ field.auto_id }}" name="{{field.html_name}}" class="form-control {% if field.errors %}is-invalid{% endif %}" {% render_attrs field %}{% if field.field.required %}required{% endif %}>
 
             {% for error in field.errors %}
-                <p class="help-block orange-text {{ form.error_css_class }}">{{ error }}</p>
+                <p class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</p>
                 {% endfor %}
 
             {% if field.help_text %}

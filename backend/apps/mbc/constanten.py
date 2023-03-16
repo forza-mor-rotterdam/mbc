@@ -12,6 +12,14 @@ BEGRAAFPLAATS_PERNIS = "Begraafplaats Pernis"
 BEGRAAFPLAATS_ROZENBURG = "Begraafplaats Rozenburg"
 BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS = "De Zuiderbegraafplaats"
 
+BEGRAAFPLAATS_MEDEWERKERS_ZUID = (
+    "C.M. Hendriks",
+    "A. van de Graaf",
+    "I. Addicks",
+    "A.J. Verhoeven",
+    "M. van Berkum",
+)
+
 BEGRAAFPLAATSEN_SOURCE = (
     (
         BEGRAAFPLAATS_CROOSWIJK,
@@ -39,11 +47,7 @@ BEGRAAFPLAATSEN_SOURCE = (
     ),
     (
         BEGRAAFPLAATS_OUDE_LAND,
-        (
-            "Collega J",
-            "Collega K",
-            "Collega L",
-        ),
+        BEGRAAFPLAATS_MEDEWERKERS_ZUID,
     ),
     (
         BEGRAAFPLAATS_OUD_HOOGVLIET,
@@ -79,27 +83,15 @@ BEGRAAFPLAATSEN_SOURCE = (
     ),
     (
         BEGRAAFPLAATS_PERNIS,
-        (
-            "Collega Y",
-            "Collega Z",
-            "Collega AA",
-        ),
+        BEGRAAFPLAATS_MEDEWERKERS_ZUID,
     ),
     (
         BEGRAAFPLAATS_ROZENBURG,
-        (
-            "Collega BB",
-            "Collega CC",
-            "Collega DD",
-        ),
+        BEGRAAFPLAATS_MEDEWERKERS_ZUID,
     ),
     (
         BEGRAAFPLAATS_ZUIDERBEGRAAFPLAATS,
-        (
-            "Collega EE",
-            "Collega FF",
-            "Collega GG",
-        ),
+        BEGRAAFPLAATS_MEDEWERKERS_ZUID,
     ),
 )
 CATEGORIE_SOURCE = [
@@ -125,7 +117,8 @@ ALLE_MEDEWERKERS = [["", "Selecteer een medewerker"]] + [
     m for b in BEGRAAFPLAATSEN for m in b[1]
 ]
 BEGRAAFPLAATS_MEDEWERKERS = {
-    b[0][0]: [["", "Selecteer een medewerker"]] + b[1] for b in BEGRAAFPLAATSEN
+    b[0][0]: [["", "Selecteer een medewerker"], ["onbekend", "Onbekend"]] + b[1]
+    for b in BEGRAAFPLAATSEN
 }
 BEGRAAFPLAATS_SELECT = [["", "Selecteer een begraafplaats"]] + [
     b[0] for b in BEGRAAFPLAATSEN
