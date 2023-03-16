@@ -1,0 +1,24 @@
+Serviceverzoek Begraven & Cremeren
+
+Geachte heer, mevrouw,
+Hartelijk dank voor het indienen van het serviceverzoek.
+Wij hebben de volgende gegevens van u ontvangen:
+
+Begraafplaats:                     {{ begraafplaats }}
+Grafnummer:                        {% if grafnummer %}{{ grafnummer }}{% else %}-{% endif %}
+Vak:                               {% if vak %}{{ vak }}{% else %}-{% endif %}
+Naam overledene:                   {% if naam_overledene %}{{ naam_overledene }}{% else %}-{% endif %}
+Categorie:                         {{ categorie }}
+Omschrijving andere oorzaken:      {% if omschrijving_andere_oorzaken %}{{ omschrijving_andere_oorzaken }}{% else %}-{% endif %}
+Toelichting:                       {% if toelichting %}{{ toelichting }}{% else %}-{% endif %}
+Foto's:                            {% if fotos %}{{ fotos }}{% else %}-{% endif %}
+Wie heeft het verzoek aangenomen?: {% if aannemer %}{{ aannemer }}{% else %}-{% endif %}
+Naam:                              {% if naam_melder %}{{ naam_melder }}{% else %}-{% endif %}
+Telefoonnummer:                    {% if telefoon_melder %}{{ telefoon_melder }}{% else %}-{% endif %}
+E-mailadres:                       {% if email_melder %}{{ email_melder }}{% else %}-{% endif %}
+Is deze persoon de rechthebbende?: {% if rechthebbende == "1" %}Ja{% elif rechthebbende == "2" %}Onbekend{% else %}Nee{% endif %}
+Is terugkoppeling gewenst?:        {% if terugkoppeling_gewenst == "1" %}Ja{% else %}Nee{% endif %}
+
+We gaan zo snel mogelijk uw verzoek aan de slag.
+Met vriendelijke groet,
+Medewerker Begraven & cremeren

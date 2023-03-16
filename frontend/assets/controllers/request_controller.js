@@ -28,7 +28,7 @@ export default class extends Controller {
         this.dirtyFieldsTarget.value = JSON.stringify(this.removeDuplicates(dirtyFields))
 
         console.log("Send form")
-        document.getElementById('requestForm').requestSubmit()
+        // document.getElementById('requestForm').requestSubmit()
     }
 
     showFileInput() {

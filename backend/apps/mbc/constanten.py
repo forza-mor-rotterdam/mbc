@@ -123,10 +123,12 @@ CATEGORIE_SOURCE = [
     "Andere oorzaken",
 ]
 CATEGORIE = [[f"categorie_{snake_case(c)}", c] for c in CATEGORIE_SOURCE]
+CATEGORIE_NAAM = {c[0]: c[1] for c in CATEGORIE}
 BEGRAAFPLAATSEN = [
     [[snake_case(b[0]), b[0]], [[snake_case(c), c] for c in b[1]], b[2]]
     for b in BEGRAAFPLAATSEN_SOURCE
 ]
+BEGRAAFPLAATS_NAAM = {b[0][0]: b[0][1] for b in BEGRAAFPLAATSEN}
 ALLE_MEDEWERKERS = [["", "Selecteer een medewerker"]] + [
     m for b in BEGRAAFPLAATSEN for m in b[1]
 ]
@@ -135,6 +137,8 @@ BEGRAAFPLAATS_MEDEWERKERS = {
     b[0][0]: [["", "Selecteer een medewerker"], ["onbekend", "Onbekend"]] + b[1]
     for b in BEGRAAFPLAATSEN
 }
+BEGRAAFPLAATS_MEDEWERKER_NAAM = {m[0]: m[1] for b in BEGRAAFPLAATSEN for m in b[1]}
+BEGRAAFPLAATS_NAAM = {b[0][0]: b[0][1] for b in BEGRAAFPLAATSEN}
 BEGRAAFPLAATS_EMAIL = {b[0][0]: b[2] for b in BEGRAAFPLAATSEN}
 BEGRAAFPLAATS_SELECT = [["", "Selecteer een begraafplaats"]] + [
     b[0] for b in BEGRAAFPLAATSEN
