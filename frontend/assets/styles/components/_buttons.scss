@@ -224,3 +224,12 @@ button[class="icon"] {
         cursor: pointer;
     }
 }
+
+a.btn {
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}

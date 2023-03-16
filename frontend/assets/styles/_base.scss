@@ -268,3 +268,7 @@ section {
 .wrapper-horizontal {
     display: flex;
 }
+
+.invalid-text {
+    color: $invalid-color !important;
+}

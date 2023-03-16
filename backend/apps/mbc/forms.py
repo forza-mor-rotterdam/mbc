@@ -1,8 +1,13 @@
+from apps.mbc.constanten import (
+    ALLE_MEDEWERKERS,
+    BEGRAAFPLAATS_MEDEWERKERS,
+    BEGRAAFPLAATS_SELECT,
+    CATEGORIE,
+)
 from django import forms
 
-
-class RadioSelect(forms.RadioSelect):
-    option_template_name = "widgets/radio_option.html"
+# class RadioSelect(forms.RadioSelect):
+#     option_template_name = "widgets/radio_option.html"
 
 
 class Select(forms.Select):
@@ -18,66 +23,42 @@ class Select(forms.Select):
 
 
 class MeldingAanmakenForm(forms.Form):
-    fieldsets = (
-        {
-            "titel": "Fieldset naam",
-            "icon": "Fieldset icon",
-            "fields": (
-                "begraafplaats",
-                "naam_melder",
-            ),
-        },
-        {},
+    dirty_fields = forms.CharField(
+        widget=forms.HiddenInput(attrs={"data-request-target": "dirtyFields"}),
+        initial="[]",
+        required=False,
     )
-
     begraafplaats = forms.ChoiceField(
-        widget=Select(
-            attrs={
-                "class": "form-select",
-            }
-        ),
+        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
         label="Begraafplaats",
-        choices=(
-            ("", "Selecteer een begraafplaats"),
-            ("begraafplaats_crooswijk", "Begraafplaats Crooswijk"),
-            ("begraafplaats_hoek_van_holland", "Begraafplaats Hoek van Holland"),
-            ("begraafplaats_hofwijk", "Begraafplaats en crematorium Hofwijk"),
-            ("begraafplaats_oude_land", "Begraafplaats Oudeland, Hoogvliet"),
-            ("begraafplaats_oud_hoogvliet", "Begraafplaats Oud-Hoogvliet"),
-            ("begraafplaats_oud_overschie", "Begraafplaats Oud-Overschie"),
-            ("begraafplaats_oud_pernis", "Begraafplaats Oud-Pernis"),
-            ("begraafplaats_oud_schiebroek", "Begraafplaats Oud-Schiebroek"),
-            ("begraafplaats_pernis", "Begraafplaats Pernis"),
-            ("begraafplaats_rozenburg", "Begraafplaats Rozenburg"),
-            ("begraafplaats_zuiderbegraafplaats", "De Zuiderbegraafplaats"),
-        ),
+        choices=BEGRAAFPLAATS_SELECT,
         required=True,
     )
-
     grafnummer = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
-        label="Grafnummer of colombarium",
+        label="Grafnummer",
         required=True,
     )
-
     vak = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Vak",
         required=True,
     )
-
     naam_overledene = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Naam overledene",
@@ -88,75 +69,48 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                "data-action": "request#toggleInputOtherCategory",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Categorie",
-        choices=(
-            ("categorie_verzakking_eigen_graf", "Verzakking eigen graf"),
-            ("categorie_verzakking_algemeen", "Verzakking algemeen"),
-            ("categorie_snoeien", "Snoeien"),
-            ("categorie_beplanting", "Beplanting"),
-            ("categorie_schoonmaken", "Schoonmaken"),
-            ("categorie_verdwenen_materiaal", "Verdwenen materiaal"),
-            ("categorie_gaten", "Gaten"),
-            ("categorie_wespennest", "Wespennest"),
-            ("categorie_konijnen", "Konijnen"),
-            ("categorie_muizen", "Muizen"),
-            ("categorie_zerk_reinigen", "Zerk reinigen"),
-            ("categorie_andere_oorzaken", "Andere oorzaken"),
-        ),
+        choices=CATEGORIE,
         required=True,
     )
-
-    # categorie_omschrijving = forms.CharField(
-    #     widget=forms.TextInput(
-    #         attrs={
-    #             "class": "form-control hidden",
-    #             "data-request-target": "categoryDescription",
-    #         }
-    #     ),
-    #     label="Andere oorzaken",
-    #     # required=True,
-    #     # show_hidden_initial=True,
-    # )
-
-    toelichting = forms.CharField(
-        widget=forms.Textarea(
-            attrs={
-                "class": "form-control",
-                "rows": "4",
-            }
+    omschrijving_andere_oorzaken = forms.CharField(
+        widget=forms.HiddenInput(
+            attrs={"data-action": "change->request#onChangeSendForm"}
         ),
+        label="Omschrijving andere oorzaken",
+        required=False,
+    )
+    toelichting = forms.CharField(
+        widget=forms.Textarea(),
         label="Toelichting",
         required=False,
     )
 
-    aannemer = forms.ChoiceField(
-        widget=Select(
+    fotos = forms.FileField(
+        widget=forms.widgets.FileInput(
             attrs={
-                "class": "form-select",
+                "accept": ".jpg, .jpeg, .png",
+                "data-action": "change->request#updateImageDisplay",
             }
         ),
+        label="Foto's",
+        required=False,
+    )
+    aannemer = forms.ChoiceField(
+        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
         label="Wie heeft het verzoek aangenomen?",
-        choices=(
-            ("", "Selecteer een collega"),
-            ("collega_onbekend", "Onbekend"),
-            ("collega_a", "Collega A"),
-            ("collega_b", "Collega B"),
-            ("collega_c", "Collega C"),
-            ("collega_d", "Collega D"),
-            ("collega_e", "Collega E"),
-            ("collega_f", "Collega F"),
-            ("collega_g", "Collega G"),
-        ),
-        required=True,
+        choices=ALLE_MEDEWERKERS,
+        required=False,
     )
 
     naam_melder = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Naam",
@@ -164,21 +118,34 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     telefoon_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control", "type": "tel"}),
+        widget=forms.TextInput(
+            attrs={
+                "type": "tel",
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="Telefoonnummer",
         required=True,
     )
 
     email_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control", "type": "email"}),
+        widget=forms.TextInput(
+            attrs={
+                "type": "email",
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="E-mailadres",
         required=False,
     )
 
     rechthebbende = forms.ChoiceField(
-        widget=RadioSelect(
+        widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Is deze persoon de rechthebbende?",
@@ -191,9 +158,10 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     terugkoppeling_gewenst = forms.ChoiceField(
-        widget=RadioSelect(
+        widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Is terugkoppeling gewenst?",
@@ -203,3 +171,20 @@ class MeldingAanmakenForm(forms.Form):
         ),
         required=True,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        aannemer_choices = ALLE_MEDEWERKERS
+        if "categorie_andere_oorzaken" in self.data.get("categorie", []):
+            self.fields["omschrijving_andere_oorzaken"].widget = forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "required": "required",
+                    "data-action": "change->request#onChangeSendForm",
+                }
+            )
+            self.fields["omschrijving_andere_oorzaken"].required = True
+
+        if self.data.get("begraafplaats"):
+            aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]
+        self.fields["aannemer"].choices = aannemer_choices
