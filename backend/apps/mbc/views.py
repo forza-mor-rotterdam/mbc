@@ -1,3 +1,5 @@
+import json
+
 from apps.mbc.forms import MeldingAanmakenForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -28,10 +30,14 @@ def handle_uploaded_file(f):
 
 
 def melding_aanmaken(request):
+    dirty_fields_list = []
     if request.POST:
         form = MeldingAanmakenForm(request.POST, request.FILES)
         is_valid = form.is_valid()
         print(request.FILES)
+        print(form.data)
+        print(form.errors)
+        dirty_fields_list = json.loads(form.data.get("dirty_fields", "[]"))
         if is_valid:
             return redirect("melding_verzonden")
     else:
@@ -40,7 +46,10 @@ def melding_aanmaken(request):
     return render(
         request,
         "melding/aanmaken.html",
-        {"form": form},
+        {
+            "form": form,
+            "dirty_fields_list": dirty_fields_list,
+        },
     )
 
 

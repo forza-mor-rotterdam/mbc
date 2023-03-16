@@ -2,20 +2,32 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ["categoryDescription"]
+    static targets = ["categoryDescription", "dirtyFields"]
 
     connect() {
         console.log('request_controller connected')
     }
-
+    removeDuplicates(arr) {
+        var unique = [];
+        arr.forEach(element => {
+            if (!unique.includes(element)) {
+                unique.push(element);
+            }
+        })
+        return unique
+    }
     toggleInputOtherCategory(e) {
         // TODO fix with turbo-frame and POST
         if(e.target.value === "categorie_andere_oorzaken"){
             this.categoryDescriptionTarget.classList.toggle('hidden')
         }
     }
-
     onChangeSendForm(e) {
+        let dirtyFields = JSON.parse(this.dirtyFieldsTarget.value) ?? []
+        dirtyFields.push(e.target.name)
+        this.dirtyFieldsTarget.value = JSON.stringify(this.removeDuplicates(dirtyFields))
+
+        console.log("Send form")
         document.getElementById('requestForm').requestSubmit()
     }
 

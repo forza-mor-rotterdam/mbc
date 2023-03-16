@@ -6,9 +6,8 @@ from apps.mbc.constanten import (
 )
 from django import forms
 
-
-class RadioSelect(forms.RadioSelect):
-    option_template_name = "widgets/radio_option.html"
+# class RadioSelect(forms.RadioSelect):
+#     option_template_name = "widgets/radio_option.html"
 
 
 class Select(forms.Select):
@@ -24,6 +23,11 @@ class Select(forms.Select):
 
 
 class MeldingAanmakenForm(forms.Form):
+    dirty_fields = forms.CharField(
+        widget=forms.HiddenInput(attrs={"data-request-target": "dirtyFields"}),
+        initial="[]",
+        required=False,
+    )
     begraafplaats = forms.ChoiceField(
         widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
         label="Begraafplaats",
@@ -31,17 +35,32 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
     grafnummer = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="Grafnummer",
         required=True,
     )
     vak = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="Vak",
         required=True,
     )
     naam_overledene = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="Naam overledene",
         required=True,
     )
@@ -58,7 +77,9 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
     omschrijving_andere_oorzaken = forms.CharField(
-        widget=forms.HiddenInput(),
+        widget=forms.HiddenInput(
+            attrs={"data-action": "change->request#onChangeSendForm"}
+        ),
         label="Omschrijving andere oorzaken",
         required=False,
     )
@@ -79,34 +100,52 @@ class MeldingAanmakenForm(forms.Form):
         required=False,
     )
     aannemer = forms.ChoiceField(
-        widget=Select(),
+        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
         label="Wie heeft het verzoek aangenomen?",
         choices=ALLE_MEDEWERKERS,
         required=False,
     )
 
     naam_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="Naam",
         required=True,
     )
 
     telefoon_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"type": "tel", "class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "type": "tel",
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="Telefoonnummer",
         required=True,
     )
 
     email_melder = forms.CharField(
-        widget=forms.TextInput(attrs={"type": "email", "class": "form-control"}),
+        widget=forms.TextInput(
+            attrs={
+                "type": "email",
+                "class": "form-control",
+                "data-action": "change->request#onChangeSendForm",
+            }
+        ),
         label="E-mailadres",
         required=False,
     )
 
     rechthebbende = forms.ChoiceField(
-        widget=RadioSelect(
+        widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Is deze persoon de rechthebbende?",
@@ -119,9 +158,10 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     terugkoppeling_gewenst = forms.ChoiceField(
-        widget=RadioSelect(
+        widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
+                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Is terugkoppeling gewenst?",
@@ -137,7 +177,11 @@ class MeldingAanmakenForm(forms.Form):
         aannemer_choices = ALLE_MEDEWERKERS
         if "categorie_andere_oorzaken" in self.data.get("categorie", []):
             self.fields["omschrijving_andere_oorzaken"].widget = forms.TextInput(
-                attrs={"class": "form-control", "required": "required"}
+                attrs={
+                    "class": "form-control",
+                    "required": "required",
+                    "data-action": "change->request#onChangeSendForm",
+                }
             )
             self.fields["omschrijving_andere_oorzaken"].required = True
 
