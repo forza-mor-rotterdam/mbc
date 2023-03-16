@@ -42,3 +42,27 @@ def melding_aanmaken(request):
         "melding/aanmaken.html",
         {"form": form},
     )
+
+
+def melding_email(request):
+    return render(
+        request,
+        "email/email.html",
+        {
+            "formdata": {
+                "begraafplaats": "Zuiderbegraafplaats",
+                "Grafnummer": "18",
+                "Vak": "C",
+                "Naam overledene": "A. Jansen",
+                "categorie": ", ".join(["Snoeien"]),
+                "Andere oorzaken": "",
+                "Toelichting": "Graag de overhangende takken verwijderen.",
+                "Medewerker": "A. van de Graaf",
+                "Naam melder": "D. Melder",
+                "Telefoonnummer melder": "06-12345678",
+                "E-mailadres": "",
+                "Rechthebbende": "Ja",
+                "Terugkoppeling gewenst?": "Ja",
+            }
+        },
+    )
