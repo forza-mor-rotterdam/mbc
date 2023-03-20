@@ -31,7 +31,7 @@ class Select(forms.Select):
 
 class MeldingAanmakenForm(forms.Form):
     begraafplaats = forms.ChoiceField(
-        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
+        widget=Select(attrs={"data-action": "change->request#onBegraafplaatsChange"}),
         label="Begraafplaats",
         choices=BEGRAAFPLAATS_SELECT,
         required=True,
@@ -79,8 +79,10 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
     omschrijving_andere_oorzaken = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={"data-action": "change->request#onChangeSendForm"}
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+            }
         ),
         label="Omschrijving andere oorzaken",
         required=False,
@@ -102,7 +104,12 @@ class MeldingAanmakenForm(forms.Form):
         required=False,
     )
     aannemer = forms.ChoiceField(
-        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
+        widget=Select(
+            attrs={
+                "data-action": "change->request#onChangeSendForm",
+                "data-request-target": "aannemerField",
+            }
+        ),
         label="Wie heeft het verzoek aangenomen?",
         choices=ALLE_MEDEWERKERS,
         required=False,
@@ -178,13 +185,6 @@ class MeldingAanmakenForm(forms.Form):
         super().__init__(*args, **kwargs)
         aannemer_choices = ALLE_MEDEWERKERS
         if "categorie_andere_oorzaken" in self.data.get("categorie", []):
-            self.fields["omschrijving_andere_oorzaken"].widget = forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "required": "required",
-                    "data-action": "change->request#onChangeSendForm",
-                }
-            )
             self.fields["omschrijving_andere_oorzaken"].required = True
 
         if self.data.get("begraafplaats"):

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% load rotterdam_formulier_html %}
+{% load rotterdam_formulier_html mbc_tags %}
 
 {% block body %}
 <h1>Serviceverzoek</h1>
 
 <turbo-frame id="melding_aanmaken">
-<form class="form__request"  id="requestForm" data-controller="request" enctype="multipart/form-data" method="post" novalidate>
+<form class="form__request" data-request-medewerkers-value="{{ BEGRAAFPLAATS_MEDEWERKERS|json_encode }}" id="requestForm" data-controller="request" enctype="multipart/form-data" method="post" novalidate>
     {% csrf_token %}
 
     <fieldset>
