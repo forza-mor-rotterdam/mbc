@@ -30,11 +30,6 @@ class Select(forms.Select):
 
 
 class MeldingAanmakenForm(forms.Form):
-    dirty_fields = forms.CharField(
-        widget=forms.HiddenInput(attrs={"data-request-target": "dirtyFields"}),
-        initial="[]",
-        required=False,
-    )
     begraafplaats = forms.ChoiceField(
         widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
         label="Begraafplaats",

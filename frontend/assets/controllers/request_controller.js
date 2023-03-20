@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ["categoryDescription", "dirtyFields"]
+    static targets = ["categoryDescription"]
 
     connect() {
         console.log('request_controller connected')
@@ -23,10 +23,6 @@ export default class extends Controller {
         }
     }
     onChangeSendForm(e) {
-        let dirtyFields = JSON.parse(this.dirtyFieldsTarget.value) ?? []
-        dirtyFields.push(e.target.name)
-        this.dirtyFieldsTarget.value = JSON.stringify(this.removeDuplicates(dirtyFields))
-
         console.log("Send form")
         // document.getElementById('requestForm').requestSubmit()
     }

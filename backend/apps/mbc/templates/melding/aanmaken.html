@@ -7,39 +7,37 @@
 <turbo-frame id="melding_aanmaken">
 <form class="form__request"  id="requestForm" data-controller="request" enctype="multipart/form-data" method="post" novalidate>
     {% csrf_token %}
-    {{ form.dirty_fields }}
 
     <fieldset>
         {% include "snippets/legend.html" with title="Locatie" icon_name="pin_filled" only %}
-        {{ form.begraafplaats|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.grafnummer|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.vak|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.naam_overledene|render_rotterdam_formulier:dirty_fields_list }}
+        {{ form.begraafplaats|render_rotterdam_formulier }}
+        {{ form.grafnummer|render_rotterdam_formulier }}
+        {{ form.vak|render_rotterdam_formulier }}
+        {{ form.naam_overledene|render_rotterdam_formulier }}
     </fieldset>
     <fieldset>
         {% include "snippets/legend.html" with title="Verzoek" icon_name="list" only %}
-        {{ form.categorie|render_rotterdam_formulier:dirty_fields_list }}
+        {{ form.categorie|render_rotterdam_formulier }}
         {% comment %} <div class="form-row">
             <div class="hidden" data-request-target="categoryDescription">
                 <label for="omschrijving_andere_oorzaken">Omschrijving andere oorzaken</label>
                 <input class="form-control" type="text" name="omschrijving_andere_oorzaken" id="omschrijving_andere_oorzaken" value="">
             </div>
         </div> {% endcomment %}
-        {{ form.omschrijving_andere_oorzaken|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.toelichting|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.fotos|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.aannemer|render_rotterdam_formulier:dirty_fields_list }}
+        {{ form.omschrijving_andere_oorzaken|render_rotterdam_formulier }}
+        {{ form.toelichting|render_rotterdam_formulier }}
+        {{ form.fotos|render_rotterdam_formulier }}
+        {{ form.aannemer|render_rotterdam_formulier }}
     </fieldset>
     <fieldset>
         {% include "snippets/legend.html" with title="Melder" icon_name="person" only %}
-        {{ form.naam_melder|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.telefoon_melder|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.email_melder|render_rotterdam_formulier:dirty_fields_list }}
-        {{ form.rechthebbende|render_rotterdam_formulier:dirty_fields_list }}
+        {{ form.naam_melder|render_rotterdam_formulier }}
+        {{ form.telefoon_melder|render_rotterdam_formulier }}
+        {{ form.email_melder|render_rotterdam_formulier }}
+        {{ form.rechthebbende|render_rotterdam_formulier }}
         {% comment %} {{ form.rechthebbende }} {% endcomment %}
-        {{ form.terugkoppeling_gewenst|render_rotterdam_formulier:dirty_fields_list }}
+        {{ form.terugkoppeling_gewenst|render_rotterdam_formulier }}
     </fieldset>
-    {% comment %} {% if not form.errors and dirty_fields_list  %} {% endcomment %}
     <div class="form-row container__button">
         <button
             class="btn btn-action"

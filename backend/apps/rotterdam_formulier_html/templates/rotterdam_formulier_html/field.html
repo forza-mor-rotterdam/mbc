@@ -38,9 +38,7 @@
             {{ field }}
         </div>
         {% for error in field.errors %}
-            {% if field.html_name in dirty_fields  %}
             <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
-        {% endif %}
         {% endfor %}
         {% if field.help_text %}
             <p class="help-block">
@@ -127,9 +125,7 @@
                 </select>
 
                 {% for error in field.errors %}
-                    {% if field.html_name in dirty_fields  %}
                     <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
-                    {% endif %}
                 {% endfor %}
 
                 {% if field.help_text %}
@@ -163,9 +159,7 @@
 
             </ul>
             {% for error in field.errors %}
-                {% if field.html_name in dirty_fields  %}
                 <span class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</span>
-                {% endif %}
             {% endfor %}
 
             {% if field.help_text %}
@@ -185,12 +179,10 @@
             {% if field.auto_id %}
                 <label class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}" for="{{ field.auto_id }}">{{ field.label }}{% if not field.field.required %} <small>(Niet verplicht)</small>{% endif %}</label>
             {% endif %}
-            <textarea id="{{ field.auto_id }}" class="form-control {% if field.errors and field.html_name in dirty_fields %}is-invalid{% endif %}" rows="4" name="{{field.html_name}}" {% render_attrs field %} >{% if field.value %}{{ field.value }}{% endif %}</textarea>
+            <textarea id="{{ field.auto_id }}" class="form-control {% if field.errors %}is-invalid{% endif %}" rows="4" name="{{field.html_name}}" {% render_attrs field %} >{% if field.value %}{{ field.value }}{% endif %}</textarea>
 
             {% for error in field.errors %}
-                {% if field.html_name in dirty_fields  %}
                 <p class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</p>
-                {% endif %}
             {% endfor %}
 
             {% if field.help_text %}
@@ -239,12 +231,10 @@
                 <label class="{% if field.field.required %}{{ form.required_css_class }}{% endif %}" for="{{ field.auto_id }}">{{ field.field.label }}{% if not field.field.required %} <small>(Niet verplicht)</small>{% endif %}</label>
             {% endif %}
             {% comment %} {{ field }} {% endcomment %}
-            <input type="text" id="{{ field.auto_id }}" name="{{field.html_name}}" {% if field.value != None %} value="{{ field.value|stringformat:'s' }}"{% endif %} class="form-control {% if field.errors and field.html_name in dirty_fields %}is-invalid{% endif %}" {% render_attrs field %}{% if field.field.required %}required{% endif %}>
+            <input type="text" id="{{ field.auto_id }}" name="{{field.html_name}}" {% if field.value != None %} value="{{ field.value|stringformat:'s' }}"{% endif %} class="form-control {% if field.errors %}is-invalid{% endif %}" {% render_attrs field %}{% if field.field.required %}required{% endif %}>
 
             {% for error in field.errors %}
-                {% if field.html_name in dirty_fields  %}
                 <p class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</p>
-                {% endif %}
             {% endfor %}
 
             {% if field.help_text %}
