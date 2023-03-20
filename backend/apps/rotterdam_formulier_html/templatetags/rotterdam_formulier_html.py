@@ -26,10 +26,7 @@ def render_rotterdam_formulier(element, options={}):
     # Set default values if none of them are set
     label_cols = "s12"
     icon = ""
-    dirty_fields = []
-    if type(options) is list:
-        dirty_fields = options
-    elif options and type(options) is str:
+    if options and type(options) is str:
         # Split options string into a list of arguments
         arguments = [arg.strip() for arg in options.split(",")]
 
@@ -55,7 +52,7 @@ def render_rotterdam_formulier(element, options={}):
         "single_value": "",
         "icon": icon,
     }
-    return render(element, markup_classes, dirty_fields)
+    return render(element, markup_classes)
 
 
 def _add_input_classes_widget(widget, field_errors):
@@ -78,7 +75,7 @@ def add_input_classes(field):
     _add_input_classes_widget(field.field.widget, field.errors)
 
 
-def render(element, markup_classes, dirty_fields):
+def render(element, markup_classes):
     element_type = element.__class__.__name__.lower()
 
     # Get the icon set setting
@@ -91,7 +88,6 @@ def render(element, markup_classes, dirty_fields):
             "field": element,
             "classes": markup_classes,
             "icon_set": icon_set,
-            "dirty_fields": dirty_fields,
         }
     else:
         has_management = getattr(element, "management_form", None)
