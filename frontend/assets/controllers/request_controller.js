@@ -2,10 +2,14 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ["categoryDescription", "dirtyFields"]
+    static targets = ["categoryDescription", "dirtyFields", "aannemerField"]
+    static values = {
+        medewerkers: String
+    }
 
     connect() {
         console.log('request_controller connected')
+        this.aannemerFieldTarget.setAttribute("disabled", "disabled")
     }
     removeDuplicates(arr) {
         var unique = [];
@@ -21,6 +25,24 @@ export default class extends Controller {
         if(e.target.value === "categorie_andere_oorzaken"){
             this.categoryDescriptionTarget.classList.toggle('hidden')
         }
+    }
+    onBegraafplaatsChange(e) {
+        console.log(e.target.value)
+        const medewerekers = JSON.parse(this.medewerkersValue)
+        console.log(medewerekers[e.target.value])
+        let options = this.aannemerFieldTarget.getElementsByTagName('option');
+        const medewerekerOptions = medewerekers[e.target.value]
+        this.aannemerFieldTarget.removeAttribute("disabled", "disabled")
+        for (var i=options.length; i--;) {
+            this.aannemerFieldTarget.removeChild(options[i]);
+        }
+        for (let i = 0; i < medewerekerOptions.length; i++){
+            let option = document.createElement("OPTION")
+            option.innerHTML = medewerekerOptions[i][1]
+            option.setAttribute("value", medewerekerOptions[i][0])
+            this.aannemerFieldTarget.appendChild(option);
+        }
+
     }
     onChangeSendForm(e) {
         let dirtyFields = JSON.parse(this.dirtyFieldsTarget.value) ?? []

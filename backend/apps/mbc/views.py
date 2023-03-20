@@ -1,5 +1,6 @@
 import json
 
+from apps.mbc.constanten import BEGRAAFPLAATS_MEDEWERKERS
 from apps.mbc.forms import MeldingAanmakenForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -49,6 +50,7 @@ def melding_aanmaken(request):
         {
             "form": form,
             "dirty_fields_list": dirty_fields_list,
+            "BEGRAAFPLAATS_MEDEWERKERS": BEGRAAFPLAATS_MEDEWERKERS,
         },
     )
 
