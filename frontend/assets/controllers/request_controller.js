@@ -1,15 +1,16 @@
 import { Controller } from '@hotwired/stimulus';
 
+let specifiek_graf = 1
 export default class extends Controller {
 
-    static targets = ["categoryDescription", "aannemerField"]
+    static targets = ["categorieOmschrijvingField", "aannemerField", "specifiekGrafField"]
     static values = {
         medewerkers: String
     }
 
     connect() {
-        console.log('request_controller connected')
         this.aannemerFieldTarget.setAttribute("disabled", "disabled")
+        this.categorieOmschrijvingFieldTarget.closest('.form-row').classList.add("hidden")
     }
     removeDuplicates(arr) {
         var unique = [];
@@ -21,25 +22,60 @@ export default class extends Controller {
         return unique
     }
     toggleInputOtherCategory(e) {
-        // TODO fix with turbo-frame and POST
         if(e.target.value === "categorie_andere_oorzaken"){
-            this.categoryDescriptionTarget.classList.toggle('hidden')
+            const fieldContainer = this.categorieOmschrijvingFieldTarget.closest('.form-row')
+            if(e.target.checked) {
+                fieldContainer.classList.remove('hidden')
+                if(fieldContainer.getElementsByTagName('small').length > 0){
+                    fieldContainer.getElementsByTagName('small')[0].remove()
+                }
+                this.categorieOmschrijvingFieldTarget.setAttribute('required', true)
+            }else {
+                fieldContainer.classList.add('hidden')
+                this.categorieOmschrijvingFieldTarget.setAttribute('required', false)
+            }
+
         }
     }
+
+    onSpecifiekGrafChange(e){
+        specifiek_graf = Number(e.target.value)
+        if(specifiek_graf === 0) {
+            //hide fields
+            this.hideField("id_grafnummer")
+            this.hideField("id_naam_overledene")
+            this.hideField("id_rechthebbende")
+        } else {
+            this.showField("id_grafnummer")
+            this.showField("id_naam_overledene")
+            this.showField("id_rechthebbende")
+        }
+    }
+
+    hideField(field) {
+        document.getElementById(field).closest('.form-row').classList.add('hidden')
+        document.getElementById(field).setAttribute('required', false)
+        document.getElementById(field).value = ''
+
+    }
+
+    showField(field) {
+        document.getElementById(field).closest('.form-row').classList.remove('hidden')
+        document.getElementById(field).setAttribute('required', true)
+    }
+
     onBegraafplaatsChange(e) {
-        console.log(e.target.value)
-        const medewerekers = JSON.parse(this.medewerkersValue)
-        console.log(medewerekers[e.target.value])
+        const medewerkers = JSON.parse(this.medewerkersValue)
         let options = this.aannemerFieldTarget.getElementsByTagName('option');
-        const medewerekerOptions = medewerekers[e.target.value]
+        const medewerkerOptions = medewerkers[e.target.value]
         this.aannemerFieldTarget.removeAttribute("disabled", "disabled")
         for (var i=options.length; i--;) {
             this.aannemerFieldTarget.removeChild(options[i]);
         }
-        for (let i = 0; i < medewerekerOptions.length; i++){
+        for (let i = 0; i < medewerkerOptions.length; i++){
             let option = document.createElement("OPTION")
-            option.innerHTML = medewerekerOptions[i][1]
-            option.setAttribute("value", medewerekerOptions[i][0])
+            option.innerHTML = medewerkerOptions[i][1]
+            option.setAttribute("value", medewerkerOptions[i][0])
             this.aannemerFieldTarget.appendChild(option);
         }
 

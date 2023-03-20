@@ -30,6 +30,22 @@ class Select(forms.Select):
 
 
 class MeldingAanmakenForm(forms.Form):
+    
+    specifiek_graf = forms.ChoiceField(
+        widget=forms.RadioSelect(
+            attrs={
+                "class": "list--form-radio-input",
+                "data-action": "change->request#onSpecifiekGrafChange",
+                "data-request-target": "specifiekGrafField",
+            }
+        ),
+        label="Betreft het verzoek een specifiek graf?",
+        choices=(
+            ("1", "Ja"),
+            ("0", "Nee"),
+        ),
+        required=True,
+    )
     begraafplaats = forms.ChoiceField(
         widget=Select(attrs={"data-action": "change->request#onBegraafplaatsChange"}),
         label="Begraafplaats",
@@ -71,7 +87,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                "data-action": "change->request#onChangeSendForm",
+                "data-action": "change->request#toggleInputOtherCategory",
             }
         ),
         label="Categorie",
@@ -82,6 +98,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "data-request-target": "categorieOmschrijvingField",
             }
         ),
         label="Omschrijving andere oorzaken",
@@ -186,6 +203,11 @@ class MeldingAanmakenForm(forms.Form):
         aannemer_choices = ALLE_MEDEWERKERS
         if "categorie_andere_oorzaken" in self.data.get("categorie", []):
             self.fields["omschrijving_andere_oorzaken"].required = True
+
+        if "0" in self.data.get("specifiek_graf", []):
+            self.fields["naam_overledene"].required = False
+            self.fields["grafnummer"].required = False
+            self.fields["rechthebbende"].required = False
 
         if self.data.get("begraafplaats"):
             aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]

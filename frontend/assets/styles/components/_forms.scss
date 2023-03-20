@@ -244,6 +244,10 @@ textarea {
     }
 }
 
+.list--form-radio-input {
+    margin-bottom: 1.5rem;
+}
+
 .form-check-input,
 .form-radio-input {
     @include form-check-input();
