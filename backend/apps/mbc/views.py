@@ -1,3 +1,4 @@
+from apps.mbc.constanten import BEGRAAFPLAATS_MEDEWERKERS
 from apps.mbc.forms import MeldingAanmakenForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -44,6 +45,7 @@ def melding_aanmaken(request):
         "melding/aanmaken.html",
         {
             "form": form,
+            "BEGRAAFPLAATS_MEDEWERKERS": BEGRAAFPLAATS_MEDEWERKERS,
         },
     )
 

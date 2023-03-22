@@ -20,6 +20,7 @@ BEGRAAFPLAATS_MEDEWERKERS_ZUID = (
     "I. Addicks",
     "A.J. Verhoeven",
     "M. van Berkum",
+    "Onbekend",
 )
 
 BEGRAAFPLAATSEN_SOURCE = (
@@ -29,6 +30,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega A Crooswijk",
             "Collega B Crooswijk",
             "Collega C Crooswijk",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -38,6 +40,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega D",
             "Collega E",
             "Collega F",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -47,6 +50,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega G",
             "Collega H",
             "Collega I",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -61,6 +65,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega M",
             "Collega N",
             "Collega O",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -70,6 +75,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega P",
             "Collega Q",
             "Collega R",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -79,6 +85,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega S",
             "Collega T",
             "Collega U",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -88,6 +95,7 @@ BEGRAAFPLAATSEN_SOURCE = (
             "Collega V",
             "Collega W",
             "Collega X",
+            "Onbekend",
         ),
         DEFAULT_BEGRAAFPLAATS_EMAIL,
     ),
@@ -134,8 +142,7 @@ ALLE_MEDEWERKERS = [["", "Selecteer een medewerker"]] + [
 ]
 BEGRAAFPLAATS_EMAIL_ADRES = {b[0][0]: b[2] for b in BEGRAAFPLAATSEN}
 BEGRAAFPLAATS_MEDEWERKERS = {
-    b[0][0]: [["", "Selecteer een medewerker"], ["onbekend", "Onbekend"]] + b[1]
-    for b in BEGRAAFPLAATSEN
+    b[0][0]: [["", "Selecteer een medewerker"]] + b[1] for b in BEGRAAFPLAATSEN
 }
 BEGRAAFPLAATS_MEDEWERKER_NAAM = {m[0]: m[1] for b in BEGRAAFPLAATSEN for m in b[1]}
 BEGRAAFPLAATS_NAAM = {b[0][0]: b[0][1] for b in BEGRAAFPLAATSEN}

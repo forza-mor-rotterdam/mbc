@@ -30,8 +30,24 @@ class Select(forms.Select):
 
 
 class MeldingAanmakenForm(forms.Form):
+
+    specifiek_graf = forms.ChoiceField(
+        widget=forms.RadioSelect(
+            attrs={
+                "class": "list--form-radio-input",
+                "data-action": "change->request#onSpecifiekGrafChange",
+                "data-request-target": "specifiekGrafField",
+            }
+        ),
+        label="Betreft het verzoek een specifiek graf?",
+        choices=(
+            ("1", "Ja"),
+            ("0", "Nee"),
+        ),
+        required=True,
+    )
     begraafplaats = forms.ChoiceField(
-        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
+        widget=Select(attrs={"data-action": "change->request#onBegraafplaatsChange"}),
         label="Begraafplaats",
         choices=BEGRAAFPLAATS_SELECT,
         required=True,
@@ -40,7 +56,6 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Grafnummer",
@@ -50,7 +65,6 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Vak",
@@ -60,9 +74,9 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
+        help_text='<span>Bekijk namen en graven op <a href="https://grafzoeken.nl/" target="_blank">grafzoeken.nl</a></span>',
         label="Naam overledene",
         required=True,
     )
@@ -71,7 +85,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                "data-action": "change->request#onChangeSendForm",
+                "data-action": "change->request#toggleInputOtherCategory",
             }
         ),
         label="Categorie",
@@ -79,8 +93,11 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
     omschrijving_andere_oorzaken = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={"data-action": "change->request#onChangeSendForm"}
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "data-request-target": "categorieOmschrijvingField",
+            }
         ),
         label="Omschrijving andere oorzaken",
         required=False,
@@ -102,7 +119,11 @@ class MeldingAanmakenForm(forms.Form):
         required=False,
     )
     aannemer = forms.ChoiceField(
-        widget=Select(attrs={"data-action": "change->request#onChangeSendForm"}),
+        widget=Select(
+            attrs={
+                "data-request-target": "aannemerField",
+            }
+        ),
         label="Wie heeft het verzoek aangenomen?",
         choices=ALLE_MEDEWERKERS,
         required=False,
@@ -112,7 +133,6 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Naam",
@@ -124,7 +144,6 @@ class MeldingAanmakenForm(forms.Form):
             attrs={
                 "type": "tel",
                 "class": "form-control",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Telefoonnummer",
@@ -136,7 +155,6 @@ class MeldingAanmakenForm(forms.Form):
             attrs={
                 "type": "email",
                 "class": "form-control",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="E-mailadres",
@@ -147,7 +165,6 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Is deze persoon de rechthebbende?",
@@ -163,7 +180,6 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.RadioSelect(
             attrs={
                 "class": "list--form-radio-input",
-                "data-action": "change->request#onChangeSendForm",
             }
         ),
         label="Is terugkoppeling gewenst?",
@@ -178,18 +194,17 @@ class MeldingAanmakenForm(forms.Form):
         super().__init__(*args, **kwargs)
         aannemer_choices = ALLE_MEDEWERKERS
         if "categorie_andere_oorzaken" in self.data.get("categorie", []):
-            self.fields["omschrijving_andere_oorzaken"].widget = forms.TextInput(
-                attrs={
-                    "class": "form-control",
-                    "required": "required",
-                    "data-action": "change->request#onChangeSendForm",
-                }
-            )
             self.fields["omschrijving_andere_oorzaken"].required = True
+
+        if "0" in self.data.get("specifiek_graf", []):
+            self.fields["naam_overledene"].required = False
+            self.fields["grafnummer"].required = False
+            self.fields["rechthebbende"].required = False
 
         if self.data.get("begraafplaats"):
             aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]
         self.fields["aannemer"].choices = aannemer_choices
+        self.fields["aannemer"].required = False
 
     def send_mail(self, files=[]):
         send_to = []
