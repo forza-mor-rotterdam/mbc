@@ -54,18 +54,10 @@ export default class extends Controller {
             const allFieldsValid = this.checkValids()
             const checkBoxesValid = this.checkCheckBoxes()
 
-
-            console.log(new FormData(document.querySelector("form")))
-
-            if((checkBoxesValid && allFieldsValid)){
-                console.log("GOED")
-
-            } else {
+            if(!(checkBoxesValid && allFieldsValid)){
                 event.preventDefault();
-                console.log("FOUT")
             }
-
-          });
+        });
     }
 
     checkValids() {
