@@ -1,5 +1,3 @@
-import json
-
 from apps.mbc.constanten import BEGRAAFPLAATS_MEDEWERKERS
 from apps.mbc.forms import MeldingAanmakenForm
 from django.shortcuts import redirect, render
