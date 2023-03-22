@@ -5,6 +5,7 @@ let form = null
 let inputList = null
 let checkboxList = null
 let formData = null
+const defaultErrorMessage = "Vul a.u.b. dit veld in."
 export default class extends Controller {
 
     static targets = ["categorieOmschrijvingField", "aannemerField", "specifiekGrafField"]
@@ -22,6 +23,9 @@ export default class extends Controller {
 
         formData = new FormData(form)
 
+        //check radiobutton
+        document.getElementById('id_specifiek_graf_0').click()
+
         for (let i=0; i<inputList.length; i++){
             const input = inputList[i]
             const error = input.closest('.form-row').getElementsByClassName('invalid-text')[0]
@@ -31,7 +35,7 @@ export default class extends Controller {
                     input.closest('.form-row').classList.remove('is-invalid')
                     error.textContent = "";
                 } else {
-                    error.textContent = "Vul aub dit veld in.";
+                    error.textContent = defaultErrorMessage;
                     input.closest('.form-row').classList.add('is-invalid')
                 }
             })
@@ -68,25 +72,19 @@ export default class extends Controller {
         //check all inputfields (except checkboxes) for validity
         // if 1 or more fields is invalid, don't send the form (return false)
         inputList = document.querySelectorAll('[type="text"], [type="radio"], select, textarea')
-        console.log(inputList)
         let count = 0
         for (let i=0; i<inputList.length; i++){
             const input = inputList[i]
-            console.log(input, input.required)
             const error = input.closest('.form-row').getElementsByClassName('invalid-text')[0]
             if (input.validity.valid) {
-                console.log('valid', input.validity)
                 error.textContent = "";
                 input.closest('.form-row').classList.remove('is-invalid')
             } else {
-                console.log('invalid', input.validity)
-                error.textContent = "Vul aub dit veld in.";
+                error.textContent = defaultErrorMessage;
                 input.closest('.form-row').classList.add('is-invalid')
-
                 count++
             }
         }
-        console.log('count', count)
         if (count > 0) {
             return false
         }else {
@@ -144,16 +142,35 @@ export default class extends Controller {
             this.hideField("id_grafnummer")
             this.hideField("id_naam_overledene")
             this.hideField("id_rechthebbende")
+            this.hideCheckbox("categorie_verzakking_eigen_graf")
+            this.hideCheckbox("categorie_zerk_reinigen")
+            this.showCheckbox("categorie_verzakking_algemeen")
         } else {
             this.showField("id_grafnummer")
             this.showField("id_naam_overledene")
             this.showField("id_rechthebbende")
+            this.showCheckbox("categorie_verzakking_eigen_graf")
+            this.showCheckbox("categorie_zerk_reinigen")
+            this.hideCheckbox("categorie_verzakking_algemeen")
         }
     }
 
     onSpecifiekGrafChange(e){
         specifiek_graf = Number(e.target.value)
         this.checkSpecifiekGraf()
+    }
+
+    hideCheckbox(cbValue){
+        const cbToHide = document.querySelector(`[value=${cbValue}]`);
+        cbToHide.checked = false
+        cbToHide.setAttribute("disabled", "disabled")
+        cbToHide.closest('li').style.display="none";
+    }
+
+    showCheckbox(cbValue){
+        const cbToShow = document.querySelector(`[value=${cbValue}]`);
+        cbToShow.removeAttribute("disabled")
+        cbToShow.closest('li').style.display="block";
     }
 
     hideField(fieldId) {
