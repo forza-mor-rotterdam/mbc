@@ -1,6 +1,6 @@
 from apps.mbc.views import http_404, http_500, melding_aanmaken, melding_email, root
 from django.conf import settings
-from django.urls import path
+from django.urls import include, path
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
         TemplateView.as_view(template_name="melding/verzonden.html"),
         name="melding_verzonden",
     ),
+    path("health/", include("health_check.urls")),
 ]
 
 if settings.DEBUG:
