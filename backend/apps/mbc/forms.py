@@ -1,3 +1,6 @@
+import base64
+
+import requests
 from apps.mbc.constanten import (
     ALLE_MEDEWERKERS,
     BEGRAAFPLAATS_EMAIL_ADRES,
@@ -10,11 +13,10 @@ from apps.mbc.constanten import (
 )
 from django import forms
 from django.conf import settings
+from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
-
-# class RadioSelect(forms.RadioSelect):
-#     option_template_name = "widgets/radio_option.html"
+from django.utils import timezone
 
 
 class Select(forms.Select):
@@ -240,3 +242,51 @@ class MeldingAanmakenForm(forms.Form):
             msg.attach(f.name, f.read(), f.content_type)
         if send_to and not settings.DEBUG:
             msg.send()
+
+    def _to_base64(self, file):
+        binary_file = default_storage.open(file)
+        binary_file_data = binary_file.read()
+        base64_encoded_data = base64.b64encode(binary_file_data)
+        base64_message = base64_encoded_data.decode("utf-8")
+        return base64_message
+
+    def send_to_meldingen(self, files=[]):
+        url = f"{settings.MELDINGEN_API}/signaal/"
+        data = self.cleaned_data
+        post_data = {
+            "melder": {
+                "naam": data.get("naam_melder"),
+                "email": data.get("email_melder"),
+                "telefoonnummer": data.get("telefoon_melder"),
+            },
+            "bijlagen": [{"bestand": self._to_base64(file) for file in files}],
+            "origineel_aangemaakt": timezone.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[
+                :-3
+            ],
+            "tekst": data.get("toelichting"),
+            "meta": {
+                "naam_overledene": data.get("naam_overledene"),
+                "aannemer": data.get("aannemer"),
+                "categorie": data.get("categorie"),
+                "omschrijving_andere_oorzaken": data.get(
+                    "omschrijving_andere_oorzaken"
+                ),
+                "rechthebbende": data.get("rechthebbende"),
+                "terugkoppeling_gewenst": data.get("terugkoppeling_gewenst"),
+            },
+            "bron": "bc_serviceverzoek_formulier",
+            "onderwerp": "Begraven & cremeren",
+            "graven": [
+                {
+                    "bron": None,
+                    "plaatsnaam": "Rotterdam",
+                    "begraafplaats": data.get("begraafplaats"),
+                    "grafnummer": data.get("grafnummer"),
+                    "vak": data.get("vak"),
+                    "geometrieen": [],
+                }
+            ],
+        }
+        response = requests.post(url, json=post_data)
+        print(response.status_code)
+        print(response.json())
