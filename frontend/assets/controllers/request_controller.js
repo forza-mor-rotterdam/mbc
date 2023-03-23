@@ -55,6 +55,8 @@ export default class extends Controller {
             const checkBoxesValid = this.checkCheckBoxes()
 
             if(!(checkBoxesValid && allFieldsValid)){
+                const errorList = document.querySelectorAll('div.is-invalid')
+                errorList[0].scrollIntoView({ behavior: "smooth"})
                 event.preventDefault();
             }
         });

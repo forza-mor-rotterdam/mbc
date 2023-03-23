@@ -106,7 +106,16 @@ fieldset {
     }
 
     .invalid-text {
-        margin-top: 0.25rem;
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+        position: relative;
+
+        &:before {
+            content: url('../icons/warning_triangle.svg');
+            position: absolute;
+            left: 0;
+            top: -1px;
+        }
     }
 }
 .was-validated .form-select:invalid, .form-select.is-invalid{
