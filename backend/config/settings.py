@@ -179,7 +179,7 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "0") in TRUE_VALUES
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") in TRUE_VALUES
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@forzamor.nl")
 
-MELDINGEN_API = os.getenv("MELDINGEN_API", "https://mor-core-acc.forzamor.nl/v1/")
+MELDINGEN_API = os.getenv("MELDINGEN_API", "https://mor-core-acc.forzamor.nl/v1")
 MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
     "MELDINGEN_API", "https://mor-core-acc.forzamor.nl/health/"
 )
