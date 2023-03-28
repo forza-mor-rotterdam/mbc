@@ -253,7 +253,8 @@ class MeldingAanmakenForm(forms.Form):
 
     def send_to_meldingen(self, files=[], request=None):
         url = f"{settings.MELDINGEN_API}/signaal/"
-        data = copy.deepcopy(self.cleaned_data)
+        data = self.cleaned_data
+        data.pop("fotos")
         labels = {
             k: {
                 "label": v.label,
@@ -268,14 +269,12 @@ class MeldingAanmakenForm(forms.Form):
                 "labels": labels,
             }
         )
-        data.pop("fotos")
         post_data = {
             "melder": {
                 "naam": data.get("naam_melder"),
                 "email": data.get("email_melder"),
                 "telefoonnummer": data.get("telefoon_melder"),
             },
-            "bijlagen": [{"bestand": self._to_base64(file) for file in files}],
             "origineel_aangemaakt": timezone.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[
                 :-3
             ],
@@ -285,5 +284,6 @@ class MeldingAanmakenForm(forms.Form):
             "onderwerp": "Begraven & cremeren",
             "ruwe_informatie": data,
         }
+        post_data["bijlagen"] = [{"bestand": self._to_base64(file) for file in files}]
         response = requests.post(url, json=post_data)
         response.raise_for_status()
