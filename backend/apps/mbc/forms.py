@@ -1,4 +1,5 @@
 import base64
+import copy
 
 import requests
 from apps.mbc.constanten import (
@@ -209,6 +210,7 @@ class MeldingAanmakenForm(forms.Form):
         self.fields["aannemer"].required = False
 
     def send_mail(self, files=[]):
+        email_context = copy.deepcopy(self.cleaned_data)
         send_to = []
         if BEGRAAFPLAATS_EMAIL_ADRES.get(self.cleaned_data.get("begraafplaats")):
             send_to.append(
@@ -217,7 +219,6 @@ class MeldingAanmakenForm(forms.Form):
         if self.cleaned_data.get("email_melder"):
             send_to.append(self.cleaned_data.get("email_melder"))
 
-        email_context = self.cleaned_data
         email_context["fotos"] = len(files)
         email_context["categorie"] = ", ".join(
             [CATEGORIE_NAAM[c] for c in email_context["categorie"]]
@@ -250,9 +251,24 @@ class MeldingAanmakenForm(forms.Form):
         base64_message = base64_encoded_data.decode("utf-8")
         return base64_message
 
-    def send_to_meldingen(self, files=[]):
+    def send_to_meldingen(self, files=[], request=None):
         url = f"{settings.MELDINGEN_API}/signaal/"
-        data = self.cleaned_data
+        data = copy.deepcopy(self.cleaned_data)
+        labels = {
+            k: {
+                "label": v.label,
+                "choices": {c[0]: c[1] for c in v.choices}
+                if hasattr(v, "choices")
+                else None,
+            }
+            for k, v in self.fields.items()
+        }
+        data.update(
+            {
+                "labels": labels,
+            }
+        )
+        data.pop("fotos")
         post_data = {
             "melder": {
                 "naam": data.get("naam_melder"),
@@ -263,30 +279,11 @@ class MeldingAanmakenForm(forms.Form):
             "origineel_aangemaakt": timezone.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[
                 :-3
             ],
-            "tekst": data.get("toelichting"),
-            "meta": {
-                "naam_overledene": data.get("naam_overledene"),
-                "aannemer": data.get("aannemer"),
-                "categorie": data.get("categorie"),
-                "omschrijving_andere_oorzaken": data.get(
-                    "omschrijving_andere_oorzaken"
-                ),
-                "rechthebbende": data.get("rechthebbende"),
-                "terugkoppeling_gewenst": data.get("terugkoppeling_gewenst"),
-            },
-            "bron": "bc_serviceverzoek_formulier",
+            "bron": f"{request.build_absolute_uri('/api/melding/id')}"
+            if request
+            else "link-to-source",
             "onderwerp": "Begraven & cremeren",
-            "graven": [
-                {
-                    "bron": None,
-                    "plaatsnaam": "Rotterdam",
-                    "begraafplaats": data.get("begraafplaats"),
-                    "grafnummer": data.get("grafnummer"),
-                    "vak": data.get("vak"),
-                    "geometrieen": [],
-                }
-            ],
+            "ruwe_informatie": data,
         }
         response = requests.post(url, json=post_data)
-        print(response.status_code)
-        print(response.json())
+        response.raise_for_status()

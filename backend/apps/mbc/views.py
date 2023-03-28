@@ -37,7 +37,7 @@ def melding_aanmaken(request):
                 form.send_mail(fotos)
             except Exception as e:
                 print(e)
-            form.send_to_meldingen(file_names)
+            form.send_to_meldingen(file_names, request)
             return redirect("melding_verzonden")
     else:
         form = MeldingAanmakenForm()
