@@ -153,7 +153,7 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
 
-    email_melder = forms.CharField(
+    email_melder = forms.EmailField(
         widget=forms.TextInput(
             attrs={
                 "type": "email",
@@ -284,6 +284,7 @@ class MeldingAanmakenForm(forms.Form):
             "onderwerp": "Begraven & cremeren",
             "ruwe_informatie": data,
         }
-        post_data["bijlagen"] = [{"bestand": self._to_base64(file) for file in files}]
+        post_data["bijlagen"] = [{"bestand": self._to_base64(file)} for file in files]
+
         response = requests.post(url, json=post_data)
         response.raise_for_status()
