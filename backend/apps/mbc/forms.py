@@ -252,6 +252,7 @@ class MeldingAanmakenForm(forms.Form):
         return base64_message
 
     def send_to_meldingen(self, files=[], request=None):
+        now = timezone.localtime(timezone.now())
         url = f"{settings.MELDINGEN_API}/signaal/"
         data = self.cleaned_data
         data.pop("fotos")
@@ -275,9 +276,7 @@ class MeldingAanmakenForm(forms.Form):
                 "email": data.get("email_melder"),
                 "telefoonnummer": data.get("telefoon_melder"),
             },
-            "origineel_aangemaakt": timezone.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[
-                :-3
-            ],
+            "origineel_aangemaakt": now.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
             "bron": f"{request.build_absolute_uri('/api/melding/id')}"
             if request
             else "link-to-source",
