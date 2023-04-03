@@ -276,7 +276,7 @@ class MeldingAanmakenForm(forms.Form):
                 "email": data.get("email_melder"),
                 "telefoonnummer": data.get("telefoon_melder"),
             },
-            "origineel_aangemaakt": now.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
+            "origineel_aangemaakt": now.isoformat(),
             "bron": f"{request.build_absolute_uri('/api/melding/id')}"
             if request
             else "link-to-source",
