@@ -77,6 +77,14 @@ PERMISSIONS_POLICY = {
     "usb": [],
 }
 
+STATICFILES_DIRS = (
+    [
+        "/app/frontend/public/build/",
+    ]
+    if DEBUG
+    else []
+)
+
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), "static"))
 
@@ -88,8 +96,10 @@ WEBPACK_LOADER = {
         "CACHE": not DEBUG,
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update.js", r".+\.map"],
-        "LOADER_CLASS": "config.webpack.ExternalWebpackLoader",
-        "STATS_URL": f"{FRONTEND_URL}/build/webpack-stats.json",
+        "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
+        "STATS_FILE": "/static/webpack-stats.json"
+        if not DEBUG
+        else "/app/frontend/public/build/webpack-stats.json",
     }
 }
 
@@ -183,6 +193,8 @@ MELDINGEN_API = os.getenv("MELDINGEN_API", "https://mor-core-acc.forzamor.nl/v1"
 MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
     "MELDINGEN_API", "https://mor-core-acc.forzamor.nl/health/"
 )
+
+# LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 
 LOGGING = {
     "version": 1,
