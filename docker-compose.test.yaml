@@ -21,6 +21,16 @@ services:
     ports:
       - "6379:6379"
 
+  database:
+    image: postgis/postgis:11-3.3
+    shm_size: '1024m'
+    ports:
+      - "5411:5432"
+    env_file:
+      - .env.test
+    networks:
+      - mor_network
+
 networks:
   mor_network:
     external: true
