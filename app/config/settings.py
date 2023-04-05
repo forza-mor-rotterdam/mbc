@@ -32,8 +32,15 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL")
 PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
 
 INSTALLED_APPS = (
+    "django.contrib.contenttypes",
     "django.contrib.staticfiles",
     "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.sites",
+    "django.contrib.auth",
+    "django.contrib.admin",
+    "django.contrib.gis",
+    "django.contrib.postgres",
     "rest_framework",
     "webpack_loader",
     "corsheaders",
@@ -48,12 +55,14 @@ INSTALLED_APPS = (
 MIDDLEWARE = (
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "csp.middleware.CSPMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
@@ -90,6 +99,24 @@ STATIC_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), "static"))
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), "media"))
+
+# Database settings
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_HOST = os.getenv("DATABASE_HOST_OVERRIDE")
+DATABASE_PORT = os.getenv("DATABASE_PORT_OVERRIDE")
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": DATABASE_NAME,  # noqa:
+        "USER": DATABASE_USER,  # noqa
+        "PASSWORD": DATABASE_PASSWORD,  # noqa
+        "HOST": DATABASE_HOST,  # noqa
+        "PORT": DATABASE_PORT,  # noqa
+    },
+}  # noqa
 
 WEBPACK_LOADER = {
     "DEFAULT": {
@@ -157,6 +184,8 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.contrib.messages.context_processors.messages",
+                "django.contrib.auth.context_processors.auth",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "config.context_processors.general_settings",

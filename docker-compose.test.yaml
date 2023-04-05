@@ -9,7 +9,8 @@ services:
     volumes:
       - ./app:/app
     depends_on:
-      - redis
+      database:
+        condition: service_healthy
     networks:
       - mor_network
     command: ["bash", "/app/deploy/docker-entrypoint.development.sh"]
@@ -20,6 +21,21 @@ services:
       - mor_network
     ports:
       - "6379:6379"
+
+  database:
+    image: postgis/postgis:11-3.3
+    shm_size: '1024m'
+    ports:
+      - "5411:5432"
+    env_file:
+      - .env.test
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mor_network
 
 networks:
   mor_network:
