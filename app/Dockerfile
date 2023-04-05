@@ -6,7 +6,7 @@ RUN cd /srv/web \
  && npm install \
  && npm run build
 
-FROM python:3.9.15-slim-buster
+FROM python:3.10.10-slim-bullseye
 
 EXPOSE 8000
 
@@ -24,6 +24,15 @@ WORKDIR /app/
 RUN apt-get update && apt-get install -y \
     build-essential \
     python-dev \
+    libgeos-c1v5 \
+    gdal-bin \
+    postgresql-client \
+    libgdal28 \
+    libspatialite7 \
+    libfreexl1 \
+    libgeotiff-dev \
+    libwebp6 \
+    proj-bin \
     git \
     locales \
     && pip install --upgrade pip \
