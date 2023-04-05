@@ -1,5 +1,6 @@
 from apps.mbc.views import http_404, http_500, melding_aanmaken, melding_email, root
 from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import include, path
 from django.views.generic import TemplateView
 
@@ -20,3 +21,4 @@ if settings.DEBUG:
         path("404/", http_404, name="404"),
         path("500/", http_500, name="500"),
     ]
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
