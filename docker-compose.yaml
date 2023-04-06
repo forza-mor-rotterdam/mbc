@@ -10,6 +10,7 @@ services:
       - ./app:/app
     depends_on:
       - redis
+      - database
     networks:
       - mor_network
     command: ["bash", "/app/deploy/docker-entrypoint.development.sh"]

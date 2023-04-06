@@ -122,6 +122,8 @@ DATABASES = {
     },
 }  # noqa
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not DEBUG,
@@ -208,7 +210,7 @@ MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
     "MELDINGEN_API", "https://mor-core-acc.forzamor.nl/health/"
 )
 
-# LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
+LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 
 LOGGING = {
     "version": 1,

@@ -2,34 +2,13 @@ import base64
 import copy
 
 import requests
-from apps.mbc.constanten import (
-    ALLE_MEDEWERKERS,
-    BEGRAAFPLAATS_EMAIL_ADRES,
-    BEGRAAFPLAATS_MEDEWERKER_NAAM,
-    BEGRAAFPLAATS_MEDEWERKERS,
-    BEGRAAFPLAATS_NAAM,
-    BEGRAAFPLAATS_SELECT,
-    CATEGORIE,
-    CATEGORIE_NAAM,
-)
+from apps.mbc.models import Begraafplaats, Categorie, Medewerker
 from django import forms
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.utils import timezone
-
-
-class Select(forms.Select):
-    def create_option(self, *args, **kwargs):
-        option = super().create_option(*args, **kwargs)
-        if not option.get("value"):
-            option["attrs"]["disabled"] = "disabled"
-
-        if option.get("value") == 2:
-            option["attrs"]["disabled"] = "disabled"
-
-        return option
 
 
 class MeldingAanmakenForm(forms.Form):
@@ -50,9 +29,10 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
     begraafplaats = forms.ChoiceField(
-        widget=Select(attrs={"data-action": "change->request#onBegraafplaatsChange"}),
+        widget=forms.Select(
+            attrs={"data-action": "change->request#onBegraafplaatsChange"}
+        ),
         label="Begraafplaats",
-        choices=BEGRAAFPLAATS_SELECT,
         required=True,
     )
     grafnummer = forms.CharField(
@@ -92,7 +72,6 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Categorie",
-        choices=CATEGORIE,
         required=True,
     )
     omschrijving_andere_oorzaken = forms.CharField(
@@ -122,14 +101,13 @@ class MeldingAanmakenForm(forms.Form):
         required=False,
     )
     aannemer = forms.ChoiceField(
-        widget=Select(
+        widget=forms.Select(
             attrs={
                 "data-request-target": "aannemerField",
             }
         ),
         label="Wie heeft het verzoek aangenomen?",
-        choices=ALLE_MEDEWERKERS,
-        required=False,
+        required=True,
     )
 
     naam_melder = forms.CharField(
@@ -193,9 +171,96 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
 
+    def get_begraafplaats_choices(self):
+        return [("", "Selecteer een begraafplaats")] + [
+            (str(m[0]), m[1])
+            for m in list(Begraafplaats.objects.all().values_list("pk", "naam"))
+        ]
+
+    def get_alle_medewerker_choices(self):
+        return [("", "Selecteer een medewerker")] + [
+            (str(m[0]), m[1])
+            for m in list(Medewerker.objects.all().values_list("pk", "naam"))
+            + [("onbekend", "Onbekend")]
+        ]
+
+    def get_medewerker_choices(self, begraafplaats_id):
+        return (
+            [("", "Selecteer een medewerker")]
+            + [
+                (str(m[0]), m[1])
+                for m in list(
+                    Medewerker.objects.filter(
+                        begraafplaatsen__pk=begraafplaats_id
+                    ).values_list("pk", "naam")
+                )
+            ]
+            + [("onbekend", "Onbekend")]
+        )
+
+    def get_categorie_choices(self):
+        return [
+            (str(m[0]), m[1])
+            for m in list(
+                Categorie.objects.all().order_by("volgorde").values_list("pk", "naam")
+            )
+        ]
+
+    def get_begraafplaats_medewerkers(self):
+        medewerkers = list(
+            Medewerker.objects.all().values_list("pk", "naam", "begraafplaatsen")
+        )
+        begraafplaatsen = list(Begraafplaats.objects.all().values_list("pk", flat=True))
+        return {
+            b: [("", "Selecteer een medewerker")]
+            + [(str(m[0]), m[1]) for m in medewerkers if b == m[2]]
+            + [("onbekend", "Onbekend")]
+            for b in begraafplaatsen
+        }
+
+    def get_categorie_andere_oorzaak(self):
+        return list(
+            [
+                str(c)
+                for c in Categorie.objects.filter(toon_andere_oorzaak=True).values_list(
+                    "pk", flat=True
+                )
+            ]
+        )
+
+    def get_specifiek_graf_categorieen(self):
+        return {
+            0: list(
+                [
+                    str(c)
+                    for c in Categorie.objects.filter(
+                        toon_specifiek_graf__in=("altijd", "niet_specifiek_graf")
+                    ).values_list("pk", flat=True)
+                ]
+            ),
+            1: list(
+                [
+                    str(c)
+                    for c in Categorie.objects.filter(
+                        toon_specifiek_graf__in=("altijd", "specifiek_graf")
+                    ).values_list("pk", flat=True)
+                ]
+            ),
+        }
+
+    def get_verbose_value_from_field(self, fieldname, value):
+        if hasattr(self.fields.get(fieldname), "choices"):
+            choices_lookup = {c[0]: c[1] for c in self.fields[fieldname].choices}
+            if type(value) == list:
+                return [choices_lookup.get(v, v) for v in value]
+            return choices_lookup.get(value, value)
+        return value
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        aannemer_choices = ALLE_MEDEWERKERS
+        self.fields["begraafplaats"].choices = self.get_begraafplaats_choices()
+        self.fields["categorie"].choices = self.get_categorie_choices()
+
         if "categorie_andere_oorzaken" in self.data.get("categorie", []):
             self.fields["omschrijving_andere_oorzaken"].required = True
 
@@ -205,30 +270,31 @@ class MeldingAanmakenForm(forms.Form):
             self.fields["rechthebbende"].required = False
 
         if self.data.get("begraafplaats"):
-            aannemer_choices = BEGRAAFPLAATS_MEDEWERKERS[self.data["begraafplaats"]]
-        self.fields["aannemer"].choices = aannemer_choices
-        self.fields["aannemer"].required = False
+            self.fields["aannemer"].choices = self.get_medewerker_choices(
+                self.data["begraafplaats"]
+            )
+            self.fields["aannemer"].required = False
 
     def send_mail(self, files=[]):
         email_context = copy.deepcopy(self.cleaned_data)
         send_to = []
-        if BEGRAAFPLAATS_EMAIL_ADRES.get(self.cleaned_data.get("begraafplaats")):
-            send_to.append(
-                BEGRAAFPLAATS_EMAIL_ADRES.get(self.cleaned_data.get("begraafplaats"))
-            )
-        if self.cleaned_data.get("email_melder"):
-            send_to.append(self.cleaned_data.get("email_melder"))
+        begraafplaats = Begraafplaats.objects.get(pk=email_context["begraafplaats"])
+        if begraafplaats.email:
+            send_to.append(begraafplaats.email)
+        if email_context.get("email_melder"):
+            send_to.append(email_context.get("email_melder"))
 
         email_context["fotos"] = len(files)
-        email_context["categorie"] = ", ".join(
-            [CATEGORIE_NAAM[c] for c in email_context["categorie"]]
+        choice_fields = (
+            "categorie",
+            "begraafplaats",
+            "aannemer",
+            "terugkoppeling_gewenst",
+            "rechthebbende",
+            "specifiek_graf",
         )
-        email_context["begraafplaats"] = BEGRAAFPLAATS_NAAM[
-            email_context["begraafplaats"]
-        ]
-        email_context["aannemer"] = BEGRAAFPLAATS_MEDEWERKER_NAAM[
-            email_context["aannemer"]
-        ]
+        for cf in choice_fields:
+            email_context[cf] = self.get_verbose_value_from_field(cf, email_context[cf])
 
         text_template = get_template("email/email.txt")
         html_template = get_template("email/email.html")
