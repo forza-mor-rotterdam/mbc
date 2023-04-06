@@ -17,6 +17,9 @@ python manage.py test_cache
 echo Apply migrations
 python manage.py migrate --noinput
 
+echo Load initial data
+python manage.py loaddata initial_data
+
 echo Create superuser
 python manage.py createsuperuser --noinput || true
 
