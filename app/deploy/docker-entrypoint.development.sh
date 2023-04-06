@@ -6,7 +6,7 @@ set -x
 rm -rf /static/*
 
 echo Test cache
-# python manage.py test_cache
+python manage.py test_cache
 
 # echo "Start with a fresh database"
 # export PGPASSWORD=${DATABASE_PASSWORD}
@@ -15,6 +15,9 @@ echo Test cache
 
 echo Apply migrations
 python manage.py migrate --noinput
+
+echo Load initial data
+python manage.py loaddata initial_data
 
 echo Create superuser
 python manage.py createsuperuser --noinput || true

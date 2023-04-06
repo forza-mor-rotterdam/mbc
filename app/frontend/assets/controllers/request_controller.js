@@ -10,7 +10,9 @@ export default class extends Controller {
 
     static targets = ["categorieOmschrijvingField", "aannemerField", "specifiekGrafField"]
     static values = {
-        medewerkers: String
+        medewerkers: String,
+        categorie_andere_oorzaak: String,
+        specifiek_graf_categorieen: String
     }
 
     connect() {
@@ -86,12 +88,10 @@ export default class extends Controller {
         }
     }
     checkCheckBoxes() {
-        console.log('checkCheckBoxes')
         const cbRequired = document.getElementsByClassName('form-row cb-required')[0]
         if(cbRequired){
             const error = cbRequired.getElementsByClassName('invalid-text')[0]
             const form_data = new FormData(document.querySelector("form"));
-            console.log(form_data)
             if(!form_data.has(cbRequired.querySelector("input").getAttribute("name"))){
                 error.textContent = `Selecteer een ${cbRequired.querySelector("input").getAttribute("name")}`;
                 cbRequired.classList.add('is-invalid')
@@ -116,7 +116,8 @@ export default class extends Controller {
         return unique
     }
     toggleInputOtherCategory(e) {
-        if(e.target.value === "categorie_andere_oorzaken"){
+        const categorieAndereOorzaak = JSON.parse(this.categorieAndereOorzaakValue)
+        if(categorieAndereOorzaak.includes(e.target.value)){
             const fieldContainer = this.categorieOmschrijvingFieldTarget.closest('.form-row')
             if(e.target.checked) {
                 fieldContainer.classList.remove('hidden')
@@ -131,38 +132,39 @@ export default class extends Controller {
     }
 
     checkSpecifiekGraf(){
+        const specifiekGrafCategorieen = JSON.parse(this.specifiekGrafCategorieenValue)
         if(specifiek_graf === 0) {
-            //hide fields
             this.hideField("id_grafnummer")
             this.hideField("id_naam_overledene")
             this.hideField("id_rechthebbende")
-            this.hideCheckbox("categorie_verzakking_eigen_graf")
-            this.hideCheckbox("categorie_zerk_reinigen")
-            this.showCheckbox("categorie_verzakking_algemeen")
         } else {
             this.showField("id_grafnummer")
             this.showField("id_naam_overledene")
             this.showField("id_rechthebbende")
-            this.showCheckbox("categorie_verzakking_eigen_graf")
-            this.showCheckbox("categorie_zerk_reinigen")
-            this.hideCheckbox("categorie_verzakking_algemeen")
+        }
+
+        let checkBoxes = document.querySelectorAll(`[name="categorie"]`)
+        let catIdsToShow = specifiekGrafCategorieen[specifiek_graf]
+        for (let i=0; i<checkBoxes.length; i++){
+            if (catIdsToShow.includes(checkBoxes[i].value)){
+                this.showCheckbox(checkBoxes[i])
+            }else {
+                this.hideCheckbox(checkBoxes[i])
+            }
         }
     }
-
     onSpecifiekGrafChange(e){
         specifiek_graf = Number(e.target.value)
         this.checkSpecifiekGraf()
     }
 
-    hideCheckbox(cbValue){
-        const cbToHide = document.querySelector(`[value=${cbValue}]`);
+    hideCheckbox(cbToHide){
         cbToHide.checked = false
         cbToHide.setAttribute("disabled", "disabled")
         cbToHide.closest('li').style.display="none";
     }
 
-    showCheckbox(cbValue){
-        const cbToShow = document.querySelector(`[value=${cbValue}]`);
+    showCheckbox(cbToShow){
         cbToShow.removeAttribute("disabled")
         cbToShow.closest('li').style.display="block";
     }
@@ -172,7 +174,6 @@ export default class extends Controller {
         const field = document.getElementById(fieldId)
         field.closest('.form-row').classList.add('hidden')
         field.value = ''
-        console.log('field.nodeName', field.nodeName)
         if(field.nodeName.toLowerCase() === 'input') {
             field.removeAttribute('required')
         } else {
@@ -183,7 +184,6 @@ export default class extends Controller {
             }
 
         }
-        console.log('hideField', field)
     }
 
     showField(field) {

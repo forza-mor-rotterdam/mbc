@@ -1,4 +1,3 @@
-from apps.mbc.constanten import BEGRAAFPLAATS_MEDEWERKERS
 from apps.mbc.forms import MeldingAanmakenForm
 from django.core.files.storage import default_storage
 from django.shortcuts import redirect, render
@@ -47,7 +46,9 @@ def melding_aanmaken(request):
         "melding/aanmaken.html",
         {
             "form": form,
-            "BEGRAAFPLAATS_MEDEWERKERS": BEGRAAFPLAATS_MEDEWERKERS,
+            "begraafplaats_medewerkers": form.get_begraafplaats_medewerkers(),
+            "categorie_andere_oorzaak": form.get_categorie_andere_oorzaak(),
+            "specifiek_graf_categorieen": form.get_specifiek_graf_categorieen(),
         },
     )
 

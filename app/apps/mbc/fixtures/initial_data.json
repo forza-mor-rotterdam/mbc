@@ -1,0 +1,247 @@
+[
+{
+  "model": "mbc.begraafplaats",
+  "pk": 1,
+  "fields": {
+    "naam": "Begraafplaats Crooswijk"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 2,
+  "fields": {
+    "naam": "Begraafplaats Hoek van Holland"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 3,
+  "fields": {
+    "naam": "Begraafplaats en crematorium Hofwijk"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 4,
+  "fields": {
+    "naam": "Begraafplaats Oudeland, Hoogvliet"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 5,
+  "fields": {
+    "naam": "Begraafplaats Oud-Hoogvliet"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 6,
+  "fields": {
+    "naam": "Begraafplaats Oud-Overschie"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 7,
+  "fields": {
+    "naam": "Begraafplaats Oud-Pernis"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 8,
+  "fields": {
+    "naam": "Begraafplaats Oud-Schiebroek"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 9,
+  "fields": {
+    "naam": "Begraafplaats Pernis"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 10,
+  "fields": {
+    "naam": "Begraafplaats Rozenburg"
+  }
+},
+{
+  "model": "mbc.begraafplaats",
+  "pk": 11,
+  "fields": {
+    "naam": "Zuiderbegraafplaats"
+  }
+},
+
+
+{
+  "model": "mbc.categorie",
+  "pk": 1,
+  "fields": {
+    "naam": "Verzakking eigen graf",
+    "volgorde": 0,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "specifiek_graf"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 2,
+  "fields": {
+    "naam": "Verzakking algemeen",
+    "volgorde": 10,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "niet_specifiek_graf"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 3,
+  "fields": {
+    "naam": "Snoeien",
+    "volgorde": 20,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 4,
+  "fields": {
+    "naam": "Beplanting",
+    "volgorde": 30,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 5,
+  "fields": {
+    "naam": "Schoonmaken",
+    "volgorde": 40,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 6,
+  "fields": {
+    "naam": "Verdwenen materiaal",
+    "volgorde": 50,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 7,
+  "fields": {
+    "naam": "Gaten",
+    "volgorde": 60,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 8,
+  "fields": {
+    "naam": "Wespennest",
+    "volgorde": 70,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 9,
+  "fields": {
+    "naam": "Konijnen",
+    "volgorde": 80,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 10,
+  "fields": {
+    "naam": "Muizen",
+    "volgorde": 90,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 11,
+  "fields": {
+    "naam": "Zerk reinigen",
+    "volgorde": 100,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "specifiek_graf"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 12,
+  "fields": {
+    "naam": "Andere oorzaken",
+    "volgorde": 110,
+    "toon_andere_oorzaak": true,
+    "toon_specifiek_graf": "altijd"
+  }
+},
+
+
+
+
+
+{
+  "model": "mbc.medewerker",
+  "pk": 1,
+  "fields": {
+    "naam": "C.M. Hendriks",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "mbc.medewerker",
+  "pk": 2,
+  "fields": {
+    "naam": "A. van de Graaf",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "mbc.medewerker",
+  "pk": 3,
+  "fields": {
+    "naam": "I. Addicks",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "mbc.medewerker",
+  "pk": 4,
+  "fields": {
+    "naam": "A.J. Verhoeven",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "mbc.medewerker",
+  "pk": 5,
+  "fields": {
+    "naam": "M. van Berkum",
+    "begraafplaatsen": [11, 10, 9]
+  }
+}
+
+]
