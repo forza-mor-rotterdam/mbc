@@ -138,7 +138,7 @@ class MeldingAanmakenForm(forms.Form):
                 "class": "list--form-radio-input",
             }
         ),
-        label="Is deze persoon de rechthebbende?",
+        label="Is deze persoon de rechthebbende of belanghebbende?",
         choices=(
             ("1", "Ja"),
             ("0", "Nee"),

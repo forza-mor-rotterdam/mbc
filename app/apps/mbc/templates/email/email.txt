@@ -19,6 +19,6 @@ E-mailadres:                       {% if email_melder %}{{ email_melder }}{% els
 Is deze persoon de rechthebbende?: {% if rechthebbende == "1" %}Ja{% elif rechthebbende == "2" %}Onbekend{% else %}Nee{% endif %}
 Is terugkoppeling gewenst?:        {% if terugkoppeling_gewenst == "1" %}Ja{% else %}Nee{% endif %}
 
-We gaan zo snel mogelijk uw verzoek aan de slag.
+We streven ernaar om uw melding binnen twee weken in behandeling te nemen.
 Met vriendelijke groet,
 Medewerker Begraven & cremeren
