@@ -118,7 +118,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Telefoonnummer",
-        required=True,
+        required=False,
     )
 
     email_melder = forms.EmailField(
@@ -129,6 +129,17 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="E-mailadres",
+        required=True,
+    )
+
+    no_email = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={
+                "class": "form-check-input",
+                "data-action": "change->request#toggleInputNoEmail",
+            }
+        ),
+        label="De melder beschikt niet over een e-mailadres.",
         required=False,
     )
 
@@ -339,6 +350,7 @@ class MeldingAanmakenForm(forms.Form):
             "onderwerp": "Begraven & cremeren",
             "ruwe_informatie": data,
         }
+        print(post_data)
         post_data["bijlagen"] = [{"bestand": self._to_base64(file)} for file in files]
 
         response = requests.post(url, json=post_data)
