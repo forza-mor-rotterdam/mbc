@@ -59,7 +59,7 @@ class MeldingAanmakenForm(forms.Form):
                 "class": "form-control",
             }
         ),
-        help_text='<span>Bekijk namen en graven op <a href="https://grafzoeken.nl/" target="_blank">grafzoeken.nl</a></span>',
+        help_text='<span>Bekijk namen en graven op <a href="https://grafzoeken.nl/#/0599" target="_blank">grafzoeken.nl</a></span>',
         label="Naam overledene",
         required=True,
     )
