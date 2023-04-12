@@ -8,7 +8,7 @@ let formData = null
 const defaultErrorMessage = "Vul a.u.b. dit veld in."
 export default class extends Controller {
 
-    static targets = ["categorieOmschrijvingField", "aannemerField", "specifiekGrafField"]
+    static targets = ["aannemerField", "specifiekGrafField"]
     static values = {
         medewerkers: String,
         categorie_andere_oorzaak: String,
@@ -17,7 +17,6 @@ export default class extends Controller {
 
     connect() {
         this.aannemerFieldTarget.setAttribute("disabled", "disabled")
-        this.categorieOmschrijvingFieldTarget.closest('.form-row').classList.add("hidden")
 
         form = document.querySelector("form");
         inputList = document.querySelectorAll('[type="text"], [type="radio"], select, textarea')
@@ -114,21 +113,6 @@ export default class extends Controller {
             }
         })
         return unique
-    }
-    toggleInputOtherCategory(e) {
-        const categorieAndereOorzaak = JSON.parse(this.categorieAndereOorzaakValue)
-        if(categorieAndereOorzaak.includes(e.target.value)){
-            const fieldContainer = this.categorieOmschrijvingFieldTarget.closest('.form-row')
-            if(e.target.checked) {
-                fieldContainer.classList.remove('hidden')
-                if(fieldContainer.getElementsByTagName('small').length > 0){
-                    fieldContainer.getElementsByTagName('small')[0].remove()
-                }
-                this.showField("id_omschrijving_andere_oorzaken")
-            }else {
-                this.hideField("id_omschrijving_andere_oorzaken")
-            }
-        }
     }
 
     checkSpecifiekGraf(){

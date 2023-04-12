@@ -68,26 +68,16 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-check-input",
-                "data-action": "change->request#toggleInputOtherCategory",
             }
         ),
         label="Categorie",
         required=True,
     )
-    omschrijving_andere_oorzaken = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "data-request-target": "categorieOmschrijvingField",
-            }
-        ),
-        label="Omschrijving andere oorzaken",
-        required=False,
-    )
+
     toelichting = forms.CharField(
         widget=forms.Textarea(),
         label="Toelichting",
-        required=False,
+        required=True,
     )
 
     fotos = forms.FileField(

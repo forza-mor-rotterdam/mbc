@@ -28,13 +28,6 @@
     <fieldset>
         {% include "snippets/legend.html" with title="Verzoek" icon_name="list" only %}
         {{ form.categorie|render_rotterdam_formulier }}
-        {% comment %} <div class="form-row">
-            <div class="hidden" data-request-target="categoryDescription">
-                <label for="omschrijving_andere_oorzaken">Omschrijving andere oorzaken</label>
-                <input class="form-control" type="text" name="omschrijving_andere_oorzaken" id="omschrijving_andere_oorzaken" value="">
-            </div>
-        </div> {% endcomment %}
-        {{ form.omschrijving_andere_oorzaken|render_rotterdam_formulier }}
         {{ form.toelichting|render_rotterdam_formulier }}
         {{ form.fotos|render_rotterdam_formulier }}
         {{ form.aannemer|render_rotterdam_formulier }}
