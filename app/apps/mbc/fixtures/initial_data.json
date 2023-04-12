@@ -192,9 +192,9 @@
   "model": "mbc.categorie",
   "pk": 12,
   "fields": {
-    "naam": "Andere oorzaken",
+    "naam": "Overig",
     "volgorde": 110,
-    "toon_andere_oorzaak": true,
+    "toon_andere_oorzaak": false,
     "toon_specifiek_graf": "altijd"
   }
 },
