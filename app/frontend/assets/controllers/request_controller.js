@@ -16,6 +16,7 @@ export default class extends Controller {
     }
 
     connect() {
+        console.log('request_controller conected')
         this.aannemerFieldTarget.setAttribute("disabled", "disabled")
         this.categorieOmschrijvingFieldTarget.closest('.form-row').classList.add("hidden")
 
@@ -129,6 +130,37 @@ export default class extends Controller {
                 this.hideField("id_omschrijving_andere_oorzaken")
             }
         }
+    }
+
+    toggleInputNoEmail(e) {
+        const fieldEmail = document.getElementById("id_email_melder")
+        const fieldPhone = document.getElementById("id_telefoon_melder")
+        const labelEmail = document.querySelector("label[for='id_email_melder']");
+        const labelPhone = document.querySelector("label[for='id_telefoon_melder']");
+        const labelEmailTextClean = labelEmail.innerHTML.split("<small>")[0]
+        const labelPhoneTextClean = labelPhone.innerHTML.split("<small>")[0]
+
+        if(e.target.checked) {
+            //no email, phone required
+            fieldEmail.removeAttribute("required")
+            fieldEmail.setAttribute("disabled", true)
+            fieldEmail.value = ""
+            fieldPhone.setAttribute("required", true)
+            //show/hide helptext
+            labelEmail.innerHTML = `${labelEmailTextClean} <small>(Niet verplicht)</small>`
+            labelPhone.innerHTML = `${labelPhoneTextClean}`
+
+        } else {
+            //use email, phone NOT required
+            fieldPhone.removeAttribute("required")
+            fieldEmail.setAttribute("required", true)
+            fieldEmail.removeAttribute("disabled", "disabled")
+            labelEmail.innerHTML = `${labelEmailTextClean}`
+            labelPhone.innerHTML = `${labelPhoneTextClean} <small>(Niet verplicht)</small>`
+            //show/hide helptext
+        }
+
+
     }
 
     checkSpecifiekGraf(){

@@ -42,8 +42,9 @@
     <fieldset>
         {% include "snippets/legend.html" with title="Melder" icon_name="person" only %}
         {{ form.naam_melder|render_rotterdam_formulier }}
-        {{ form.telefoon_melder|render_rotterdam_formulier }}
         {{ form.email_melder|render_rotterdam_formulier }}
+        {{ form.no_email|render_rotterdam_formulier }}
+        {{ form.telefoon_melder|render_rotterdam_formulier }}
         {{ form.rechthebbende|render_rotterdam_formulier }}
         {% comment %} {{ form.rechthebbende }} {% endcomment %}
         {{ form.terugkoppeling_gewenst|render_rotterdam_formulier }}

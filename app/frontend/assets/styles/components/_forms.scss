@@ -238,6 +238,13 @@ textarea {
             line-height: 1.5rem;
             font-weight: 400;
         }
+
+        &[type="checkbox"]{
+            + span {
+                font-weight: 400;
+                line-height: 28px;
+            }
+        }
 }
 
 .list--form-check-input,
@@ -371,6 +378,7 @@ textarea {
         small {
             font-weight: 400;
             font-size: $h6-font-size;
+            line-height: initial;
         }
     }
 
