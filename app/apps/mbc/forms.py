@@ -51,7 +51,7 @@ class MeldingAanmakenForm(forms.Form):
             }
         ),
         label="Vak",
-        required=True,
+        required=False,
     )
     naam_overledene = forms.CharField(
         widget=forms.TextInput(
