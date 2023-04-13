@@ -8,7 +8,7 @@ let formData = null
 const defaultErrorMessage = "Vul a.u.b. dit veld in."
 export default class extends Controller {
 
-    static targets = ["aannemerField", "specifiekGrafField"]
+    static targets = ["aannemerField", "specifiekGrafField", "emailField", "phoneField"]
     static values = {
         medewerkers: String,
         categorie_andere_oorzaak: String,
@@ -16,8 +16,12 @@ export default class extends Controller {
     }
 
     connect() {
-        console.log('request_controller conected')
         this.aannemerFieldTarget.setAttribute("disabled", "disabled")
+        this.emailFieldTarget.setAttribute("required", true)
+
+        const labelEmail = document.querySelector("label[for='id_email_melder']");
+        const labelEmailTextClean = labelEmail.innerHTML.split("<small>")[0]
+        labelEmail.innerHTML = `${labelEmailTextClean}`
 
         form = document.querySelector("form");
         inputList = document.querySelectorAll('[type="text"], [type="radio"], select, textarea')
@@ -117,8 +121,6 @@ export default class extends Controller {
     }
 
     toggleInputNoEmail(e) {
-        const fieldEmail = document.getElementById("id_email_melder")
-        const fieldPhone = document.getElementById("id_telefoon_melder")
         const labelEmail = document.querySelector("label[for='id_email_melder']");
         const labelPhone = document.querySelector("label[for='id_telefoon_melder']");
         const labelEmailTextClean = labelEmail.innerHTML.split("<small>")[0]
@@ -126,56 +128,31 @@ export default class extends Controller {
 
         if(e.target.checked) {
             //no email, phone required
-            fieldEmail.removeAttribute("required")
-            fieldEmail.setAttribute("disabled", true)
-            fieldEmail.value = ""
-            fieldPhone.setAttribute("required", true)
+            this.emailFieldTarget.removeAttribute("required")
+            this.emailFieldTarget.setAttribute("disabled", true)
+            this.emailFieldTarget.value = ""
+            this.phoneFieldTarget.setAttribute("required", true)
             //show/hide helptext
             labelEmail.innerHTML = `${labelEmailTextClean} <small>(Niet verplicht)</small>`
             labelPhone.innerHTML = `${labelPhoneTextClean}`
+            //show/hide errormessage
+            this.emailFieldTarget.closest(".form-row").classList.remove("is-invalid")
+            this.emailFieldTarget.closest(".form-row").getElementsByClassName('invalid-text')[0].innerHTML = ""
+
 
         } else {
             //use email, phone NOT required
-            fieldPhone.removeAttribute("required")
-            fieldEmail.setAttribute("required", true)
-            fieldEmail.removeAttribute("disabled", "disabled")
+            this.phoneFieldTarget.removeAttribute("required")
+            this.emailFieldTarget.setAttribute("required", true)
+            this.emailFieldTarget.removeAttribute("disabled", "disabled")
+            //show/hide helptext
             labelEmail.innerHTML = `${labelEmailTextClean}`
             labelPhone.innerHTML = `${labelPhoneTextClean} <small>(Niet verplicht)</small>`
-            //show/hide helptext
+            //show/hide errormessage
+            this.phoneFieldTarget.closest(".form-row").classList.remove("is-invalid")
+            this.phoneFieldTarget.closest(".form-row").getElementsByClassName('invalid-text')[0].innerHTML = ""
+
         }
-
-
-    }
-
-    toggleInputNoEmail(e) {
-        const fieldEmail = document.getElementById("id_email_melder")
-        const fieldPhone = document.getElementById("id_telefoon_melder")
-        const labelEmail = document.querySelector("label[for='id_email_melder']");
-        const labelPhone = document.querySelector("label[for='id_telefoon_melder']");
-        const labelEmailTextClean = labelEmail.innerHTML.split("<small>")[0]
-        const labelPhoneTextClean = labelPhone.innerHTML.split("<small>")[0]
-
-        if(e.target.checked) {
-            //no email, phone required
-            fieldEmail.removeAttribute("required")
-            fieldEmail.setAttribute("disabled", true)
-            fieldEmail.value = ""
-            fieldPhone.setAttribute("required", true)
-            //show/hide helptext
-            labelEmail.innerHTML = `${labelEmailTextClean} <small>(Niet verplicht)</small>`
-            labelPhone.innerHTML = `${labelPhoneTextClean}`
-
-        } else {
-            //use email, phone NOT required
-            fieldPhone.removeAttribute("required")
-            fieldEmail.setAttribute("required", true)
-            fieldEmail.removeAttribute("disabled", "disabled")
-            labelEmail.innerHTML = `${labelEmailTextClean}`
-            labelPhone.innerHTML = `${labelPhoneTextClean} <small>(Niet verplicht)</small>`
-            //show/hide helptext
-        }
-
-
     }
 
     checkSpecifiekGraf(){

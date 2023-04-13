@@ -115,6 +115,7 @@ class MeldingAanmakenForm(forms.Form):
             attrs={
                 "type": "tel",
                 "class": "form-control",
+                "data-request-target": "phoneField",
             }
         ),
         label="Telefoonnummer",
@@ -126,10 +127,11 @@ class MeldingAanmakenForm(forms.Form):
             attrs={
                 "type": "email",
                 "class": "form-control",
+                "data-request-target": "emailField",
             }
         ),
         label="E-mailadres",
-        required=True,
+        required=False,
     )
 
     no_email = forms.BooleanField(
