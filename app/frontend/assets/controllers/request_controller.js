@@ -261,6 +261,7 @@ export default class extends Controller {
         const fileTypes = [
             "image/apng",
             "image/bmp",
+            "image/heic",
             "image/gif",
             "image/jpeg",
             "image/pjpeg",
