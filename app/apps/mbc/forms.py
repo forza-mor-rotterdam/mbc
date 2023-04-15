@@ -83,7 +83,7 @@ class MeldingAanmakenForm(forms.Form):
     fotos = forms.FileField(
         widget=forms.widgets.FileInput(
             attrs={
-                "accept": ".jpg, .jpeg, .png",
+                "accept": ".jpg, .jpeg, .png, .heic",
                 "data-action": "change->request#updateImageDisplay",
             }
         ),
