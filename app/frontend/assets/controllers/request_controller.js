@@ -261,6 +261,7 @@ export default class extends Controller {
         const fileTypes = [
             "image/apng",
             "image/bmp",
+            "image/heic",
             "image/gif",
             "image/jpeg",
             "image/pjpeg",
@@ -306,12 +307,21 @@ export default class extends Controller {
 
                 if (validFileType(file)) {
                     content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
-                    const image = document.createElement('img');
-                    image.src = URL.createObjectURL(file);
-                    image.onload = () => {
-                        URL.revokeObjectURL(image.src);
-                    };
-                    listItem.appendChild(image);
+                    if(file.type !== "image/heic"){
+                        const image = document.createElement('img');
+                        image.src = URL.createObjectURL(file);
+                        image.onload = () => {
+                            URL.revokeObjectURL(image.src);
+                        };
+                        listItem.appendChild(image);
+                    } else {
+                        const placeholder = document.createElement("div")
+                        const span = document.createElement("span")
+                        placeholder.classList.add("placeholder")
+                        span.textContent = "Van dit bestandstype kan geen preview getoond worden."
+                        placeholder.appendChild(span)
+                        listItem.appendChild(placeholder)
+                    }
                     listItem.appendChild(content);
                     listItem.appendChild(remove);
                 } else {
