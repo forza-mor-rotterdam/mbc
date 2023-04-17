@@ -300,6 +300,9 @@ export default class extends Controller {
                 const listItem = document.createElement('li');
                 const content = document.createElement('span');
                 const remove = document.createElement('button');
+                const span = document.createElement("span")
+                span.classList.add('container__image')
+
                 remove.setAttribute('type', "button")
                 remove.setAttribute('data-action', "request#removeFile")
                 remove.setAttribute('data-request-index-param', index)
@@ -313,10 +316,11 @@ export default class extends Controller {
                         image.onload = () => {
                             URL.revokeObjectURL(image.src);
                         };
-                        listItem.appendChild(image);
+                        span.appendChild(image);
+                        listItem.appendChild(span)
+
                     } else {
                         const placeholder = document.createElement("div")
-                        const span = document.createElement("span")
                         placeholder.classList.add("placeholder")
                         span.textContent = "Van dit bestandstype kan geen preview getoond worden."
                         placeholder.appendChild(span)
