@@ -28,9 +28,6 @@ LANGUAGES = [("nl", "Dutch")]
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
-FRONTEND_URL = os.environ.get("FRONTEND_URL")
-PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
-
 INSTALLED_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
@@ -212,6 +209,13 @@ MELDINGEN_API = os.getenv("MELDINGEN_API", "https://mor-core-acc.forzamor.nl/v1"
 MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
     "MELDINGEN_API", "https://mor-core-acc.forzamor.nl/health/"
 )
+MELDINGEN_TOKEN_API = os.getenv(
+    "MELDINGEN_TOKEN_API", "https://mor-core-acc.forzamor.nl/api-token-auth/"
+)
+MELDINGEN_TOKEN_TIMEOUT = 60 * 60
+MELDINGEN_USERNAME = os.getenv("MELDINGEN_USERNAME")
+MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
+
 
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 
