@@ -324,12 +324,22 @@ textarea {
             position: relative;
             padding-right: 56px;
 
-            img {
+            img,
+            .placeholder {
                 height: 116px;
                 width: 100%;
                 max-width: 155px;
                 vertical-align: middle;
                 margin-right: $input-padding-x;
+            }
+
+            .placeholder {
+                border: 1px dotted $gray-tint04;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                font-size: 12px;
             }
 
             span {
