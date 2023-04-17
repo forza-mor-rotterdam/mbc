@@ -6,6 +6,7 @@ let inputList = null
 let checkboxList = null
 let formData = null
 const defaultErrorMessage = "Vul a.u.b. dit veld in."
+const temp_files = []
 export default class extends Controller {
 
     static targets = ["aannemerField", "specifiekGrafField", "emailField", "phoneField"]
@@ -235,7 +236,6 @@ export default class extends Controller {
     showFileInput() {
         const inputContainer = document.getElementById('id_fotos').parentElement;
         inputContainer.classList.remove('hidden');
-        const preview = document.getElementById('imagesPreview');
     }
 
     removeFile (e) {
@@ -250,13 +250,13 @@ export default class extends Controller {
         for (let file of fileListArr) { dT.items.add(file); }
         input.files = dT.files;
         this.updateImageDisplay();
-
     }
 
     updateImageDisplay() {
         const input = document.getElementById('id_fotos')
         const preview = document.getElementById('imagesPreview');
         const currentFiles = input.files;
+        temp_files.push(currentFiles)
 
         const fileTypes = [
             "image/apng",
@@ -291,12 +291,13 @@ export default class extends Controller {
         }
 
         if (currentFiles.length > 0) {
-
+            console.log('currentFiles', typeof(currentFiles))
+            console.log('temp_files', typeof(temp_files))
             const list = document.createElement('ul');
             list.classList.add('list-clean')
             preview.appendChild(list);
 
-            for (const [index, file] of [...currentFiles].entries()) {
+            for (const [index, file] of [...temp_files].entries()) {
                 const listItem = document.createElement('li');
                 const content = document.createElement('span');
                 const remove = document.createElement('button');
@@ -308,6 +309,7 @@ export default class extends Controller {
                 remove.setAttribute('data-request-index-param', index)
                 remove.classList.add('btn-close')
 
+                console.log('file', file)
                 if (validFileType(file)) {
                     content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
                     if(file.type !== "image/heic"){
