@@ -241,15 +241,9 @@ export default class extends Controller {
     }
 
     removeFile (e) {
-        console.log('-----> removeFiles')
 
         const index = e.params.index;
         const input = document.getElementById('id_fotos')
-        // const fileListArr = [...input.files]
-        console.log('___removeFile___ index: ', index)
-        console.log('___...input.files', [...input.files])
-        console.log('___...temp_files', [...temp_files])
-        console.log('___temp_filesArr', temp_filesArr)
         temp_filesArr = [...temp_files]
         temp_filesArr.splice(index, 1)
 
@@ -264,13 +258,9 @@ export default class extends Controller {
         input.files = dT.files;
 
         this.updateImageDisplay(false);
-
-        console.log('removeFiles <-----')
     }
 
     addFiles(newFiles) {
-        console.log('-----> addFiles')
-        console.log('newFiles', newFiles)
 
         if (temp_filesArr.length === 0){
             temp_filesArr = [...newFiles]
@@ -283,17 +273,12 @@ export default class extends Controller {
 
         for (let file of temp_filesArr) { dT.items.add(file); }
         temp_files = dT.files;
-        console.log('addFiles <-----')
     }
 
     updateImageDisplay(adding = true) {
-        console.log('-----> updateImageDisplay')
         const input = document.getElementById('id_fotos')
         const preview = document.getElementById('imagesPreview');
         const newFiles = input.files; //contains only new file(s)
-
-        console.log('temp_filesArr', temp_filesArr)
-        console.log('newFiles', newFiles)
 
         if(adding) {this.addFiles(newFiles)}
 
@@ -329,8 +314,6 @@ export default class extends Controller {
         while(preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        console.log('temp_files', temp_files)
-        // console.log('currentFiles', currentFiles)
         if (temp_files.length > 0) {
             const list = document.createElement('ul');
             list.classList.add('list-clean')
@@ -376,6 +359,5 @@ export default class extends Controller {
                 list.appendChild(listItem);
             }
         }
-        console.log('updateImageDisplay <-----')
     }
 }
