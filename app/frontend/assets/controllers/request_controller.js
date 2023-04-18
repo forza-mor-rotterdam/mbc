@@ -6,7 +6,8 @@ let inputList = null
 let checkboxList = null
 let formData = null
 const defaultErrorMessage = "Vul a.u.b. dit veld in."
-const temp_files = []
+let temp_files = {}
+let temp_filesArr = []
 export default class extends Controller {
 
     static targets = ["aannemerField", "specifiekGrafField", "emailField", "phoneField"]
@@ -17,6 +18,7 @@ export default class extends Controller {
     }
 
     connect() {
+
         this.aannemerFieldTarget.setAttribute("disabled", "disabled")
         this.emailFieldTarget.setAttribute("required", true)
 
@@ -239,24 +241,62 @@ export default class extends Controller {
     }
 
     removeFile (e) {
+        console.log('-----> removeFiles')
+
         const index = e.params.index;
         const input = document.getElementById('id_fotos')
-        const fileListArr = [...input.files]
-        fileListArr.splice(index, 1)
+        // const fileListArr = [...input.files]
+        console.log('___removeFile___ index: ', index)
+        console.log('___...input.files', [...input.files])
+        console.log('___...temp_files', [...temp_files])
+        console.log('___temp_filesArr', temp_filesArr)
+        temp_filesArr = [...temp_files]
+        temp_filesArr.splice(index, 1)
+
         /** Code from: https://stackoverflow.com/a/47172409/8145428 */
         const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
         new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
 
-        for (let file of fileListArr) { dT.items.add(file); }
+        for (let file of temp_filesArr) {
+            dT.items.add(file);
+        }
+        temp_files = dT.files;
         input.files = dT.files;
-        this.updateImageDisplay();
+
+        this.updateImageDisplay(false);
+
+        console.log('removeFiles <-----')
     }
 
-    updateImageDisplay() {
+    addFiles(newFiles) {
+        console.log('-----> addFiles')
+        console.log('newFiles', newFiles)
+
+        if (temp_filesArr.length === 0){
+            temp_filesArr = [...newFiles]
+        }else {
+            temp_filesArr.push(...newFiles)
+        }
+
+        const dT = new ClipboardEvent('').clipboardData || // Firefox < 62 workaround exploiting https://bugzilla.mozilla.org/show_bug.cgi?id=1422655
+        new DataTransfer(); // specs compliant (as of March 2018 only Chrome)
+
+        for (let file of temp_filesArr) { dT.items.add(file); }
+        temp_files = dT.files;
+        console.log('addFiles <-----')
+    }
+
+    updateImageDisplay(adding = true) {
+        console.log('-----> updateImageDisplay')
         const input = document.getElementById('id_fotos')
         const preview = document.getElementById('imagesPreview');
-        const currentFiles = input.files;
-        temp_files.push(currentFiles)
+        const newFiles = input.files; //contains only new file(s)
+
+        console.log('temp_filesArr', temp_filesArr)
+        console.log('newFiles', newFiles)
+
+        if(adding) {this.addFiles(newFiles)}
+
 
         const fileTypes = [
             "image/apng",
@@ -289,10 +329,9 @@ export default class extends Controller {
         while(preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-
-        if (currentFiles.length > 0) {
-            console.log('currentFiles', typeof(currentFiles))
-            console.log('temp_files', typeof(temp_files))
+        console.log('temp_files', temp_files)
+        // console.log('currentFiles', currentFiles)
+        if (temp_files.length > 0) {
             const list = document.createElement('ul');
             list.classList.add('list-clean')
             preview.appendChild(list);
@@ -309,7 +348,6 @@ export default class extends Controller {
                 remove.setAttribute('data-request-index-param', index)
                 remove.classList.add('btn-close')
 
-                console.log('file', file)
                 if (validFileType(file)) {
                     content.innerHTML = `${file.name} <small>${returnFileSize(file.size)}</small>`;
                     if(file.type !== "image/heic"){
@@ -338,5 +376,6 @@ export default class extends Controller {
                 list.appendChild(listItem);
             }
         }
+        console.log('updateImageDisplay <-----')
     }
 }
