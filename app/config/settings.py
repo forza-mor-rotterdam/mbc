@@ -43,6 +43,8 @@ INSTALLED_APPS = (
     "corsheaders",
     "health_check",
     "health_check.cache",
+    "health_check.db",
+    "health_check.contrib.migrations",
     # Apps
     "apps.health",
     "apps.rotterdam_formulier_html",
@@ -215,6 +217,9 @@ MELDINGEN_TOKEN_API = os.getenv(
 MELDINGEN_TOKEN_TIMEOUT = 60 * 60
 MELDINGEN_USERNAME = os.getenv("MELDINGEN_USERNAME")
 MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
+ONDERWERP_URL = os.getenv(
+    "ONDERWERP_URL", "https://mor-core-acc.forzamor.nl/v1/onderwerp/{slug}/"
+)
 
 
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
