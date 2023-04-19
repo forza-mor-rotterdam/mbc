@@ -10,6 +10,7 @@ from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class MeldingAanmakenForm(forms.Form):
@@ -321,6 +322,14 @@ class MeldingAanmakenForm(forms.Form):
         base64_message = base64_encoded_data.decode("utf-8")
         return base64_message
 
+    def get_onderwerp_urls(self, onderwerp_ids):
+        return [
+            settings.ONDERWERP_URL.format(**{"slug": slugify(c)})
+            for c in Categorie.objects.all()
+            .filter(pk__in=onderwerp_ids)
+            .values_list("naam", flat=True)
+        ]
+
     def send_to_meldingen(self, files=[], request=None):
         now = timezone.localtime(timezone.now())
         url = f"{settings.MELDINGEN_API}/signaal/"
@@ -351,6 +360,7 @@ class MeldingAanmakenForm(forms.Form):
             if request
             else "link-to-source",
             "onderwerp": "Begraven & cremeren",
+            "onderwerpen": self.get_onderwerp_urls(data.get("categorie", [])),
             "ruwe_informatie": data,
         }
         post_data["bijlagen"] = [{"bestand": self._to_base64(file)} for file in files]
@@ -366,7 +376,6 @@ class MeldingAanmakenForm(forms.Form):
             )
             if token_response.status_code == 200:
                 meldingen_token = token_response.json().get("token")
-                print(meldingen_token)
                 cache.set(
                     "meldingen_token", meldingen_token, settings.MELDINGEN_TOKEN_TIMEOUT
                 )
