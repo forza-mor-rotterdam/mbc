@@ -24,6 +24,7 @@ WORKDIR /app/
 RUN apt-get update && apt-get install -y \
     build-essential \
     python-dev \
+    curl \
     libgeos-c1v5 \
     gdal-bin \
     postgresql-client \

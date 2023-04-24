@@ -344,6 +344,15 @@ class MeldingAanmakenForm(forms.Form):
             }
             for k, v in self.fields.items()
         }
+        choice_fields = (
+            "aannemer",
+            "terugkoppeling_gewenst",
+            "rechthebbende",
+            "specifiek_graf",
+        )
+        for cf in choice_fields:
+            data[cf] = self.get_verbose_value_from_field(cf, data[cf])
+
         data.update(
             {
                 "labels": labels,
