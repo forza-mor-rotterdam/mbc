@@ -12,13 +12,13 @@ services:
       - redis
       - database
     networks:
-      - mor_network
+      - mbc_network
     command: ["bash", "/app/deploy/docker-entrypoint.development.sh"]
 
   redis:
     image: redis
     networks:
-      - mor_network
+      - mbc_network
     ports:
       - "6379:6379"
 
@@ -32,11 +32,11 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - mor_network
+      - mbc_network
 
 volumes:
   postgres-data:
 
 networks:
-  mor_network:
+  mbc_network:
     external: true
