@@ -32,11 +32,8 @@ def melding_aanmaken(request):
             file_names.append(file_name)
         is_valid = form.is_valid()
         if is_valid:
-            try:
-                form.send_mail(fotos)
-            except Exception as e:
-                print(e)
             form.send_to_meldingen(file_names, request)
+            form.send_mail(fotos)
             return redirect("melding_verzonden")
     else:
         form = MeldingAanmakenForm()
