@@ -33,7 +33,7 @@ def melding_aanmaken(request):
         is_valid = form.is_valid()
         if is_valid:
             form.send_to_meldingen(file_names, request)
-            form.send_mail(fotos)
+            form.send_mail(file_names)
             return redirect("melding_verzonden")
     else:
         form = MeldingAanmakenForm()

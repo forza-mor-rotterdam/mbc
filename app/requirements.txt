@@ -11,3 +11,4 @@ django-permissions-policy==4.14.0
 django-cors-headers==3.13.0
 django-csp==3.6
 django-materializecss-form
+python-magic
