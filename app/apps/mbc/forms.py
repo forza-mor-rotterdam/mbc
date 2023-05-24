@@ -1,6 +1,7 @@
 import base64
 import copy
 
+import magic
 import requests
 from apps.mbc.models import Begraafplaats, Categorie, Medewerker
 from django import forms
@@ -310,8 +311,14 @@ class MeldingAanmakenForm(forms.Form):
             subject, text_content, settings.DEFAULT_FROM_EMAIL, send_to
         )
         msg.attach_alternative(html_content, "text/html")
+
+        mime = magic.Magic(mime=True)
         for f in files:
-            msg.attach(f.name, f.read(), f.content_type)
+            attachment = default_storage.open(f)
+            msg.attach(
+                attachment.name, attachment.read(), mime.from_file(attachment.name)
+            )
+
         if send_to and not settings.DEBUG:
             msg.send()
 
