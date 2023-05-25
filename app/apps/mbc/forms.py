@@ -11,7 +11,6 @@ from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.utils import timezone
-from django.utils.text import slugify
 
 
 class MeldingAanmakenForm(forms.Form):
@@ -331,10 +330,10 @@ class MeldingAanmakenForm(forms.Form):
 
     def get_onderwerp_urls(self, onderwerp_ids):
         return [
-            settings.ONDERWERP_URL.format(**{"slug": slugify(c)})
+            c
             for c in Categorie.objects.all()
             .filter(pk__in=onderwerp_ids)
-            .values_list("naam", flat=True)
+            .values_list("onderwerp", flat=True)
         ]
 
     def send_to_meldingen(self, files=[], request=None):

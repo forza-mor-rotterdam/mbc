@@ -12,7 +12,6 @@ services:
     ports:
       - 8001:8001
     networks:
-      - mbc_network
       - mor_bridge_network
     env_file:
       - .env.local
