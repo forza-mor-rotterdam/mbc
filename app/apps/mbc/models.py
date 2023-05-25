@@ -48,6 +48,9 @@ class Categorie(models.Model):
         ),
         default="altijd",
     )
+    onderwerp = models.URLField(
+        default="https://mor-core-acc.forzamor.nl/v1/onderwerp/overig/"
+    )
 
     def __str__(self) -> str:
         return self.naam

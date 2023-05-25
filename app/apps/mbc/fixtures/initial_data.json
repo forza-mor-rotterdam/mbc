@@ -85,7 +85,8 @@
     "naam": "Verzakking eigen graf",
     "volgorde": 0,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "specifiek_graf"
+    "toon_specifiek_graf": "specifiek_graf",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/verzakking-eigen-graf/"
   }
 },
 {
@@ -95,7 +96,8 @@
     "naam": "Verzakking algemeen",
     "volgorde": 10,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "niet_specifiek_graf"
+    "toon_specifiek_graf": "niet_specifiek_graf",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/verzakking-algemeen/"
   }
 },
 {
@@ -105,7 +107,8 @@
     "naam": "Snoeien",
     "volgorde": 20,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/snoeien/"
   }
 },
 {
@@ -115,7 +118,8 @@
     "naam": "Beplanting",
     "volgorde": 30,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/beplanting/"
   }
 },
 {
@@ -125,7 +129,8 @@
     "naam": "Schoonmaken",
     "volgorde": 40,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/schoonmaken/"
   }
 },
 {
@@ -135,7 +140,8 @@
     "naam": "Verdwenen materiaal",
     "volgorde": 50,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/verdwenen-materiaal/"
   }
 },
 {
@@ -145,7 +151,8 @@
     "naam": "Gaten",
     "volgorde": 60,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/gaten/"
   }
 },
 {
@@ -155,7 +162,8 @@
     "naam": "Wespennest",
     "volgorde": 70,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/wespennest/"
   }
 },
 {
@@ -165,7 +173,8 @@
     "naam": "Konijnen",
     "volgorde": 80,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/konijnen/"
   }
 },
 {
@@ -175,7 +184,8 @@
     "naam": "Muizen",
     "volgorde": 90,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/muizen/"
   }
 },
 {
@@ -185,7 +195,8 @@
     "naam": "Zerk reinigen",
     "volgorde": 100,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "specifiek_graf"
+    "toon_specifiek_graf": "specifiek_graf",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/zerk-reinigen/"
   }
 },
 {
@@ -195,7 +206,19 @@
     "naam": "Overig",
     "volgorde": 110,
     "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd"
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/overig/"
+  }
+},
+{
+  "model": "mbc.categorie",
+  "pk": 13,
+  "fields": {
+    "naam": "Wateroverlast",
+    "volgorde": 3,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/v1/onderwerp/wateroverlast/"
   }
 },
 

@@ -18,3 +18,4 @@ yarn-error.log
 *.pytest_cache*
 **/webpack-stats.json
 **.bash_history
+media/**/*
