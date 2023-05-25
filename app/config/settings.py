@@ -207,19 +207,17 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "0") in TRUE_VALUES
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") in TRUE_VALUES
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@forzamor.nl")
 
-MELDINGEN_API = os.getenv("MELDINGEN_API", "https://mor-core-acc.forzamor.nl/v1")
+MELDINGEN_URL = os.getenv("MELDINGEN_URL", "https://mor-core-acc.forzamor.nl")
+MELDINGEN_API_URL = os.getenv("MELDINGEN_API_URL", f"{MELDINGEN_URL}/v1")
 MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
-    "MELDINGEN_API", "https://mor-core-acc.forzamor.nl/health/"
+    "MELDINGEN_API_HEALTH_CHECK_URL", f"{MELDINGEN_URL}/health/"
 )
 MELDINGEN_TOKEN_API = os.getenv(
-    "MELDINGEN_TOKEN_API", "https://mor-core-acc.forzamor.nl/api-token-auth/"
+    "MELDINGEN_TOKEN_API", f"{MELDINGEN_URL}/api-token-auth/"
 )
-MELDINGEN_TOKEN_TIMEOUT = 60 * 60
+MELDINGEN_TOKEN_TIMEOUT = 60 * 5
 MELDINGEN_USERNAME = os.getenv("MELDINGEN_USERNAME")
 MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
-ONDERWERP_URL = os.getenv(
-    "ONDERWERP_URL", "https://mor-core-acc.forzamor.nl/v1/onderwerp/{slug}/"
-)
 
 
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")

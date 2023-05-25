@@ -18,7 +18,6 @@ export default class extends Controller {
     }
 
     connect() {
-
         this.aannemerFieldTarget.setAttribute("disabled", "disabled")
         this.emailFieldTarget.setAttribute("required", true)
 
@@ -68,6 +67,9 @@ export default class extends Controller {
                 errorList[0].scrollIntoView({ behavior: "smooth"})
                 event.preventDefault();
             }
+            //clear the filelist
+            temp_files = {}
+            temp_filesArr = []
         });
     }
 

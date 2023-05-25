@@ -338,7 +338,7 @@ class MeldingAanmakenForm(forms.Form):
 
     def send_to_meldingen(self, files=[], request=None):
         now = timezone.localtime(timezone.now())
-        url = f"{settings.MELDINGEN_API}/signaal/"
+        url = f"{settings.MELDINGEN_API_URL}/signaal/"
         data = self.cleaned_data
         data.pop("fotos")
         labels = {
