@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     "django.contrib.gis",
     "django.contrib.postgres",
     "rest_framework",
+    "drf_spectacular",
     "webpack_loader",
     "corsheaders",
     "health_check",
@@ -49,6 +50,7 @@ INSTALLED_APPS = (
     "apps.health",
     "apps.rotterdam_formulier_html",
     "apps.mbc",
+    "apps.signalen",
 )
 
 MIDDLEWARE = (
@@ -138,6 +140,32 @@ WEBPACK_LOADER = {
     }
 }
 
+# Django REST framework settings
+REST_FRAMEWORK = dict(
+    PAGE_SIZE=5,
+    UNAUTHENTICATED_USER={},
+    UNAUTHENTICATED_TOKEN={},
+    DEFAULT_PAGINATION_CLASS="rest_framework.pagination.LimitOffsetPagination",
+    # DEFAULT_FILTER_BACKENDS=("django_filters.rest_framework.DjangoFilterBackend",),
+    DEFAULT_THROTTLE_RATES={
+        "nouser": os.getenv("PUBLIC_THROTTLE_RATE", "60/hour"),
+    },
+    DEFAULT_PARSER_CLASSES=[
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+    ],
+    DEFAULT_SCHEMA_CLASS="drf_spectacular.openapi.AutoSchema",
+    DEFAULT_PERMISSION_CLASSES=("rest_framework.permissions.IsAuthenticated",),
+    # DEFAULT_AUTHENTICATION_CLASSES=("apps.auth.authentication.AuthenticationClass",),
+)
+SPECTACULAR_SETTINGS = {
+    "TITLE": "B&C Meldingformulier",
+    "DESCRIPTION": "Voor meldingen op begraafplaatsen binnen de gemeente Rotterdam(Meldingen Openbare Ruimte)",
+    "VERSION": "0.1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
+
 # Django security settings
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_REFERRER_POLICY = "strict-origin"
@@ -161,9 +189,27 @@ CSRF_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
 # Settings for Content-Security-Policy header
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_FRAME_ANCESTORS = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-eval'", "unpkg.com")
-CSP_IMG_SRC = ("'self'", "blob:", "data:", "unpkg.com", "tile.openstreetmap.org")
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "unpkg.com")
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "'unsafe-eval'",
+    "'unsafe-inline'",
+    "unpkg.com",
+    "cdn.jsdelivr.net",
+)
+CSP_IMG_SRC = (
+    "'self'",
+    "blob:",
+    "data:",
+    "unpkg.com",
+    "tile.openstreetmap.org",
+    "cdn.jsdelivr.net",
+)
+CSP_STYLE_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    "unpkg.com",
+    "cdn.jsdelivr.net",
+)
 CSP_CONNECT_SRC = ("'self'",) if not DEBUG else ("'self'", "ws:")
 
 TEMPLATES = [
