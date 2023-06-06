@@ -2,11 +2,9 @@ import base64
 import copy
 
 import magic
-import requests
 from apps.mbc.models import Begraafplaats, Categorie, Medewerker
 from django import forms
 from django.conf import settings
-from django.core.cache import cache
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
@@ -336,9 +334,8 @@ class MeldingAanmakenForm(forms.Form):
             .values_list("onderwerp", flat=True)
         ]
 
-    def send_to_meldingen(self, files=[], request=None):
+    def signaal_data(self, files=[]):
         now = timezone.localtime(timezone.now())
-        url = f"{settings.MELDINGEN_API_URL}/signaal/"
         data = self.cleaned_data
         data.pop("fotos")
         labels = {
@@ -359,11 +356,6 @@ class MeldingAanmakenForm(forms.Form):
         for cf in choice_fields:
             data[cf] = self.get_verbose_value_from_field(cf, data[cf])
 
-        data.update(
-            {
-                "labels": labels,
-            }
-        )
         post_data = {
             "melder": {
                 "naam": data.get("naam_melder"),
@@ -371,30 +363,19 @@ class MeldingAanmakenForm(forms.Form):
                 "telefoonnummer": data.get("telefoon_melder"),
             },
             "origineel_aangemaakt": now.isoformat(),
-            "bron": f"{request.build_absolute_uri('/api/melding/id')}"
-            if request
-            else "link-to-source",
-            "onderwerp": "Begraven & cremeren",
             "onderwerpen": self.get_onderwerp_urls(data.get("categorie", [])),
-            "ruwe_informatie": data,
+            "omschrijving_kort": data.get("toelichting", "")[:200],
+            "omschrijving": data.get("toelichting", ""),
+            "meta": data,
+            "meta_uitgebreid": labels,
+            "graven": [
+                {
+                    "plaatsnaam": "Rotterdam",
+                    "begraafplaats": data.get("begraafplaats"),
+                    "grafnummer": data.get("grafnummer"),
+                    "vak": data.get("vak"),
+                },
+            ],
         }
         post_data["bijlagen"] = [{"bestand": self._to_base64(file)} for file in files]
-
-        meldingen_token = cache.get("meldingen_token")
-        if not meldingen_token:
-            token_response = requests.post(
-                settings.MELDINGEN_TOKEN_API,
-                json={
-                    "username": settings.MELDINGEN_USERNAME,
-                    "password": settings.MELDINGEN_PASSWORD,
-                },
-            )
-            if token_response.status_code == 200:
-                meldingen_token = token_response.json().get("token")
-                cache.set(
-                    "meldingen_token", meldingen_token, settings.MELDINGEN_TOKEN_TIMEOUT
-                )
-
-        headers = {"Authorization": f"Token {meldingen_token}"}
-        response = requests.post(url, json=post_data, headers=headers)
-        response.raise_for_status()
+        return post_data

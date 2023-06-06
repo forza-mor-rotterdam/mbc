@@ -1,7 +1,12 @@
+import logging
+
 from apps.mbc.forms import MeldingAanmakenForm
+from apps.signalen.models import Signaal
 from django.core.files.storage import default_storage
 from django.shortcuts import redirect, render
 from django.urls import reverse
+
+logger = logging.getLogger(__name__)
 
 
 def http_404(request):
@@ -32,7 +37,9 @@ def melding_aanmaken(request):
             file_names.append(file_name)
         is_valid = form.is_valid()
         if is_valid:
-            form.send_to_meldingen(file_names, request)
+            Signaal.acties.signaal_aanmaken(
+                form.signaal_data(file_names), request=request
+            )
             form.send_mail(file_names)
             return redirect("melding_verzonden")
     else:

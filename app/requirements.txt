@@ -1,5 +1,6 @@
 Django==3.2.16
 djangorestframework==3.13.1
+drf-spectacular==0.26.0
 uWSGI==2.0.21
 psycopg2-binary==2.9.5
 django-webpack-loader==1.7.0
