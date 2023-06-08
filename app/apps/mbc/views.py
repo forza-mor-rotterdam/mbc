@@ -1,9 +1,13 @@
 import logging
 
 from apps.mbc.forms import MeldingAanmakenForm
+from apps.services.mail import MailService
+from apps.services.meldingen import MeldingenService
 from apps.signalen.models import Signaal
+from django.contrib.auth.decorators import user_passes_test
 from django.core.files.storage import default_storage
-from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 logger = logging.getLogger(__name__)
@@ -37,11 +41,13 @@ def melding_aanmaken(request):
             file_names.append(file_name)
         is_valid = form.is_valid()
         if is_valid:
-            Signaal.acties.signaal_aanmaken(
+            signaal = Signaal.acties.signaal_aanmaken(
                 form.signaal_data(file_names), request=request
             )
             form.send_mail(file_names)
-            return redirect("melding_verzonden")
+            return redirect(
+                reverse("melding_verzonden", kwargs={"signaal_uuid": signaal.uuid})
+            )
     else:
         form = MeldingAanmakenForm()
 
@@ -57,24 +63,57 @@ def melding_aanmaken(request):
     )
 
 
-def melding_email(request):
+def melding_verzonden(request, signaal_uuid):
+    signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
+    meldingen_signaal_response = MeldingenService().signaal_ophalen(
+        signaal.meldingen_signaal_url
+    )
+    meldingen_signaal = {}
+    if meldingen_signaal_response.status_code == 200:
+        meldingen_signaal = meldingen_signaal_response.json()
     return render(
         request,
-        "email/email.html",
+        "melding/verzonden.html",
         {
-            "begraafplaats": "De Zuiderbegraafplaats",
-            "grafnummer": "42",
-            "vak": "F",
-            "naam_overledene": "John Doe",
-            "categorie": "Muizen, Andere oorzaken",
-            "omschrijving_andere_oorzaken": "Andere oorzaak",
-            "toelichting": "Toelichting...",
-            "fotos": 0,
-            "aannemer": "A.J. Verhoeven",
-            "naam_melder": "Donald",
-            "telefoon_melder": "0601234567",
-            "email_melder": "",
-            "rechthebbende": "2",
-            "terugkoppeling_gewenst": "1",
+            "signaal": signaal,
+            "meldingen_signaal": meldingen_signaal,
         },
     )
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def melding_aangemaakt_email(request, signaal_uuid):
+    signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
+    meldingen_signaal_response = MeldingenService().signaal_ophalen(
+        signaal.meldingen_signaal_url
+    )
+    meldingen_signaal = {}
+    if meldingen_signaal_response.status_code == 200:
+        meldingen_signaal = meldingen_signaal_response.json()
+
+    melding_ophalen_response = MeldingenService().melding_ophalen(
+        meldingen_signaal.get("_links", {}).get("melding")
+    )
+    melding = melding_ophalen_response.json()
+
+    email_html_content = MailService().melding_aangemaakt_email(signaal, melding)
+    return HttpResponse(email_html_content)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def melding_afgesloten_email(request, signaal_uuid):
+    signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
+    meldingen_signaal_response = MeldingenService().signaal_ophalen(
+        signaal.meldingen_signaal_url
+    )
+    meldingen_signaal = {}
+    if meldingen_signaal_response.status_code == 200:
+        meldingen_signaal = meldingen_signaal_response.json()
+
+    melding_ophalen_response = MeldingenService().melding_ophalen(
+        meldingen_signaal.get("_links", {}).get("melding")
+    )
+    melding = melding_ophalen_response.json()
+
+    email_html_content = MailService().melding_afgesloten_email(signaal, melding)
+    return HttpResponse(email_html_content)

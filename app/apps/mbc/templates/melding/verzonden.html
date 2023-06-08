@@ -4,6 +4,15 @@
 {% block body %}
     <h1>Bedankt</h1>
     <p>Het serviceverzoek is ingediend</p>
+    {% if meldingen_signaal %}<p>Het verzoeknummer is: {{meldingen_signaal.melding}}</p>{% endif %}
+
+    {% if DEBUG %}
+    <p>
+    <a href="{% url 'melding_aangemaakt_email' signaal.uuid %}">Melding aangemaakt email</a><br>
+    <a href="{% url 'melding_afgesloten_email' signaal.uuid %}">Melding afgesloten email</a>
+    </p>
+
+    {%endif %}
     <a href="{% url 'melding_aanmaken' %}" class="btn btn-action">
         <span>Nog een verzoek indienen</span>
     </a>

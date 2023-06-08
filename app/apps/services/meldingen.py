@@ -67,3 +67,12 @@ class MeldingenService:
             method="post",
             data=data,
         )
+
+    def signaal_ophalen(self, signaal_url):
+        return self.do_request(signaal_url)
+
+    def melding_ophalen(self, signaal_url):
+        return self.do_request(signaal_url)
+
+    def afbeelding_ophalen(self, afbeelding_url):
+        return self.do_request(afbeelding_url)

@@ -1,3 +1,7 @@
-def general_settings(context):
+from django.conf import settings
 
-    return {}
+
+def general_settings(context):
+    return {
+        "DEBUG": settings.DEBUG,
+    }
