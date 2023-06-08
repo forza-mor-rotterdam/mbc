@@ -1,10 +1,17 @@
-from apps.mbc.views import http_404, http_500, melding_aanmaken, melding_email, root
+from apps.mbc.views import (
+    http_404,
+    http_500,
+    melding_aangemaakt_email,
+    melding_aanmaken,
+    melding_afgesloten_email,
+    melding_verzonden,
+    root,
+)
 from apps.signalen.viewsets import SignaalViewSet
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -19,11 +26,20 @@ urlpatterns = [
     path("api/v1/", include((router.urls, "app"), namespace="v1")),
     path("", root, name="root"),
     path("melding/aanmaken", melding_aanmaken, name="melding_aanmaken"),
-    path("melding/email", melding_email, name="melding_email"),
     path(
-        "melding/verzonden",
-        TemplateView.as_view(template_name="melding/verzonden.html"),
+        "melding/verzonden/<uuid:signaal_uuid>/",
+        melding_verzonden,
         name="melding_verzonden",
+    ),
+    path(
+        "email/melding-aangemaakt/<uuid:signaal_uuid>/",
+        melding_aangemaakt_email,
+        name="melding_aangemaakt_email",
+    ),
+    path(
+        "email/melding-afgesloten/<uuid:signaal_uuid>/",
+        melding_afgesloten_email,
+        name="melding_afgesloten_email",
     ),
     path("health/", include("health_check.urls")),
     path("admin/", admin.site.urls),

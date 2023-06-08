@@ -3,7 +3,7 @@ from django.contrib import admin
 
 
 class SignaalAdmin(admin.ModelAdmin):
-    list_display = ("id", "uuid")
+    list_display = ("id", "uuid", "afgesloten_op")
 
 
 admin.site.register(Signaal, SignaalAdmin)

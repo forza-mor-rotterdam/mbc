@@ -5,6 +5,7 @@ from utils.models import BasisModel
 
 
 class Signaal(BasisModel):
+    afgesloten_op = models.DateTimeField(null=True, blank=True)
     meldingen_signaal_url = models.URLField(
         null=True,
         blank=True,

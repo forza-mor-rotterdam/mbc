@@ -156,7 +156,7 @@ REST_FRAMEWORK = dict(
         "rest_framework.parsers.MultiPartParser",
     ],
     DEFAULT_SCHEMA_CLASS="drf_spectacular.openapi.AutoSchema",
-    DEFAULT_PERMISSION_CLASSES=("rest_framework.permissions.IsAuthenticated",),
+    # DEFAULT_PERMISSION_CLASSES=("rest_framework.permissions.IsAuthenticated",),
     # DEFAULT_AUTHENTICATION_CLASSES=("apps.auth.authentication.AuthenticationClass",),
 )
 SPECTACULAR_SETTINGS = {
