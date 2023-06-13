@@ -1,0 +1,23 @@
+Serviceverzoek Begraven & Cremeren
+
+Beste {{signaal.formulier_data.meta.naam_melder}},
+
+We ontvingen van jou het volgende serviceverzoek:
+
+Datum en tijd:                      {{melding.aangemaakt_op}}</dd>
+Begraafplaats:                     {{ begraafplaats.naam }}
+Grafnummer:                        {% if signaal.formulier_data.meta.grafnummer %}{{ signaal.formulier_data.meta.grafnummer }}{% else %}-{% endif %}
+Vak:                               {% if signaal.formulier_data.meta.vak %}{{ signaal.formulier_data.meta.vak }}{% else %}-{% endif %}
+Naam overledene:                   {% if signaal.formulier_data.meta.naam_overledene %}{{ signaal.formulier_data.meta.naam_overledene }}{% else %}-{% endif %}
+Categorie:                         {{onderwerpen}}
+Toelichting:                       {% if signaal.formulier_data.meta.toelichting %}{{signaal.formulier_data.meta.toelichting}}{%else%}-{% endif %}
+Meldingnummer:                     {{melding.id}}
+
+{{begraafplaats.naam}} is met dit verzoek aan de slag gegaan.
+
+Bericht van de uitvoerder:
+{% if melding.meldinggebeurtenissen.0.omschrijving_extern %} {{melding.meldinggebeurtenissen.0.omschrijving_extern}}{%else%}-{% endif %}
+Aantal foto's:                            {% if bijlagen_list %}{{ bijlagen_list|length }}{% else %}-{% endif %}
+
+Met vriendelijke groet,
+Gemeente Rotterdam

@@ -83,6 +83,7 @@ def melding_verzonden(request, signaal_uuid):
 
 @user_passes_test(lambda u: u.is_superuser)
 def melding_aangemaakt_email(request, signaal_uuid):
+    template_stijl = request.GET.get("template_stijl", "html")
     signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
     meldingen_signaal_response = MeldingenService().signaal_ophalen(
         signaal.meldingen_signaal_url
@@ -96,12 +97,15 @@ def melding_aangemaakt_email(request, signaal_uuid):
     )
     melding = melding_ophalen_response.json()
 
-    email_html_content = MailService().melding_aangemaakt_email(signaal, melding)
+    email_html_content = MailService().melding_aangemaakt_email(
+        signaal, melding, template_stijl
+    )
     return HttpResponse(email_html_content)
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def melding_afgesloten_email(request, signaal_uuid):
+    template_stijl = request.GET.get("template_stijl", "html")
     signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
     meldingen_signaal_response = MeldingenService().signaal_ophalen(
         signaal.meldingen_signaal_url
@@ -115,5 +119,7 @@ def melding_afgesloten_email(request, signaal_uuid):
     )
     melding = melding_ophalen_response.json()
 
-    email_html_content = MailService().melding_afgesloten_email(signaal, melding)
+    email_html_content = MailService().melding_afgesloten_email(
+        signaal, melding, template_stijl
+    )
     return HttpResponse(email_html_content)

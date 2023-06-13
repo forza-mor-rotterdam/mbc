@@ -1,24 +1,29 @@
 Serviceverzoek Begraven & Cremeren
 
-Geachte heer, mevrouw,
-Hartelijk dank voor het indienen van het serviceverzoek.
-Wij hebben de volgende gegevens van u ontvangen:
+Beste {{signaal.formulier_data.meta.naam_melder}},
+We ontvingen van jou het volgende serviceverzoek:
 
-Begraafplaats:                     {{ begraafplaats }}
-Grafnummer:                        {% if grafnummer %}{{ grafnummer }}{% else %}-{% endif %}
-Vak:                               {% if vak %}{{ vak }}{% else %}-{% endif %}
-Naam overledene:                   {% if naam_overledene %}{{ naam_overledene }}{% else %}-{% endif %}
-Categorie:                         {{ categorie }}
-Omschrijving andere oorzaken:      {% if omschrijving_andere_oorzaken %}{{ omschrijving_andere_oorzaken }}{% else %}-{% endif %}
-Toelichting:                       {% if toelichting %}{{ toelichting }}{% else %}-{% endif %}
-Foto's:                            {% if fotos %}{{ fotos|length }}{% else %}-{% endif %}
-Wie heeft het verzoek aangenomen?: {% if aannemer %}{{ aannemer }}{% else %}-{% endif %}
-Naam:                              {% if naam_melder %}{{ naam_melder }}{% else %}-{% endif %}
-Telefoonnummer:                    {% if telefoon_melder %}{{ telefoon_melder }}{% else %}-{% endif %}
-E-mailadres:                       {% if email_melder %}{{ email_melder }}{% else %}-{% endif %}
-Is deze persoon de rechthebbende?: {% if rechthebbende == "1" %}Ja{% elif rechthebbende == "2" %}Onbekend{% else %}Nee{% endif %}
-Is terugkoppeling gewenst?:        {% if terugkoppeling_gewenst == "1" %}Ja{% else %}Nee{% endif %}
+Uw gegevens
+Naam:                                       {% if signaal.formulier_data.meta.naam_melder %}{{ signaal.formulier_data.meta.naam_melder }}{% else %}-{% endif %}
+Telefoonnummer:                             {% if signaal.formulier_data.meta.telefoon_melder %}{{ signaal.formulier_data.meta.telefoon_melder }}{% else %}-{% endif %}
+E-mailadres:                                {% if signaal.formulier_data.meta.email_melder %}{{ signaal.formulier_data.meta.email_melder }}{% else %}-{% endif %}
+Ben je de rechthebbende/ belanghebbende?:   {{signaal.formulier_data.meta.rechthebbende}}
+Is terugkoppeling gewenst?:                 {{ signaal.formulier_data.meta.terugkoppeling_gewenst }}
+
+Melding
+Meldingnummer:                              {{melding.id}}
+Datum en tijd:                              {{melding.aangemaakt_op}}</dd>
+Aangenomen door:                            {% if signaal.formulier_data.meta.aannemer %}{{ signaal.formulier_data.meta.aannemer }}{%else%}-{%endif%}
+Categorie:                                  {{onderwerpen}}
+Toelichting:                                {% if signaal.formulier_data.meta.toelichting %}{{signaal.formulier_data.meta.toelichting}}{%else%}-{% endif %}
+
+Locatie
+Begraafplaats:                              {{ begraafplaats.naam }}
+Naam overledene:                            {% if signaal.formulier_data.meta.naam_overledene %}{{ signaal.formulier_data.meta.naam_overledene }}{% else %}-{% endif %}
+Grafnummer:                                 {% if signaal.formulier_data.meta.grafnummer %}{{ signaal.formulier_data.meta.grafnummer }}{% else %}-{% endif %}
+Vak:                                        {% if signaal.formulier_data.meta.vak %}{{ signaal.formulier_data.meta.vak }}{% else %}-{% endif %}
+Aantal foto's:                              {% if bijlagen_list %}{{ bijlagen_list|length }}{% else %}-{% endif %}
 
 We streven ernaar om uw melding binnen twee weken in behandeling te nemen.
 Met vriendelijke groet,
-Medewerker Begraven & cremeren
+Gemeent Rotterdam

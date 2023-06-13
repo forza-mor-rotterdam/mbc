@@ -7,7 +7,7 @@ from django.template.loader import get_template
 
 
 class MailService:
-    def melding_aangemaakt_email(self, signaal, melding):
+    def melding_aangemaakt_email(self, signaal, melding, template_stijl="html"):
         send_to = []
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
@@ -33,6 +33,7 @@ class MailService:
             "signaal": signaal,
             "onderwerpen": onderwerpen_verbose,
             "bijlagen": bijlagen_verbose,
+            "bijlagen_list": bijlagen,
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
@@ -75,9 +76,11 @@ class MailService:
 
         if send_to and not settings.DEBUG:
             msg.send()
-        return html_content
+        if template_stijl == "html":
+            return html_content
+        return text_content
 
-    def melding_afgesloten_email(self, signaal, melding):
+    def melding_afgesloten_email(self, signaal, melding, template_stijl="html"):
         send_to = []
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
@@ -104,6 +107,7 @@ class MailService:
             "signaal": signaal,
             "onderwerpen": onderwerpen_verbose,
             "bijlagen": bijlagen_verbose,
+            "bijlagen_list": bijlagen,
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
@@ -146,4 +150,6 @@ class MailService:
 
         if send_to and not settings.DEBUG:
             msg.send()
-        return html_content
+        if template_stijl == "html":
+            return html_content
+        return text_content
