@@ -22,7 +22,7 @@
     <body style="margin:0;padding:0;">
         <table role="presentation" style="width:100%;max-width: 776px; margin: 0 auto;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
             <tr>
-                <td align="left" style="padding:40px 0 20px;">
+                <td align="left" style="padding: 40px 0 20px;">
                     <?xml version="1.0" standalone="no"?>
                     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
                     "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
@@ -167,6 +167,11 @@
             </tr>
             <tr>
                 <td align="left" style="padding:0 20px;">
+                    <h1>Serviceverzoek {{begraafplaats.naam}}</h1>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" style="padding:0 20px;">
                     <p>Beste {{signaal.formulier_data.meta.naam_melder}},</p>
                     <p>We ontvingen van jou het volgende serviceverzoek:</p>
                 </td>
@@ -175,12 +180,83 @@
                 <td align="left" style="padding:0 20px;">
                     <table style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#EFF4F6;">
                         <tr>
-                            <td style="padding: 4px 16px;">
+                            <td style="padding: 4px 16px;" colspan="2">
+                                <h2 style="margin-bottom:0;">Uw gegevens</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 16px; vertical-align: top;">
                                 <dl>
+                                    {% if signaal.formulier_data.meta.naam_melder %}
+                                    <dt><strong>Naam</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.naam_melder }}</dd>
+                                    {% endif %}
+                                    {% if signaal.formulier_data.meta.telefoon_melder %}
+                                    <dt><strong>Telefoon</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.telefoon_melder }}</dd>
+                                    {% endif %}
+                                    {% if signaal.formulier_data.meta.telefoon_melder %}
+                                    <dt><strong>E-mailadres</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.email_melder }}</dd>
+                                    {% endif %}
+                                </dl>
+                            </td>
+                            <td style="padding: 4px 16px; vertical-align: top;">
+                                <dl>
+                                    <dt><strong>Ben je de rechthebbende/<br/>belanghebbende?</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{signaal.formulier_data.meta.rechthebbende}}</dd>
+                                    <dt><strong>Is terugkoppeling gewenst?</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.terugkoppeling_gewenst }}</dd>
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 16px;" colspan="2">
+                                <h2 style="margin-bottom:0;">Melding</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 16px; vertical-align: top;">
+                                <dl>
+                                    <dt><strong>Meldingnummer</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{melding.id}}</dd>
                                     <dt><strong>Datum en tijd</strong></dt>
                                     <dd style="margin:0 0 12px;">{{melding.aangemaakt_op}}</dd>
-                                    <dt><strong>Locatie</strong></dt>
+                                    {% if signaal.formulier_data.meta.aannemer %}
+                                    <dt><strong>Aangenomen door</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.aannemer }}</dd>
+                                    {% endif %}
+                                </dl>
+                            </td>
+                            <td style="padding: 4px 16px; vertical-align: top;">
+                                <dl>
+                                    <dt><strong>Categorie</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{onderwerpen}}</dd>
+                                    {% if signaal.formulier_data.meta.toelichting %}
+                                    <dt><strong>Toelichting</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{signaal.formulier_data.meta.toelichting}}</dd>
+                                    {% endif %}
+                                </dl>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 16px;" colspan="2">
+                                <h2 style="margin-bottom:0;">Locatie</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px 16px; vertical-align: top;">
+                                <dl>
+                                    <dt><strong>Begraafplaats</strong></dt>
                                     <dd style="margin:0 0 12px;">{{begraafplaats.naam}}</dd>
+                                    {% if signaal.formulier_data.meta.naam_overledene %}
+                                    <dt><strong>Naam overledene</strong></dt>
+                                    <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.naam_overledene }}</dd>
+                                    {% endif %}
+                                </dl>
+                            </td>
+                            <td style="padding: 4px 16px; vertical-align: top;">
+                                <dl>
                                     {% if signaal.formulier_data.meta.grafnummer %}
                                     <dt><strong>Grafnummer</strong></dt>
                                     <dd style="margin:0 0 12px;">{{signaal.formulier_data.meta.grafnummer}}</dd>
@@ -191,54 +267,29 @@
                                     {% endif %}
                                 </dl>
                             </td>
-                            <td style="padding: 4px 16px;">
-                                <dl>
-                                    <dt><strong>Meldingnummer</strong></dt>
-                                    <dd style="margin:0 0 12px;">{{melding.id}}</dd>
-                                    <dt><strong>Categorie</strong></dt>
-                                    <dd style="margin:0 0 12px;">{{onderwerpen}}</dd>
-                                    {% if signaal.formulier_data.meta.toelichting %}
-                                    <dt><strong>Toelichting</strong></dt>
-                                    <dd style="margin:0 0 12px;">{{signaal.formulier_data.meta.toelichting}}</dd>
-                                    {% endif %}
-                                </dl>
+                        </tr>
+                        {% if bijlagen %}
+                        <tr>
+                            <td style="padding: 4px 16px;" colspan="2">
+                                <h2 style="margin-bottom:0;">Bijlage(n)</h2>
                             </td>
                         </tr>
-
+                        <tr>
+                            <td style="padding: 4px 16px; vertical-align: top;" colspan="2">
+                                {{ bijlagen|safe }}
+                            </td>
+                        </tr>
+                        {% endif %}
                     </table>
                 </td>
             </tr>
             <tr>
-                <td align="left" style="padding:0 20px;">
-                    <p>{{begraafplaats.naam}} is met dit verzoek aan de slag gegaan.</p>
-                </td>
-            </tr>
-            {% if melding.meldinggebeurtenissen.0.omschrijving_extern %}
-            <tr>
-                <td align="left" style="padding:0 20px;">
-                    <p>
-                        <strong>Bericht van de uitvoerder</strong>
-                        {{melding.meldinggebeurtenissen.0.omschrijving_extern}}
-                    </p>
-                </td>
-            </tr>
-            {% endif %}
-            {% if bijlagen %}
-            <tr>
-                <td align="left" style="padding:0 20px;">
-                    <p>
-                        <strong>Foto van het resultaat</strong>
-                    </p>
-                    {{bijlagen|safe}}
-                </td>
-            </tr>
-            {% endif %}
-            <tr>
-                <td align="left" style="padding: 50px 20px 20px;">
+                <td align="left" style="padding: 50px 20px;">
+                    <p>We streven ernaar om uw melding binnen twee weken in behandeling te nemen.</p>
                     <p>Met vriendelijke groet,</p>
                     <p>Gemeente Rotterdam</p>
-                </td>
-            </tr>
+                <td>
+            <tr>
             <tr>
                 <td style="padding: 20px 20px 40px;">
                     <div style="width: 100%; border-top: 8px solid #00811F;"

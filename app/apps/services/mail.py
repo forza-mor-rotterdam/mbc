@@ -1,5 +1,5 @@
 import magic
-from apps.mbc.models import Begraafplaats
+from apps.mbc.models import Begraafplaats, Categorie
 from apps.services.meldingen import MeldingenService
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -13,20 +13,37 @@ class MailService:
             "begraafplaats"
         )
         begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
+        onderwerpen = signaal.formulier_data.get("meta", {}).get("categorie")
+        bijlagen = signaal.formulier_data.get("bijlagen", {})
+        onderwerpen_list = []
+        bijlagen_list = []
+        for onderwerp in onderwerpen:
+            onderwerpen_list.append(Categorie.objects.get(pk=onderwerp).naam)
+        for bijlage in bijlagen:
+            bijlagen_list.append(
+                "<img src='data:image/png;base64, "
+                + bijlage["bestand"]
+                + "' width='300'>"
+            )
+        onderwerpen_verbose = ", ".join(onderwerpen_list)
+        bijlagen_verbose = ", ".join(bijlagen_list)
         email_context = {
             "melding": melding,
             "begraafplaats": begraafplaats,
+            "signaal": signaal,
+            "onderwerpen": onderwerpen_verbose,
+            "bijlagen": bijlagen_verbose,
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
         if signaal.formulier_data.get("melder", {}).get("email"):
             send_to.append(signaal.formulier_data.get("melder", {}).get("email"))
 
-        text_template = get_template("email/email.txt")
-        html_template = get_template("email/email.html")
+        text_template = get_template("email/email_melding_aanmaken.txt")
+        html_template = get_template("email/email_melding_aanmaken.html")
         text_content = text_template.render(email_context)
         html_content = html_template.render(email_context)
-        subject = f"Begraafplaats {begraafplaats.naam} - melding behandeld"
+        subject = f"Begraafplaats {begraafplaats.naam} - melding aangemaakt"
         msg = EmailMultiAlternatives(
             subject, text_content, settings.DEFAULT_FROM_EMAIL, send_to
         )
@@ -66,9 +83,27 @@ class MailService:
             "begraafplaats"
         )
         begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
+        onderwerpen = signaal.formulier_data.get("meta", {}).get("categorie")
+        bijlagen = signaal.formulier_data.get("bijlagen", {})
+        onderwerpen_list = []
+        bijlagen_list = []
+        for onderwerp in onderwerpen:
+            onderwerpen_list.append(Categorie.objects.get(pk=onderwerp).naam)
+        for bijlage in bijlagen:
+            bijlagen_list.append(
+                "<img src='data:image/png;base64, "
+                + bijlage["bestand"]
+                + "' width='300'>"
+            )
+        onderwerpen_verbose = ", ".join(onderwerpen_list)
+        bijlagen_verbose = ", ".join(bijlagen_list)
+
         email_context = {
             "melding": melding,
             "begraafplaats": begraafplaats,
+            "signaal": signaal,
+            "onderwerpen": onderwerpen_verbose,
+            "bijlagen": bijlagen_verbose,
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)

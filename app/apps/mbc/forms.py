@@ -299,8 +299,8 @@ class MeldingAanmakenForm(forms.Form):
         for cf in choice_fields:
             email_context[cf] = self.get_verbose_value_from_field(cf, email_context[cf])
 
-        text_template = get_template("email/email.txt")
-        html_template = get_template("email/email.html")
+        text_template = get_template("email/email_melding_aanmaken.txt")
+        html_template = get_template("email/email_melding_aanmaken.html")
         text_content = text_template.render(email_context)
         html_content = html_template.render(email_context)
         subject = "Serviceverzoek Begraven & Cremeren"
