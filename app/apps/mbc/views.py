@@ -65,12 +65,9 @@ def melding_aanmaken(request):
 
 def melding_verzonden(request, signaal_uuid):
     signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
-    meldingen_signaal_response = MeldingenService().signaal_ophalen(
+    meldingen_signaal = MeldingenService().signaal_ophalen(
         signaal.meldingen_signaal_url
     )
-    meldingen_signaal = {}
-    if meldingen_signaal_response.status_code == 200:
-        meldingen_signaal = meldingen_signaal_response.json()
     return render(
         request,
         "melding/verzonden.html",
@@ -84,21 +81,11 @@ def melding_verzonden(request, signaal_uuid):
 @user_passes_test(lambda u: u.is_superuser)
 def melding_aangemaakt_email(request, signaal_uuid):
     template_stijl = request.GET.get("template_stijl", "html")
+    email_verzenden = bool(request.GET.get("verzenden", False))
     signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
-    meldingen_signaal_response = MeldingenService().signaal_ophalen(
-        signaal.meldingen_signaal_url
-    )
-    meldingen_signaal = {}
-    if meldingen_signaal_response.status_code == 200:
-        meldingen_signaal = meldingen_signaal_response.json()
-
-    melding_ophalen_response = MeldingenService().melding_ophalen(
-        meldingen_signaal.get("_links", {}).get("melding")
-    )
-    melding = melding_ophalen_response.json()
 
     email_html_content = MailService().melding_aangemaakt_email(
-        signaal, melding, template_stijl
+        signaal, template_stijl=template_stijl, verzenden=email_verzenden
     )
     return HttpResponse(email_html_content)
 
@@ -106,20 +93,10 @@ def melding_aangemaakt_email(request, signaal_uuid):
 @user_passes_test(lambda u: u.is_superuser)
 def melding_afgesloten_email(request, signaal_uuid):
     template_stijl = request.GET.get("template_stijl", "html")
+    email_verzenden = bool(request.GET.get("verzenden", False))
     signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
-    meldingen_signaal_response = MeldingenService().signaal_ophalen(
-        signaal.meldingen_signaal_url
-    )
-    meldingen_signaal = {}
-    if meldingen_signaal_response.status_code == 200:
-        meldingen_signaal = meldingen_signaal_response.json()
-
-    melding_ophalen_response = MeldingenService().melding_ophalen(
-        meldingen_signaal.get("_links", {}).get("melding")
-    )
-    melding = melding_ophalen_response.json()
 
     email_html_content = MailService().melding_afgesloten_email(
-        signaal, melding, template_stijl
+        signaal, template_stijl=template_stijl, verzenden=email_verzenden
     )
     return HttpResponse(email_html_content)

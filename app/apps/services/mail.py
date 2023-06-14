@@ -1,6 +1,6 @@
+import base64
 import logging
 
-import magic
 from apps.mbc.models import Begraafplaats, Categorie
 from apps.services.meldingen import MeldingenService
 from django.conf import settings
@@ -11,7 +11,13 @@ logger = logging.getLogger(__name__)
 
 
 class MailService:
-    def melding_aangemaakt_email(self, signaal, melding, template_stijl="html"):
+    def melding_aangemaakt_email(
+        self, signaal, melding=None, template_stijl="html", verzenden=False
+    ):
+        if not melding:
+            melding = MeldingenService().melding_ophalen_met_signaal_url(
+                signaal.meldingen_signaal_url
+            )
         send_to = []
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
@@ -54,7 +60,28 @@ class MailService:
         )
         msg.attach_alternative(html_content, "text/html")
 
-        bijlagen = [
+        if send_to and not settings.DEBUG and verzenden:
+            msg.send()
+        if template_stijl == "html":
+            return html_content
+        return text_content
+
+    def melding_afgesloten_email(
+        self, signaal, melding=None, template_stijl="html", verzenden=False
+    ):
+        if not melding:
+            melding = MeldingenService().melding_ophalen_met_signaal_url(
+                signaal.meldingen_signaal_url
+            )
+        logger.info("melding")
+        logger.info(melding)
+        send_to = []
+        begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
+            "begraafplaats"
+        )
+        begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
+
+        melding_bijlagen = [
             [
                 bijlage.get("afbeelding")
                 for bijlage in meldinggebeurtenis.get("bijlagen", [])
@@ -69,75 +96,25 @@ class MailService:
             ]
             for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
         ]
-        bijlagen_flat = [b for bl in bijlagen for b in bl]
+        bijlagen_flat = [b for bl in melding_bijlagen for b in bl]
+        bijlagen_base64 = []
 
-        mime = magic.Magic(mime=True)
         for bijlage in bijlagen_flat:
-            filename = bijlage.split("/")[-1]
             bijlage_response = MeldingenService().afbeelding_ophalen(bijlage)
-            open(filename, "wb").write(bijlage_response.content)
-            msg.attach(filename, bijlage_response.content, mime.from_file(filename))
-
-        if send_to and not settings.DEBUG:
-            msg.send()
-        if template_stijl == "html":
-            return html_content
-        return text_content
-
-    def melding_afgesloten_email(self, signaal, melding=None, template_stijl="html"):
-        if not melding:
-            meldingen_signaal_response = MeldingenService().signaal_ophalen(
-                signaal.meldingen_signaal_url
+            base64_encoded_data = base64.b64encode(bijlage_response.content)
+            base64_message = base64_encoded_data.decode("utf-8")
+            bijlagen_base64.append(
+                f"<img src='data:image/png;base64, {base64_message}' width='300'>"
             )
-            if meldingen_signaal_response.status_code == 200:
-                meldingen_signaal = meldingen_signaal_response.json()
-            else:
-                logger.warning(
-                    f"meldingen_signaal kon niet worden opgehaald: status code: {meldingen_signaal_response.status_code}"
-                )
-                return
-
-            melding_ophalen_response = MeldingenService().melding_ophalen(
-                meldingen_signaal.get("_links", {}).get("melding")
-            )
-            if melding_ophalen_response.status_code == 200:
-                melding = melding_ophalen_response.json()
-            else:
-                logger.warning(
-                    f"melding kon niet worden opgehaald: status code: {melding_ophalen_response.status_code}"
-                )
-                return
-        logger.info("melding")
-        logger.info(melding)
-        send_to = []
-        begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
-            "begraafplaats"
-        )
-        begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
-        onderwerpen = signaal.formulier_data.get("meta", {}).get("categorie")
-        bijlagen = signaal.formulier_data.get("bijlagen", {})
-        onderwerpen_list = []
-        bijlagen_list = []
-        for onderwerp in onderwerpen:
-            onderwerpen_list.append(Categorie.objects.get(pk=onderwerp).naam)
-        for bijlage in bijlagen:
-            bijlagen_list.append(
-                "<img src='data:image/png;base64, "
-                + bijlage["bestand"]
-                + "' width='300'>"
-            )
-        logger.info(onderwerpen_list)
-        logger.info(bijlagen_list)
-        onderwerpen_verbose = ", ".join(onderwerpen_list)
-        bijlagen_verbose = ", ".join(bijlagen_list)
 
         email_context = {
             "melding": melding,
             "begraafplaats": begraafplaats,
             "signaal": signaal,
-            "onderwerpen": onderwerpen_verbose,
-            "bijlagen": bijlagen_verbose,
-            "bijlagen_list": bijlagen,
+            "onderwerpen": ", ".join(
+                [o.get("naam") for o in melding.get("onderwerpen", [])]
+            ),
+            "bijlagen": bijlagen_base64,
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
@@ -154,33 +131,7 @@ class MailService:
         )
         msg.attach_alternative(html_content, "text/html")
 
-        bijlagen = [
-            [
-                bijlage.get("afbeelding")
-                for bijlage in meldinggebeurtenis.get("bijlagen", [])
-            ]
-            + [
-                b.get("afbeelding")
-                for b in (
-                    meldinggebeurtenis.get("taakgebeurtenis", {}).get("bijlagen", [])
-                    if meldinggebeurtenis.get("taakgebeurtenis")
-                    else []
-                )
-            ]
-            for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
-        ]
-        bijlagen_flat = [b for bl in bijlagen for b in bl]
-        logger.info(send_to)
-        logger.info(text_content)
-
-        mime = magic.Magic(mime=True)
-        for bijlage in bijlagen_flat:
-            filename = bijlage.split("/")[-1]
-            bijlage_response = MeldingenService().afbeelding_ophalen(bijlage)
-            open(filename, "wb").write(bijlage_response.content)
-            msg.attach(filename, bijlage_response.content, mime.from_file(filename))
-
-        if send_to and not settings.DEBUG:
+        if send_to and not settings.DEBUG and verzenden:
             msg.send()
         if template_stijl == "html":
             return html_content

@@ -1,6 +1,7 @@
 import datetime
 import logging
 
+from apps.services.mail import MailService
 from apps.services.meldingen import MeldingenService
 from django.contrib.gis.db import models
 from django.db import OperationalError, transaction
@@ -21,13 +22,7 @@ class SignaalManager(models.Manager):
     class MeldingIsNietAfgeslotenFout(Exception):
         ...
 
-    class MeldingOphalenFout(Exception):
-        ...
-
     class MeldingenSignaalAanmakenFout(Exception):
-        ...
-
-    class MeldingenSignaalOphalenFout(Exception):
         ...
 
     def signaal_aanmaken(self, signaal_data, request, db="default"):
@@ -82,25 +77,9 @@ class SignaalManager(models.Manager):
             except OperationalError:
                 raise SignaalManager.SignaalInGebruik
 
-            meldingen_signaal_response = MeldingenService().signaal_ophalen(
+            melding = MeldingenService().melding_ophalen_met_signaal_url(
                 locked_signaal.meldingen_signaal_url
             )
-            if meldingen_signaal_response.status_code == 200:
-                meldingen_signaal = meldingen_signaal_response.json()
-            else:
-                raise SignaalManager.MeldingenSignaalOphalenFout(
-                    f"url: {locked_signaal.meldingen_signaal_url}, status code: {meldingen_signaal_response.status_code}"
-                )
-
-            melding_ophalen_response = MeldingenService().melding_ophalen(
-                meldingen_signaal.get("_links", {}).get("melding")
-            )
-            if melding_ophalen_response.status_code == 200:
-                melding = melding_ophalen_response.json()
-            else:
-                raise SignaalManager.MeldingOphalenFout(
-                    f"url: {meldingen_signaal.get('_links', {}).get('melding')}, status code: {melding_ophalen_response.status_code}"
-                )
 
             if not melding.get("afgesloten_op"):
                 raise SignaalManager.MeldingIsNietAfgeslotenFout()
@@ -119,10 +98,11 @@ class SignaalManager(models.Manager):
 
             locked_signaal.save()
 
-            # MailService().melding_afgesloten_mail(
-            #     melding=melding,
-            #     signaal=locked_signaal,
-            # )
+            MailService().melding_afgesloten_email(
+                melding=melding,
+                signaal=locked_signaal,
+                verzenden=True,
+            )
 
             transaction.on_commit(
                 lambda: melding_afgesloten.send_robust(
