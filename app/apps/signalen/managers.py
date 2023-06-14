@@ -70,7 +70,6 @@ class SignaalManager(models.Manager):
         return signaal
 
     def melding_afgesloten(self, signaal, db="default"):
-        from apps.services.mail import MailService
         from apps.signalen.models import Signaal
 
         with transaction.atomic():
@@ -120,10 +119,10 @@ class SignaalManager(models.Manager):
 
             locked_signaal.save()
 
-            MailService().melding_afgesloten_mail(
-                melding=melding,
-                signaal=locked_signaal,
-            )
+            # MailService().melding_afgesloten_mail(
+            #     melding=melding,
+            #     signaal=locked_signaal,
+            # )
 
             transaction.on_commit(
                 lambda: melding_afgesloten.send_robust(
