@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     "django.contrib.gis",
     "django.contrib.postgres",
     "rest_framework",
+    "rest_framework.authtoken",
     "drf_spectacular",
     "webpack_loader",
     "corsheaders",
@@ -146,7 +147,7 @@ REST_FRAMEWORK = dict(
     UNAUTHENTICATED_USER={},
     UNAUTHENTICATED_TOKEN={},
     DEFAULT_PAGINATION_CLASS="rest_framework.pagination.LimitOffsetPagination",
-    # DEFAULT_FILTER_BACKENDS=("django_filters.rest_framework.DjangoFilterBackend",),
+    DEFAULT_FILTER_BACKENDS=("django_filters.rest_framework.DjangoFilterBackend",),
     DEFAULT_THROTTLE_RATES={
         "nouser": os.getenv("PUBLIC_THROTTLE_RATE", "60/hour"),
     },
@@ -156,9 +157,13 @@ REST_FRAMEWORK = dict(
         "rest_framework.parsers.MultiPartParser",
     ],
     DEFAULT_SCHEMA_CLASS="drf_spectacular.openapi.AutoSchema",
+    DEFAULT_VERSIONING_CLASS="rest_framework.versioning.NamespaceVersioning",
     # DEFAULT_PERMISSION_CLASSES=("rest_framework.permissions.IsAuthenticated",),
-    # DEFAULT_AUTHENTICATION_CLASSES=("apps.auth.authentication.AuthenticationClass",),
+    DEFAULT_AUTHENTICATION_CLASSES=(
+        "rest_framework.authentication.TokenAuthentication",
+    ),
 )
+
 SPECTACULAR_SETTINGS = {
     "TITLE": "B&C Meldingformulier",
     "DESCRIPTION": "Voor meldingen op begraafplaatsen binnen de gemeente Rotterdam(Meldingen Openbare Ruimte)",
