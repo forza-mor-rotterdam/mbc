@@ -6,7 +6,7 @@ from django.contrib import admin
 @admin.action(description="Verstuur 'melding afgesloten' email")
 def action_verstuur_melding_afgesloten_email(modeladmin, request, queryset):
     for signaal in queryset.all():
-        MailService().melding_afgesloten_mail(
+        MailService().melding_afgesloten_email(
             signaal=signaal,
         )
 

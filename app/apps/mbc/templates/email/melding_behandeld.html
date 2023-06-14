@@ -229,7 +229,9 @@
                     <p>
                         <strong>Foto van het resultaat</strong>
                     </p>
-                    {{bijlagen|safe}}
+                    {% for bijlage in bijlagen %}
+                    {{bijlage|safe}}
+                    {% endfor %}
                 </td>
             </tr>
             {% endif %}
