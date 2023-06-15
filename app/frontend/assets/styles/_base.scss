@@ -32,6 +32,12 @@ main,
 header {
     padding: 0 map-get($container-margin, s) 16px;
 }
+header {
+
+    > .container {
+        max-width: map-get($container-max-widths , xxl );
+    }
+}
 
 // HEADINGS
 h1, .h1 {
@@ -271,4 +277,13 @@ section {
 
 .invalid-text {
     color: $invalid-color !important;
+}
+
+
+.bar {
+    background-color: $gray-tint01;
+    &--top {
+        height: 48px;
+        width: 100%;
+    }
 }
