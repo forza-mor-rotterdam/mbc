@@ -1,6 +1,9 @@
 from apps.mbc.views import (
+    gebruiker_informatie,
     http_404,
     http_500,
+    login_mislukt,
+    login_verplicht,
     melding_aangemaakt_email,
     melding_aanmaken,
     melding_afgesloten_email,
@@ -58,6 +61,16 @@ urlpatterns = [
         name="redoc",
     ),
 ]
+
+if settings.OIDC_RP_CLIENT_ID:
+    urlpatterns += [
+        path(
+            "gebruiker-informatie/", gebruiker_informatie, name="gebruiker_informatie"
+        ),
+        path("login-verplicht/", login_verplicht, name="login_verplicht"),
+        path("login-mislukt/", login_mislukt, name="login_mislukt"),
+        path("oidc/", include("mozilla_django_oidc.urls")),
+    ]
 
 if settings.DEBUG:
     urlpatterns += [
