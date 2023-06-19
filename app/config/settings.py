@@ -1,9 +1,13 @@
 import locale
+import logging
 import os
 import sys
 from os.path import join
 
+import requests
+
 locale.setlocale(locale.LC_ALL, "nl_NL.UTF-8")
+logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRUE_VALUES = [True, "True", "true", "1"]
@@ -43,6 +47,7 @@ INSTALLED_APPS = (
     "drf_spectacular",
     "webpack_loader",
     "corsheaders",
+    "mozilla_django_oidc",
     "health_check",
     "health_check.cache",
     "health_check.db",
@@ -64,6 +69,7 @@ MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "mozilla_django_oidc.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
@@ -158,7 +164,7 @@ REST_FRAMEWORK = dict(
     ],
     DEFAULT_SCHEMA_CLASS="drf_spectacular.openapi.AutoSchema",
     DEFAULT_VERSIONING_CLASS="rest_framework.versioning.NamespaceVersioning",
-    # DEFAULT_PERMISSION_CLASSES=("rest_framework.permissions.IsAuthenticated",),
+    DEFAULT_PERMISSION_CLASSES=("rest_framework.permissions.IsAuthenticated",),
     DEFAULT_AUTHENTICATION_CLASSES=(
         "rest_framework.authentication.TokenAuthentication",
     ),
@@ -296,3 +302,53 @@ LOGGING = {
         },
     },
 }
+
+OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
+OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
+OIDC_VERIFY_SSL = os.getenv("OIDC_VERIFY_SSL", True) in TRUE_VALUES
+OIDC_USE_NONCE = os.getenv("OIDC_USE_NONCE", True) in TRUE_VALUES
+
+OIDC_REALM = os.getenv("OIDC_REALM", "mor-acc")
+AUTH_BASE_URL = os.getenv("AUTH_BASE_URL", "https://iam.forzamor.nl")
+OPENID_CONFIG_URI = os.getenv(
+    "OPENID_CONFIG_URI",
+    f"{AUTH_BASE_URL}/realms{OIDC_REALM}/.well-known/openid-configuration",
+)
+OPENID_CONFIG = {}
+try:
+    OPENID_CONFIG = requests.get(OPENID_CONFIG_URI).json()
+except requests.exceptions.ConnectionError as e:
+    logger.error(f"OPENID_CONFIG FOUT, url: {OPENID_CONFIG_URI}, error: {e}")
+
+OIDC_OP_AUTHORIZATION_ENDPOINT = os.getenv(
+    "OIDC_OP_AUTHORIZATION_ENDPOINT", OPENID_CONFIG.get("authorization_endpoint")
+)
+OIDC_OP_TOKEN_ENDPOINT = os.getenv(
+    "OIDC_OP_TOKEN_ENDPOINT", OPENID_CONFIG.get("token_endpoint")
+)
+OIDC_OP_USER_ENDPOINT = os.getenv(
+    "OIDC_OP_USER_ENDPOINT", OPENID_CONFIG.get("userinfo_endpoint")
+)
+OIDC_OP_JWKS_ENDPOINT = os.getenv(
+    "OIDC_OP_JWKS_ENDPOINT", OPENID_CONFIG.get("jwks_uri")
+)
+CHECK_SESSION_IFRAME = os.getenv(
+    "CHECK_SESSION_IFRAME", OPENID_CONFIG.get("check_session_iframe")
+)
+OIDC_RP_SCOPES = os.getenv(
+    "OIDC_RP_SCOPES",
+    " ".join(OPENID_CONFIG.get("scopes_supported", ["openid", "email", "profile"])),
+)
+
+if OIDC_OP_JWKS_ENDPOINT:
+    OIDC_RP_SIGN_ALGO = "RS256"
+
+AUTHENTICATION_BACKENDS = [
+    # "django.contrib.auth.backends.ModelBackend",
+    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
+]
+
+LOGIN_REDIRECT_URL = "/gebruiker-informatie/"
+LOGIN_REDIRECT_URL_FAILURE = "/login-mislukt/"
+LOGOUT_REDIRECT_URL = "/gebruiker-informatie/"
+LOGIN_URL = "/oidc/authenticate/"
