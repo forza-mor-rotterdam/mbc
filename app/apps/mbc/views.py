@@ -27,10 +27,12 @@ def http_500(request):
     )
 
 
+@login_required
 def root(request):
     return redirect(reverse("melding_aanmaken"))
 
 
+@login_required
 def melding_aanmaken(request):
     if request.POST:
         form = MeldingAanmakenForm(request.POST, request.FILES)
@@ -63,6 +65,7 @@ def melding_aanmaken(request):
     )
 
 
+@login_required
 def melding_verzonden(request, signaal_uuid):
     signaal = get_object_or_404(Signaal, uuid=signaal_uuid)
     meldingen_signaal = MeldingenService().signaal_ophalen(
