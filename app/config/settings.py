@@ -201,6 +201,10 @@ CSRF_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
 # Settings for Content-Security-Policy header
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_FRAME_SRC = (
+    "'self'",
+    "iam.forzamor.nl",
+)
 CSP_SCRIPT_SRC = (
     "'self'",
     "'unsafe-eval'",
@@ -276,6 +280,8 @@ MELDINGEN_TOKEN_API = os.getenv(
 MELDINGEN_TOKEN_TIMEOUT = 60 * 5
 MELDINGEN_USERNAME = os.getenv("MELDINGEN_USERNAME")
 MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
+
+DEV_SOCKET_PORT = os.getenv("DEV_SOCKET_PORT", "9000")
 
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 
@@ -356,7 +362,7 @@ OIDC_OP_LOGOUT_URL_METHOD = "apps.authenticatie.views.provider_logout"
 ALLOW_LOGOUT_GET_METHOD = True
 OIDC_STORE_ID_TOKEN = True
 
-LOGIN_REDIRECT_URL = "/gebruiker-informatie/"
-LOGIN_REDIRECT_URL_FAILURE = "/login-mislukt/"
-LOGOUT_REDIRECT_URL = "/gebruiker-informatie/"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL_FAILURE = "/"
+LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/oidc/authenticate/"

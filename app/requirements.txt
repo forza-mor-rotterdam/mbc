@@ -15,3 +15,4 @@ django-csp==3.6
 django-materializecss-form
 python-magic
 mozilla-django-oidc==3.0.0
+PyJWT<2.4.0
