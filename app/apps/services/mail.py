@@ -106,17 +106,9 @@ class MailService:
         )
         begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
         onderwerpen = signaal.formulier_data.get("meta", {}).get("categorie")
-        bijlagen = signaal.formulier_data.get("bijlagen", {})
         onderwerpen_list = []
-        bijlagen_list = []
         for onderwerp in onderwerpen:
             onderwerpen_list.append(Categorie.objects.get(pk=onderwerp).naam)
-        for bijlage in bijlagen:
-            bijlagen_list.append(
-                "<img src='data:image/png;base64, "
-                + bijlage["bestand"]
-                + "' width='300'>"
-            )
         onderwerpen_verbose = ", ".join(onderwerpen_list)
         email_context = {
             "melding": melding,
@@ -142,7 +134,6 @@ class MailService:
 
         for f in bestanden:
             attachment = default_storage.path(f)
-            print(attachment)
             msg.attach_related_file(attachment)
 
         if send_to and not settings.DEBUG and verzenden:
