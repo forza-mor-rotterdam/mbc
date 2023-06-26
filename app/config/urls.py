@@ -9,6 +9,7 @@ from apps.mbc.views import (
     melding_afgesloten_email,
     melding_verzonden,
     root,
+    sso_logout,
 )
 from apps.signalen.viewsets import SignaalViewSet
 from django.conf import settings
@@ -69,6 +70,7 @@ if settings.OIDC_RP_CLIENT_ID:
         ),
         path("login-verplicht/", login_verplicht, name="login_verplicht"),
         path("login-mislukt/", login_mislukt, name="login_mislukt"),
+        path("sso-logout/", sso_logout, name="sso_logout"),
         path("oidc/", include("mozilla_django_oidc.urls")),
     ]
 
