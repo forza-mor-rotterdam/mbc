@@ -46,7 +46,7 @@ def melding_aanmaken(request):
             signaal = Signaal.acties.signaal_aanmaken(
                 form.signaal_data(file_names), request=request
             )
-            form.send_mail(file_names)
+
             return redirect(
                 reverse("melding_verzonden", kwargs={"signaal_uuid": signaal.uuid})
             )
@@ -122,6 +122,14 @@ def login_verplicht(request):
 
 
 def login_mislukt(request):
+    return render(
+        request,
+        "auth/login_mislukt.html",
+    )
+
+
+def sso_logout(request):
+    print("sso_logout")
     return render(
         request,
         "auth/login_mislukt.html",
