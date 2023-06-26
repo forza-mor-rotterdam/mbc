@@ -57,11 +57,6 @@ class SignaalManager(models.Manager):
 
             signaal.save()
 
-            MailService().melding_aangemaakt_email(
-                signaal=signaal,
-                verzenden=True,
-            )
-
             transaction.on_commit(
                 lambda: aangemaakt.send_robust(
                     sender=self.__class__,

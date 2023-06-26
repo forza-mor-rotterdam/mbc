@@ -46,7 +46,9 @@ def melding_aanmaken(request):
             signaal = Signaal.acties.signaal_aanmaken(
                 form.signaal_data(file_names), request=request
             )
-
+            MailService().melding_aangemaakt_email(
+                signaal=signaal, verzenden=True, bestanden=file_names
+            )
             return redirect(
                 reverse("melding_verzonden", kwargs={"signaal_uuid": signaal.uuid})
             )
