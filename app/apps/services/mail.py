@@ -109,6 +109,7 @@ class MailService:
         onderwerpen_list = []
         for onderwerp in onderwerpen:
             onderwerpen_list.append(Categorie.objects.get(pk=onderwerp).naam)
+
         onderwerpen_verbose = ", ".join(onderwerpen_list)
         email_context = {
             "melding": melding,
@@ -180,7 +181,7 @@ class MailService:
             base64_encoded_data = base64.b64encode(bijlage_response.content)
             base64_message = base64_encoded_data.decode("utf-8")
             bijlagen_base64.append(
-                f"<img src='data:image/png;base64, {base64_message}' width='300'>"
+                f"<img src='data:image/jpg;base64,{base64_message}' width='300'>"
             )
 
         email_context = {
