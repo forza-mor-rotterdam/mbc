@@ -1,13 +1,8 @@
 import base64
-import copy
 
-import magic
 from apps.mbc.models import Begraafplaats, Categorie, Medewerker
 from django import forms
-from django.conf import settings
 from django.core.files.storage import default_storage
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
 from django.utils import timezone
 
 
@@ -277,47 +272,6 @@ class MeldingAanmakenForm(forms.Form):
                 self.data["begraafplaats"]
             )
             self.fields["aannemer"].required = False
-
-    def send_mail(self, files=[]):
-        email_context = copy.deepcopy(self.cleaned_data)
-        send_to = []
-        begraafplaats = Begraafplaats.objects.get(pk=email_context["begraafplaats"])
-        if begraafplaats.email:
-            send_to.append(begraafplaats.email)
-        if email_context.get("email_melder"):
-            send_to.append(email_context.get("email_melder"))
-
-        email_context["fotos"] = len(files)
-        choice_fields = (
-            "categorie",
-            "begraafplaats",
-            "aannemer",
-            "terugkoppeling_gewenst",
-            "rechthebbende",
-            "specifiek_graf",
-        )
-        for cf in choice_fields:
-            email_context[cf] = self.get_verbose_value_from_field(cf, email_context[cf])
-
-        text_template = get_template("email/email_melding_aanmaken.txt")
-        html_template = get_template("email/email_melding_aanmaken.html")
-        text_content = text_template.render(email_context)
-        html_content = html_template.render(email_context)
-        subject = "Serviceverzoek Begraven & Cremeren"
-        msg = EmailMultiAlternatives(
-            subject, text_content, settings.DEFAULT_FROM_EMAIL, send_to
-        )
-        msg.attach_alternative(html_content, "text/html")
-
-        mime = magic.Magic(mime=True)
-        for f in files:
-            attachment = default_storage.open(f)
-            msg.attach(
-                attachment.name, attachment.read(), mime.from_file(attachment.name)
-            )
-
-        if send_to and not settings.DEBUG:
-            msg.send()
 
     def _to_base64(self, file):
         binary_file = default_storage.open(file)
