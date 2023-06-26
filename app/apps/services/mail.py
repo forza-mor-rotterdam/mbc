@@ -1,4 +1,3 @@
-import base64
 import logging
 import os.path
 import re
@@ -150,8 +149,6 @@ class MailService:
             melding = MeldingenService().melding_ophalen_met_signaal_url(
                 signaal.meldingen_signaal_url
             )
-        logger.info("melding")
-        logger.info(melding)
         send_to = []
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
@@ -160,10 +157,6 @@ class MailService:
 
         melding_bijlagen = [
             [
-                bijlage.get("afbeelding")
-                for bijlage in meldinggebeurtenis.get("bijlagen", [])
-            ]
-            + [
                 b.get("afbeelding")
                 for b in (
                     meldinggebeurtenis.get("taakgebeurtenis", {}).get("bijlagen", [])
@@ -174,15 +167,6 @@ class MailService:
             for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
         ]
         bijlagen_flat = [b for bl in melding_bijlagen for b in bl]
-        bijlagen_base64 = []
-
-        for bijlage in bijlagen_flat:
-            bijlage_response = MeldingenService().afbeelding_ophalen(bijlage)
-            base64_encoded_data = base64.b64encode(bijlage_response.content)
-            base64_message = base64_encoded_data.decode("utf-8")
-            bijlagen_base64.append(
-                f"<img src='data:image/jpg;base64,{base64_message}' width='300'>"
-            )
 
         email_context = {
             "melding": melding,
@@ -191,7 +175,7 @@ class MailService:
             "onderwerpen": ", ".join(
                 [o.get("naam") for o in melding.get("onderwerpen", [])]
             ),
-            "bijlagen": bijlagen_base64,
+            "bijlagen": [b.split("/")[-1].replace(" ", "_") for b in bijlagen_flat],
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
@@ -203,10 +187,22 @@ class MailService:
         text_content = text_template.render(email_context)
         html_content = html_template.render(email_context)
         subject = f"Begraafplaats {begraafplaats.naam} - melding behandeld"
-        msg = EmailMultiAlternatives(
+        msg = EmailMultiRelated(
             subject, text_content, settings.DEFAULT_FROM_EMAIL, send_to
         )
         msg.attach_alternative(html_content, "text/html")
+
+        for bijlage in bijlagen_flat:
+            filename = bijlage.split("/")[-1].replace(
+                " ", "_"
+            )  # be careful with file names
+            file_path = os.path.join("/media/", filename)
+            bijlage_response = MeldingenService().afbeelding_ophalen(
+                bijlage, stream=True
+            )
+            with open(file_path, "wb") as f:
+                f.write(bijlage_response.content)
+            msg.attach_related_file(file_path)
 
         if send_to and not settings.DEBUG and verzenden:
             msg.send()

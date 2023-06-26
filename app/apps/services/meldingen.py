@@ -50,7 +50,7 @@ class MeldingenService:
         headers = {"Authorization": f"Token {meldingen_token}"}
         return headers
 
-    def do_request(self, url, method="get", data={}, raw_response=True):
+    def do_request(self, url, method="get", data={}, raw_response=True, stream=False):
 
         action: Request = getattr(requests, method)
         action_params: dict = {
@@ -58,6 +58,7 @@ class MeldingenService:
             "headers": self.get_headers(),
             "json": data,
             "timeout": self._timeout,
+            "stream": stream,
         }
         response: Response = action(**action_params)
         if raw_response:
@@ -93,5 +94,5 @@ class MeldingenService:
             meldingen_signaal.get("_links", {}).get("melding")
         )
 
-    def afbeelding_ophalen(self, afbeelding_url):
-        return self.do_request(afbeelding_url)
+    def afbeelding_ophalen(self, afbeelding_url, stream=False):
+        return self.do_request(afbeelding_url, stream=stream)
