@@ -166,7 +166,7 @@ class MailService:
             ]
             for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
         ]
-        # bijlagen_flat = [b for bl in melding_bijlagen for b in bl]
+        bijlagen_flat = [b for bl in melding_bijlagen for b in bl if b is not None]
 
         email_context = {
             "melding": melding,
@@ -176,7 +176,7 @@ class MailService:
                 [o.get("naam") for o in melding.get("onderwerpen", [])]
             ),
             "melding_bijlagen": melding_bijlagen,
-            # "bijlagen": [b.split("/")[-1].replace(" ", "_") for b in bijlagen_flat],
+            "bijlagen": [b.split("/")[-1].replace(" ", "_") for b in bijlagen_flat],
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
@@ -193,17 +193,17 @@ class MailService:
         )
         msg.attach_alternative(html_content, "text/html")
 
-        # for bijlage in bijlagen_flat:
-        #     filename = bijlage.split("/")[-1].replace(
-        #         " ", "_"
-        #     )  # be careful with file names
-        #     file_path = os.path.join("/media/", filename)
-        #     bijlage_response = MeldingenService().afbeelding_ophalen(
-        #         bijlage, stream=True
-        #     )
-        #     with open(file_path, "wb") as f:
-        #         f.write(bijlage_response.content)
-        #     msg.attach_related_file(file_path)
+        for bijlage in bijlagen_flat:
+            filename = bijlage.split("/")[-1].replace(
+                " ", "_"
+            )  # be careful with file names
+            file_path = os.path.join("/media/", filename)
+            bijlage_response = MeldingenService().afbeelding_ophalen(
+                bijlage, stream=True
+            )
+            with open(file_path, "wb") as f:
+                f.write(bijlage_response.content)
+            msg.attach_related_file(file_path)
 
         if send_to and not settings.DEBUG and verzenden:
             msg.send()
