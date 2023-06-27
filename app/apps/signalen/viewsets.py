@@ -28,5 +28,6 @@ class SignaalViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         Signaal.acties.melding_afgesloten(self.get_object())
 
         return Response(
+            {},
             status=status.HTTP_200_OK,
         )
