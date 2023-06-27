@@ -155,18 +155,18 @@ class MailService:
         )
         begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
 
-        melding_bijlagen = [
-            [
-                b.get("afbeelding")
-                for b in (
-                    meldinggebeurtenis.get("taakgebeurtenis", {}).get("bijlagen", [])
-                    if meldinggebeurtenis.get("taakgebeurtenis")
-                    else []
-                )
-            ]
-            for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
-        ]
-        bijlagen_flat = [b for bl in melding_bijlagen for b in bl]
+        # melding_bijlagen = [
+        #     [
+        #         b.get("afbeelding")
+        #         for b in (
+        #             meldinggebeurtenis.get("taakgebeurtenis", {}).get("bijlagen", [])
+        #             if meldinggebeurtenis.get("taakgebeurtenis")
+        #             else []
+        #         )
+        #     ]
+        #     for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
+        # ]
+        # bijlagen_flat = [b for bl in melding_bijlagen for b in bl]
 
         email_context = {
             "melding": melding,
@@ -175,7 +175,7 @@ class MailService:
             "onderwerpen": ", ".join(
                 [o.get("naam") for o in melding.get("onderwerpen", [])]
             ),
-            "bijlagen": [b.split("/")[-1].replace(" ", "_") for b in bijlagen_flat],
+            # "bijlagen": [b.split("/")[-1].replace(" ", "_") for b in bijlagen_flat],
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
