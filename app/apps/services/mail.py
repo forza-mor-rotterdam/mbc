@@ -192,17 +192,17 @@ class MailService:
         )
         msg.attach_alternative(html_content, "text/html")
 
-        for bijlage in bijlagen_flat:
-            filename = bijlage.split("/")[-1].replace(
-                " ", "_"
-            )  # be careful with file names
-            file_path = os.path.join("/media/", filename)
-            bijlage_response = MeldingenService().afbeelding_ophalen(
-                bijlage, stream=True
-            )
-            with open(file_path, "wb") as f:
-                f.write(bijlage_response.content)
-            msg.attach_related_file(file_path)
+        # for bijlage in bijlagen_flat:
+        #     filename = bijlage.split("/")[-1].replace(
+        #         " ", "_"
+        #     )  # be careful with file names
+        #     file_path = os.path.join("/media/", filename)
+        #     bijlage_response = MeldingenService().afbeelding_ophalen(
+        #         bijlage, stream=True
+        #     )
+        #     with open(file_path, "wb") as f:
+        #         f.write(bijlage_response.content)
+        #     msg.attach_related_file(file_path)
 
         if send_to and not settings.DEBUG and verzenden:
             msg.send()
