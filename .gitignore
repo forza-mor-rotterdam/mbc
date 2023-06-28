@@ -19,3 +19,4 @@ yarn-error.log
 **/webpack-stats.json
 **.bash_history
 media/**/*
+app/*.log
