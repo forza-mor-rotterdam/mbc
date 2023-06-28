@@ -283,7 +283,7 @@ MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
 
 DEV_SOCKET_PORT = os.getenv("DEV_SOCKET_PORT", "9000")
 
-LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
+LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
 LOGGING = {
     "version": 1,
@@ -295,17 +295,27 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.StreamHandler",
             "stream": sys.stdout,
+            "formatter": "verbose",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "/app/uwsgi.log",
             "formatter": "verbose",
         },
     },
     "loggers": {
         "": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "propagate": True,
+        },
+        "celery": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
         },
     },
 }
@@ -361,6 +371,9 @@ AUTHENTICATION_BACKENDS = [
 OIDC_OP_LOGOUT_URL_METHOD = "apps.authenticatie.views.provider_logout"
 ALLOW_LOGOUT_GET_METHOD = True
 OIDC_STORE_ID_TOKEN = True
+OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = int(
+    os.getenv("OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS", "300")
+)
 
 LOGIN_REDIRECT_URL = "/"
 LOGIN_REDIRECT_URL_FAILURE = "/"
