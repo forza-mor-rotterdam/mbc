@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MBCConfig(AppConfig):
-    name = "apps.mbc"
+class MainConfig(AppConfig):
+    name = "apps.main"
     verbose_name = "Begraven & cremeren data"

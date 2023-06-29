@@ -3,7 +3,7 @@ import os.path
 import re
 
 import magic
-from apps.mbc.models import Begraafplaats, Categorie
+from apps.main.models import Begraafplaats, Categorie
 from apps.services.meldingen import MeldingenService
 from django.conf import settings
 from django.core.files.storage import default_storage

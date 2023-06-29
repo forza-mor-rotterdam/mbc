@@ -1,76 +1,76 @@
 [
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 1,
   "fields": {
     "naam": "Begraafplaats Crooswijk"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 2,
   "fields": {
     "naam": "Begraafplaats Hoek van Holland"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 3,
   "fields": {
     "naam": "Begraafplaats en crematorium Hofwijk"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 4,
   "fields": {
     "naam": "Begraafplaats Oudeland, Hoogvliet"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 5,
   "fields": {
     "naam": "Begraafplaats Oud-Hoogvliet"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 6,
   "fields": {
     "naam": "Begraafplaats Oud-Overschie"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 7,
   "fields": {
     "naam": "Begraafplaats Oud-Pernis"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 8,
   "fields": {
     "naam": "Begraafplaats Oud-Schiebroek"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 9,
   "fields": {
     "naam": "Begraafplaats Pernis"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 10,
   "fields": {
     "naam": "Begraafplaats Rozenburg"
   }
 },
 {
-  "model": "mbc.begraafplaats",
+  "model": "main.begraafplaats",
   "pk": 11,
   "fields": {
     "naam": "Zuiderbegraafplaats"
@@ -79,7 +79,7 @@
 
 
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 1,
   "fields": {
     "naam": "Verzakking eigen graf",
@@ -90,7 +90,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 2,
   "fields": {
     "naam": "Verzakking algemeen",
@@ -101,7 +101,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 3,
   "fields": {
     "naam": "Snoeien",
@@ -112,7 +112,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 4,
   "fields": {
     "naam": "Beplanting",
@@ -123,7 +123,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 5,
   "fields": {
     "naam": "Schoonmaken",
@@ -134,7 +134,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 6,
   "fields": {
     "naam": "Verdwenen materiaal",
@@ -145,7 +145,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 7,
   "fields": {
     "naam": "Gaten",
@@ -156,7 +156,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 8,
   "fields": {
     "naam": "Wespennest",
@@ -167,7 +167,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 9,
   "fields": {
     "naam": "Konijnen",
@@ -178,7 +178,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 10,
   "fields": {
     "naam": "Muizen",
@@ -189,7 +189,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 11,
   "fields": {
     "naam": "Zerk reinigen",
@@ -200,7 +200,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 12,
   "fields": {
     "naam": "Overig",
@@ -211,7 +211,7 @@
   }
 },
 {
-  "model": "mbc.categorie",
+  "model": "main.categorie",
   "pk": 13,
   "fields": {
     "naam": "Wateroverlast",
@@ -227,7 +227,7 @@
 
 
 {
-  "model": "mbc.medewerker",
+  "model": "main.medewerker",
   "pk": 1,
   "fields": {
     "naam": "C.M. Hendriks",
@@ -235,7 +235,7 @@
   }
 },
 {
-  "model": "mbc.medewerker",
+  "model": "main.medewerker",
   "pk": 2,
   "fields": {
     "naam": "A. van de Graaf",
@@ -243,7 +243,7 @@
   }
 },
 {
-  "model": "mbc.medewerker",
+  "model": "main.medewerker",
   "pk": 3,
   "fields": {
     "naam": "I. Addicks",
@@ -251,7 +251,7 @@
   }
 },
 {
-  "model": "mbc.medewerker",
+  "model": "main.medewerker",
   "pk": 4,
   "fields": {
     "naam": "A.J. Verhoeven",
@@ -259,7 +259,7 @@
   }
 },
 {
-  "model": "mbc.medewerker",
+  "model": "main.medewerker",
   "pk": 5,
   "fields": {
     "naam": "M. van Berkum",
