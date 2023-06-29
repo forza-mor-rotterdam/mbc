@@ -1,6 +1,6 @@
 import base64
 
-from apps.mbc.models import Begraafplaats, Categorie, Medewerker
+from apps.main.models import Begraafplaats, Categorie, Medewerker
 from django import forms
 from django.core.files.storage import default_storage
 from django.utils import timezone

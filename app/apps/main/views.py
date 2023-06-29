@@ -1,6 +1,6 @@
 import logging
 
-from apps.mbc.forms import MeldingAanmakenForm
+from apps.main.forms import MeldingAanmakenForm
 from apps.services.mail import MailService
 from apps.services.meldingen import MeldingenService
 from apps.signalen.models import Signaal
@@ -105,34 +105,3 @@ def melding_afgesloten_email(request, signaal_uuid):
         signaal, template_stijl=template_stijl, verzenden=email_verzenden
     )
     return HttpResponse(email_html_content)
-
-
-def gebruiker_informatie(request):
-    print(request.user)
-    return render(
-        request,
-        "auth/gebruiker_informatie.html",
-    )
-
-
-@login_required
-def login_verplicht(request):
-    return render(
-        request,
-        "auth/login_verplicht.html",
-    )
-
-
-def login_mislukt(request):
-    return render(
-        request,
-        "auth/login_mislukt.html",
-    )
-
-
-def sso_logout(request):
-    print("sso_logout")
-    return render(
-        request,
-        "auth/login_mislukt.html",
-    )

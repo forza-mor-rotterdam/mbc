@@ -55,7 +55,7 @@ INSTALLED_APPS = (
     # Apps
     "apps.health",
     "apps.rotterdam_formulier_html",
-    "apps.mbc",
+    "apps.main",
     "apps.signalen",
     "apps.authenticatie",
 )
@@ -135,6 +135,7 @@ DATABASES = {
 }  # noqa
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+AUTH_USER_MODEL = "authenticatie.Gebruiker"
 
 WEBPACK_LOADER = {
     "DEFAULT": {

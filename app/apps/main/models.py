@@ -23,7 +23,7 @@ class Medewerker(models.Model):
         blank=True,
     )
     begraafplaatsen = models.ManyToManyField(
-        to="mbc.Begraafplaats",
+        to="main.Begraafplaats",
         related_name="medewerkers",
     )
 

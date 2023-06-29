@@ -1,4 +1,4 @@
-from apps.mbc.models import Begraafplaats, Categorie, Medewerker
+from apps.main.models import Begraafplaats, Categorie, Medewerker
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 
