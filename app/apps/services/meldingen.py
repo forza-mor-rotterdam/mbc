@@ -3,6 +3,8 @@ from urllib.parse import urlparse
 import requests
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from requests import Request, Response
 
 
@@ -34,10 +36,15 @@ class MeldingenService:
     def get_headers(self):
         meldingen_token = cache.get("meldingen_token")
         if not meldingen_token:
+            email = settings.MELDINGEN_USERNAME
+            try:
+                validate_email(email)
+            except ValidationError:
+                email = f"{settings.MELDINGEN_USERNAME}@forzamor.nl"
             token_response = requests.post(
                 settings.MELDINGEN_TOKEN_API,
                 json={
-                    "username": settings.MELDINGEN_USERNAME,
+                    "username": email,
                     "password": settings.MELDINGEN_PASSWORD,
                 },
             )
