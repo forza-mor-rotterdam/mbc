@@ -5,10 +5,10 @@ set -x
 
 rm -rf /static/*
 
-echo "Start with a fresh database"
-export PGPASSWORD=${DATABASE_PASSWORD}
-psql -h ${DATABASE_HOST_OVERRIDE} -p 5432 -d ${DATABASE_NAME} -U ${DATABASE_USER} -c "drop schema public cascade;"
-psql -h ${DATABASE_HOST_OVERRIDE} -p 5432 -d ${DATABASE_NAME} -U ${DATABASE_USER} -c "create schema public;"
+# echo "Start with a fresh database"
+# export PGPASSWORD=${DATABASE_PASSWORD}
+# psql -h ${DATABASE_HOST_OVERRIDE} -p 5432 -d ${DATABASE_NAME} -U ${DATABASE_USER} -c "drop schema public cascade;"
+# psql -h ${DATABASE_HOST_OVERRIDE} -p 5432 -d ${DATABASE_NAME} -U ${DATABASE_USER} -c "create schema public;"
 
 echo Apply migrations
 python manage.py migrate --noinput
