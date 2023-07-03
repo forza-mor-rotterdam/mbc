@@ -1,0 +1,270 @@
+[
+{
+  "model": "main.begraafplaats",
+  "pk": 1,
+  "fields": {
+    "naam": "Begraafplaats Crooswijk"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 2,
+  "fields": {
+    "naam": "Begraafplaats Hoek van Holland"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 3,
+  "fields": {
+    "naam": "Begraafplaats en crematorium Hofwijk"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 4,
+  "fields": {
+    "naam": "Begraafplaats Oudeland, Hoogvliet"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 5,
+  "fields": {
+    "naam": "Begraafplaats Oud-Hoogvliet"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 6,
+  "fields": {
+    "naam": "Begraafplaats Oud-Overschie"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 7,
+  "fields": {
+    "naam": "Begraafplaats Oud-Pernis"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 8,
+  "fields": {
+    "naam": "Begraafplaats Oud-Schiebroek"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 9,
+  "fields": {
+    "naam": "Begraafplaats Pernis"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 10,
+  "fields": {
+    "naam": "Begraafplaats Rozenburg"
+  }
+},
+{
+  "model": "main.begraafplaats",
+  "pk": 11,
+  "fields": {
+    "naam": "Zuiderbegraafplaats"
+  }
+},
+
+
+{
+  "model": "main.categorie",
+  "pk": 1,
+  "fields": {
+    "naam": "Verzakking eigen graf",
+    "volgorde": 0,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "specifiek_graf",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/verzakking-eigen-graf/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 2,
+  "fields": {
+    "naam": "Verzakking algemeen",
+    "volgorde": 10,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "niet_specifiek_graf",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/verzakking-algemeen/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 3,
+  "fields": {
+    "naam": "Snoeien",
+    "volgorde": 20,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/snoeien/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 4,
+  "fields": {
+    "naam": "Beplanting",
+    "volgorde": 30,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/beplanting/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 5,
+  "fields": {
+    "naam": "Schoonmaken",
+    "volgorde": 40,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/schoonmaken/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 6,
+  "fields": {
+    "naam": "Verdwenen materiaal",
+    "volgorde": 50,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/verdwenen-materiaal/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 7,
+  "fields": {
+    "naam": "Gaten",
+    "volgorde": 60,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/gaten/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 8,
+  "fields": {
+    "naam": "Wespennest",
+    "volgorde": 70,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/wespennest/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 9,
+  "fields": {
+    "naam": "Konijnen",
+    "volgorde": 80,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/konijnen/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 10,
+  "fields": {
+    "naam": "Muizen",
+    "volgorde": 90,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/muizen/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 11,
+  "fields": {
+    "naam": "Zerk reinigen",
+    "volgorde": 100,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "specifiek_graf",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/zerk-reinigen/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 12,
+  "fields": {
+    "naam": "Overig",
+    "volgorde": 110,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/overig/"
+  }
+},
+{
+  "model": "main.categorie",
+  "pk": 13,
+  "fields": {
+    "naam": "Wateroverlast",
+    "volgorde": 3,
+    "toon_andere_oorzaak": false,
+    "toon_specifiek_graf": "altijd",
+    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/wateroverlast/"
+  }
+},
+
+
+
+
+
+{
+  "model": "main.medewerker",
+  "pk": 1,
+  "fields": {
+    "naam": "C.M. Hendriks",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "main.medewerker",
+  "pk": 2,
+  "fields": {
+    "naam": "A. van de Graaf",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "main.medewerker",
+  "pk": 3,
+  "fields": {
+    "naam": "I. Addicks",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "main.medewerker",
+  "pk": 4,
+  "fields": {
+    "naam": "A.J. Verhoeven",
+    "begraafplaatsen": [11, 10, 9]
+  }
+},
+{
+  "model": "main.medewerker",
+  "pk": 5,
+  "fields": {
+    "naam": "M. van Berkum",
+    "begraafplaatsen": [11, 10, 9]
+  }
+}
+
+]
