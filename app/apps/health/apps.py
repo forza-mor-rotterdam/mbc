@@ -7,6 +7,6 @@ class HealthConfig(AppConfig):
     verbose_name = "Health"
 
     def ready(self):
-        from apps.health.custom_checks import MeldingenAPIHealthCheck
+        from apps.health.custom_checks import MeldingenTokenCheck
 
-        plugin_dir.register(MeldingenAPIHealthCheck)
+        plugin_dir.register(MeldingenTokenCheck)

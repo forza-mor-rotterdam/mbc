@@ -46,15 +46,9 @@ class SignaalManager(models.Manager):
             signaal_response = MeldingenService().signaal_aanmaken(
                 data=signaal_data,
             )
-            if signaal_response.status_code == 201:
-                signaal.meldingen_signaal_url = (
-                    signaal_response.json().get("_links", {}).get("self")
-                )
-            else:
-                raise SignaalManager.MeldingenSignaalAanmakenFout(
-                    f"response status code: {signaal_response.status_code}, response tekst: {signaal_response.text}"
-                )
-
+            signaal.meldingen_signaal_url = signaal_response.get("_links", {}).get(
+                "self"
+            )
             signaal.save()
 
             transaction.on_commit(
