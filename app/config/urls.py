@@ -63,7 +63,6 @@ urlpatterns = [
         name="melding_afgesloten_email",
     ),
     path("health/", include("health_check.urls")),
-    path("admin/", admin.site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # Optional UI:
     path(
