@@ -3,11 +3,11 @@ services:
   app:
     build: ./app
     ports:
-      - "8000:8000"
+      - "8001:8000"
     env_file:
       - .env.test
     # volumes:
-      # - ./app:/app
+    #   - ./app:/app
     depends_on:
       database:
         condition: service_healthy
@@ -20,13 +20,13 @@ services:
     networks:
       - mor_network
     ports:
-      - "6379:6379"
+      - "6379"
 
   database:
     image: postgis/postgis:11-3.3
     shm_size: '1024m'
     ports:
-      - "5411:5432"
+      - "5432"
     env_file:
       - .env.test
     healthcheck:
