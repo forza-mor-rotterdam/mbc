@@ -1,3 +1,5 @@
+{% load to_date from main_tags %}
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
@@ -221,7 +223,7 @@
                                     <dt><strong>Meldingnummer</strong></dt>
                                     <dd style="margin:0 0 12px;">{{melding.id}}</dd>
                                     <dt><strong>Datum en tijd</strong></dt>
-                                    <dd style="margin:0 0 12px;">{{melding.aangemaakt_op}}</dd>
+                                    <dd style="margin:0 0 12px;">{{melding.aangemaakt_op|to_date|date:'d-m-Y H:m'}}</dd>
                                     {% if signaal.formulier_data.meta.aannemer %}
                                     <dt><strong>Aangenomen door</strong></dt>
                                     <dd style="margin:0 0 12px;">{{ signaal.formulier_data.meta.aannemer }}</dd>
