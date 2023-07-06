@@ -102,17 +102,6 @@
 },
 {
   "model": "main.categorie",
-  "pk": 3,
-  "fields": {
-    "naam": "Snoeien",
-    "volgorde": 20,
-    "toon_andere_oorzaak": false,
-    "toon_specifiek_graf": "altijd",
-    "onderwerp": "https://mor-core-acc.forzamor.nl/api/v1/onderwerp/snoeien/"
-  }
-},
-{
-  "model": "main.categorie",
   "pk": 4,
   "fields": {
     "naam": "Beplanting",

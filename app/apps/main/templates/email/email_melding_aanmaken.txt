@@ -24,6 +24,6 @@ Grafnummer:                                 {% if signaal.formulier_data.meta.gr
 Vak:                                        {% if signaal.formulier_data.meta.vak %}{{ signaal.formulier_data.meta.vak }}{% else %}-{% endif %}
 Aantal foto's:                              {% if bijlagen_list %}{{ bijlagen_list|length }}{% else %}-{% endif %}
 
-We streven ernaar om uw melding binnen twee weken in behandeling te nemen.
+We streven ernaar om je melding binnen twee weken in behandeling te nemen.
 Met vriendelijke groet,
 Gemeent Rotterdam
