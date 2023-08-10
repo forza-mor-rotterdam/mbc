@@ -71,7 +71,7 @@ MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "mozilla_django_oidc.middleware.SessionRefresh",
+    # "apps.authenticatie.middleware.SessionRefresh",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
@@ -261,6 +261,9 @@ CACHES = {
 }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 120
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
@@ -362,6 +365,7 @@ OIDC_OP_LOGOUT_ENDPOINT = os.getenv(
     "OIDC_OP_LOGOUT_ENDPOINT",
     OPENID_CONFIG.get("end_session_endpoint"),
 )
+OIDC_TOKEN_USE_BASIC_AUTH = os.getenv("OIDC_TOKEN_USE_BASIC_AUTH", True) in TRUE_VALUES
 
 if OIDC_OP_JWKS_ENDPOINT:
     OIDC_RP_SIGN_ALGO = "RS256"
