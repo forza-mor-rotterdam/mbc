@@ -3,17 +3,17 @@ from mozilla_django_oidc import auth
 
 class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
     def create_user(self, claims):
-        email = claims.get("upn")
+        email = claims.get("email")
         user = self.UserModel.objects.create_user(email=email)
 
-        user.first_name = claims.get("upn", "")
+        user.first_name = claims.get("email", "")
         # user.last_name = claims.get("upn", "")
         user.save()
 
         return user
 
     def update_user(self, user, claims):
-        user.first_name = claims.get("upn", "")
+        user.first_name = claims.get("email", "")
         # user.last_name = claims.get("unique_name", "")
         user.save()
 
@@ -33,4 +33,6 @@ class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
         #     proxies=self.get_settings("OIDC_PROXY", None),
         # )
         # user_response.raise_for_status()
+
+        payload.update({"email": payload.get("upn")})
         return payload
