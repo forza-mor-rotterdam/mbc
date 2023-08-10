@@ -3,18 +3,18 @@ from mozilla_django_oidc import auth
 
 class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
     def create_user(self, claims):
-        email = claims.get("email")
+        email = claims.get("upn")
         user = self.UserModel.objects.create_user(email=email)
 
-        user.first_name = claims.get("given_name", "")
-        user.last_name = claims.get("family_name", "")
+        user.first_name = claims.get("upn", "")
+        # user.last_name = claims.get("upn", "")
         user.save()
 
         return user
 
     def update_user(self, user, claims):
-        user.first_name = claims.get("given_name", "")
-        user.last_name = claims.get("family_name", "")
+        user.first_name = claims.get("upn", "")
+        # user.last_name = claims.get("unique_name", "")
         user.save()
 
         return user
