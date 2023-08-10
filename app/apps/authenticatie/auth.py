@@ -3,7 +3,7 @@ from mozilla_django_oidc import auth
 
 class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
     def create_user(self, claims):
-        email = claims.get("email")
+        email = claims.get("upn")
         user = self.UserModel.objects.create_user(email=email)
 
         user.first_name = claims.get("given_name", "")
