@@ -17,7 +17,7 @@ class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
         # copy first and last name from claims, if not set use current first and last name
         # this makes it possible to change the name of the user in the admin when IdP is not given names
         user.first_name = claims.get("given_name", user.first_name)
-        user.last_name = claims.get("family_name", user.family_name)
+        user.last_name = claims.get("family_name", user.last_name)
         user.save()
 
         return user
