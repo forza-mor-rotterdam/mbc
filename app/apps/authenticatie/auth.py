@@ -6,15 +6,18 @@ class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
         email = claims.get("email")
         user = self.UserModel.objects.create_user(email=email)
 
-        user.first_name = claims.get("email", "")
-        # user.last_name = claims.get("upn", "")
+        # copy name from the claims, if not set fallback to email as first name and empty last name
+        user.first_name = claims.get("given_name", claims.get("email"))
+        user.last_name = claims.get("family_name", "")
         user.save()
 
         return user
 
     def update_user(self, user, claims):
-        user.first_name = claims.get("email", "")
-        # user.last_name = claims.get("unique_name", "")
+        # copy first and last name from claims, if not set use current first and last name
+        # this makes it possible to change the name of the user in the admin when IdP is not given names
+        user.first_name = claims.get("given_name", user.first_name)
+        user.last_name = claims.get("family_name", user.family_name)
         user.save()
 
         return user
@@ -22,9 +25,11 @@ class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
     def get_userinfo(self, access_token, id_token, payload):
         """Return user details dictionary. The id_token and payload are not used in
         the default implementation, but may be used when overriding this method"""
-        print(id_token)
-        # print(self.get_payload_data(id_token))
-        print(payload)
+
+        # Enable print statement below for debuging the JWT claims
+        # print(payload)
+
+        # Enable statements below to call userinfo to get additional information about the user
         # user_response = requests.get(
         #     self.OIDC_OP_USER_ENDPOINT,
         #     headers={"Authorization": "Bearer {0}".format(access_token)},
@@ -34,5 +39,7 @@ class OIDCAuthenticationBackend(auth.OIDCAuthenticationBackend):
         # )
         # user_response.raise_for_status()
 
-        payload.update({"email": payload.get("upn")})
+        # Make sure always an email claim is available, if not set fallback to upn or username
+        payload.update({"email": payload.get("upn", payload.get("username"))})
+
         return payload
