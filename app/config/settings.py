@@ -367,10 +367,6 @@ OIDC_OP_LOGOUT_ENDPOINT = os.getenv(
 )
 OIDC_TOKEN_USE_BASIC_AUTH = os.getenv("OIDC_TOKEN_USE_BASIC_AUTH", True) in TRUE_VALUES
 
-OIDC_AUTH_REQUEST_EXTRA_PARAMS = {
-    "resource": "urn:microsoft:userinfo",
-}
-
 if OIDC_OP_JWKS_ENDPOINT:
     OIDC_RP_SIGN_ALGO = "RS256"
 
