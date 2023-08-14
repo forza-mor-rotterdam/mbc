@@ -14,7 +14,8 @@ export default class extends Controller {
     static values = {
         medewerkers: String,
         categorie_andere_oorzaak: String,
-        specifiek_graf_categorieen: String
+        specifiek_graf_categorieen: String,
+        session_expiry_date_timestamp: String,
     }
 
     connect() {
@@ -71,6 +72,40 @@ export default class extends Controller {
             temp_files = {}
             temp_filesArr = []
         });
+
+        this.sessionTimer()
+
+    }
+
+    openModal(event) {
+        const modal = document.querySelector('.modal');
+        const modalBackdrop = document.querySelector('.modal-backdrop');
+
+        modal.classList.add('show');
+        modalBackdrop.classList.add('show');
+        document.body.classList.add('show-modal');
+    }
+
+    closeModal() {
+        window.location.reload(true);
+        const modal = document.querySelector('.modal');
+        const modalBackdrop = document.querySelector('.modal-backdrop');
+        modal.classList.remove('show');
+        modalBackdrop.classList.remove('show');
+        document.body.classList.remove('show-modal');
+    }
+
+    sessionTimer(){
+        const sessionExpiryDateTimestamp = this.sessionExpiryDateTimestampValue;
+        const openModal = this.openModal;
+        var timer = setInterval(function(){
+            const currentDate = new Date();
+            const timeIsUp = parseInt(sessionExpiryDateTimestamp) <= parseInt((parseInt(currentDate.getTime()) / 1000))
+            if (timeIsUp){
+                clearInterval(timer);
+                openModal()
+            }
+        }, 1000 * 60);
     }
 
     checkValids() {

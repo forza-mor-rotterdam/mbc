@@ -262,8 +262,8 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_SAVE_EVERY_REQUEST = True
-SESSION_COOKIE_AGE = 120
+SESSION_SAVE_EVERY_REQUEST = False
+SESSION_COOKIE_AGE = int(os.getenv("SESSION_COOKIE_AGE", "3600"))
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
@@ -380,10 +380,11 @@ OIDC_OP_LOGOUT_URL_METHOD = "apps.authenticatie.views.provider_logout"
 ALLOW_LOGOUT_GET_METHOD = True
 OIDC_STORE_ID_TOKEN = True
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = int(
-    os.getenv("OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS", "300")
+    os.getenv("OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS", "3600")
 )
 
-LOGIN_REDIRECT_URL = "/"
-LOGIN_REDIRECT_URL_FAILURE = "/"
-LOGOUT_REDIRECT_URL = "/"
-LOGIN_URL = "/oidc/authenticate/"
+if OPENID_CONFIG_URI and OIDC_RP_CLIENT_ID:
+    LOGIN_REDIRECT_URL = "/"
+    LOGIN_REDIRECT_URL_FAILURE = "/"
+    LOGOUT_REDIRECT_URL = "/"
+    LOGIN_URL = "/oidc/authenticate/"
