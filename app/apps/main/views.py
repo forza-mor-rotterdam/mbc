@@ -4,6 +4,7 @@ from apps.main.forms import MeldingAanmakenForm
 from apps.services.mail import MailService
 from apps.services.meldingen import MeldingenService
 from apps.signalen.models import Signaal
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
@@ -34,6 +35,14 @@ def root(request):
 
 @login_required
 def melding_aanmaken(request):
+    session_expiry_max_timestamp = (
+        request.session.get("_session_init_timestamp_")
+        + settings.SESSION_EXPIRE_MAXIMUM_SECONDS
+    )
+    session_expiry_timestamp = (
+        request.session.get("_session_current_timestamp_")
+        + settings.SESSION_EXPIRE_SECONDS
+    )
     if request.POST:
         form = MeldingAanmakenForm(request.POST, request.FILES)
         fotos = request.FILES.getlist("fotos", [])
@@ -63,7 +72,8 @@ def melding_aanmaken(request):
             "begraafplaats_medewerkers": form.get_begraafplaats_medewerkers(),
             "categorie_andere_oorzaak": form.get_categorie_andere_oorzaak(),
             "specifiek_graf_categorieen": form.get_specifiek_graf_categorieen(),
-            "session_expiry_date_timestamp": request.session.get_expiry_date().timestamp(),
+            "session_expiry_max_timestamp": session_expiry_max_timestamp,
+            "session_expiry_timestamp": session_expiry_timestamp,
         },
     )
 

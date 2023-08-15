@@ -15,7 +15,8 @@ export default class extends Controller {
         medewerkers: String,
         categorie_andere_oorzaak: String,
         specifiek_graf_categorieen: String,
-        session_expiry_date_timestamp: String,
+        session_expiry_timestamp: String,
+        session_expiry_max_timestamp: String,
     }
 
     connect() {
@@ -96,12 +97,16 @@ export default class extends Controller {
     }
 
     sessionTimer(){
-        const sessionExpiryDateTimestamp = this.sessionExpiryDateTimestampValue;
+        const sessionExpiryTimestamp = parseInt(this.sessionExpiryTimestampValue) * 1000;
+        const sessionExpiryMaxTimestamp = parseInt(this.sessionExpiryMaxTimestampValue) * 1000;
         const openModal = this.openModal;
         var timer = setInterval(function(){
             const currentDate = new Date();
-            const timeIsUp = parseInt(sessionExpiryDateTimestamp) <= parseInt((parseInt(currentDate.getTime()) / 1000))
-            if (timeIsUp){
+            console.log({"sessionExpiryTimestamp": sessionExpiryTimestamp, "countdown": sessionExpiryTimestamp - parseInt((parseInt(currentDate.getTime())))})
+            console.log({"sessionExpiryMaxTimestamp": sessionExpiryMaxTimestamp, "countdownMax": sessionExpiryMaxTimestamp - parseInt((parseInt(currentDate.getTime())))})
+            const timeIsUp = sessionExpiryTimestamp <= parseInt((parseInt(currentDate.getTime())))
+            const timeIsUpMax = sessionExpiryMaxTimestamp <= parseInt((parseInt(currentDate.getTime())))
+            if (timeIsUp || timeIsUpMax){
                 clearInterval(timer);
                 openModal()
             }
