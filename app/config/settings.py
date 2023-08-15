@@ -197,8 +197,8 @@ SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_NAME = "__Secure-sessionid" if not DEBUG else "sessionid"
 CSRF_COOKIE_NAME = "__Secure-csrftoken" if not DEBUG else "csrftoken"
-SESSION_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
-CSRF_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
+SESSION_COOKIE_SAMESITE = "Lax" # Strict does not work well together with OIDC
+CSRF_COOKIE_SAMESITE = "Lax" # Strict does not work well together with OIDC
 
 # Settings for Content-Security-Policy header
 CSP_DEFAULT_SRC = ("'self'",)
