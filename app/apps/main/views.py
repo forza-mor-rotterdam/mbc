@@ -63,6 +63,7 @@ def melding_aanmaken(request):
             "begraafplaats_medewerkers": form.get_begraafplaats_medewerkers(),
             "categorie_andere_oorzaak": form.get_categorie_andere_oorzaak(),
             "specifiek_graf_categorieen": form.get_specifiek_graf_categorieen(),
+            "session_expiry_date_timestamp": request.session.get_expiry_date().timestamp(),
         },
     )
 
