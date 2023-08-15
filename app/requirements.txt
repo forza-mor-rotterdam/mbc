@@ -16,6 +16,7 @@ django-materializecss-form
 python-magic
 mozilla-django-oidc==3.0.0
 PyJWT<2.4.0
+django-session-timeout-joinup==1.0.0
 
 # tests
 requests_mock

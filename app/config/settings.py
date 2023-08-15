@@ -65,6 +65,7 @@ MIDDLEWARE = (
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_session_timeout.middleware.SessionTimeoutMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "csp.middleware.CSPMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -137,18 +138,6 @@ DATABASES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 AUTH_USER_MODEL = "authenticatie.Gebruiker"
-
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "CACHE": not DEBUG,
-        "POLL_INTERVAL": 0.1,
-        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
-        "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
-        "STATS_FILE": "/static/webpack-stats.json"
-        if not DEBUG
-        else "/app/frontend/public/build/webpack-stats.json",
-    }
-}
 
 # Django REST framework settings
 REST_FRAMEWORK = dict(
@@ -230,6 +219,8 @@ CSP_STYLE_SRC = (
 )
 CSP_CONNECT_SRC = ("'self'",) if not DEBUG else ("'self'", "ws:")
 
+
+# Template settings
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -247,6 +238,7 @@ TEMPLATES = [
     }
 ]
 
+# Cache settings
 REDIS_URL = "redis://redis:6379"
 CACHES = {
     "default": {
@@ -260,11 +252,23 @@ CACHES = {
     }
 }
 
+
+# Sessions are managed by django-session-timeout-joinup
+# Django session settings
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_SAVE_EVERY_REQUEST = False
-SESSION_COOKIE_AGE = int(os.getenv("SESSION_COOKIE_AGE", "3600"))
 
+# Session settings for django-session-timeout-joinup
+SESSION_EXPIRE_MAXIMUM_SECONDS = int(
+    os.getenv("SESSION_EXPIRE_MAXIMUM_SECONDS", "28800")
+)
+SESSION_EXPIRE_SECONDS = int(os.getenv("SESSION_EXPIRE_SECONDS", "3600"))
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = int(
+    os.getenv("SESSION_EXPIRE_SECONDS", "3600")
+)
+
+
+# email settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT", 25)
@@ -274,6 +278,8 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "0") in TRUE_VALUES
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") in TRUE_VALUES
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@forzamor.nl")
 
+
+# Project specific settings
 MELDINGEN_URL = os.getenv("MELDINGEN_URL", "https://mor-core-acc.forzamor.nl")
 MELDINGEN_API_URL = os.getenv("MELDINGEN_API_URL", f"{MELDINGEN_URL}/api/v1")
 MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
@@ -286,8 +292,24 @@ MELDINGEN_TOKEN_TIMEOUT = 60 * 5
 MELDINGEN_USERNAME = os.getenv("MELDINGEN_USERNAME")
 MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
 
-DEV_SOCKET_PORT = os.getenv("DEV_SOCKET_PORT", "9000")
 
+# Frontend tools for development
+# Autoreload socket port
+DEV_SOCKET_PORT = os.getenv("DEV_SOCKET_PORT", "9000")
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": not DEBUG,
+        "POLL_INTERVAL": 0.1,
+        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
+        "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
+        "STATS_FILE": "/static/webpack-stats.json"
+        if not DEBUG
+        else "/app/frontend/public/build/webpack-stats.json",
+    }
+}
+
+
+# Logging settings
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
 
 LOGGING = {
