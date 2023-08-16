@@ -1,6 +1,6 @@
 {
-  "name": "Regie",
-  "short_name": "Regie",
+  "name": "Serviceverzoek",
+  "short_name": "Serviceverzoek",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
