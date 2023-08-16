@@ -183,9 +183,9 @@
             {% endif %}
             <textarea id="{{ field.auto_id }}" class="form-control {% if field.errors %}is-invalid{% endif %}" rows="4" name="{{field.html_name}}" {% render_attrs field %} {% if field.field.required %}required{% endif %}>{% if field.value %}{{ field.value }}{% endif %}</textarea>
             <p class="help-block invalid-text"></p>
-            {% for error in field.errors %}
-                <p class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</p>
-            {% endfor %}
+            {% comment %} {% for error in field.errors %} {% endcomment %}
+                <p class="help-block invalid-text {{ form.error_css_class }}">---{{ error }}</p>
+            {% comment %} {% endfor %} {% endcomment %}
 
             {% if field.help_text %}
                 <p>
