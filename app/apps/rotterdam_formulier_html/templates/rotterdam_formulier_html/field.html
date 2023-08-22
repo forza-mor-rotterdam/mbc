@@ -93,7 +93,7 @@
                     {% include 'rotterdam_formulier_html/field_icon.html' %}
                 {% endif %}
                 {% if field.auto_id %}
-                    <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}">{{ field.label }}</label>
+                    <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}" for="{{ field.auto_id }}">{{ field.label }}</label>
                 {% endif %}
                 <select multiple name="{{ field.html_name }}" id="{{ field.auto_id }}" {% render_attrs field class="form-select" test="nog een test" %} {% if field.field.required %}required{% endif %} >
                     {% for choice in field %}
@@ -117,7 +117,7 @@
                     {% include 'rotterdam_formulier_html/field_icon.html' %}
                 {% endif %}
                 {% if field.auto_id %}
-                    <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}">{{ field.label }}</label>
+                    <label class="control-label {{ classes.label }} {% if field.field.required %}{{ form.required_css_class }}{% endif %}" for="{{ field.auto_id }}">{{ field.label }}</label>
                 {% endif %}
                 <select name="{{ field.html_name }}" id="{{ field.auto_id }}" {% render_attrs field class="form-select" %} {% if field.field.required %}required{% endif %}>
                     {% for choice in field %}
@@ -183,9 +183,9 @@
             {% endif %}
             <textarea id="{{ field.auto_id }}" class="form-control {% if field.errors %}is-invalid{% endif %}" rows="4" name="{{field.html_name}}" {% render_attrs field %} {% if field.field.required %}required{% endif %}>{% if field.value %}{{ field.value }}{% endif %}</textarea>
             <p class="help-block invalid-text"></p>
-            {% for error in field.errors %}
+            {% comment %} {% for error in field.errors %} {% endcomment %}
                 <p class="help-block invalid-text {{ form.error_css_class }}">{{ error }}</p>
-            {% endfor %}
+            {% comment %} {% endfor %} {% endcomment %}
 
             {% if field.help_text %}
                 <p>

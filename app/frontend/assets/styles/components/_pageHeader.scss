@@ -1,8 +1,28 @@
 header {
     height: 64px;
+    .container {
+        display: flex;
+        flex-direction: column;
+        margin: 1rem auto 0;
 
-    img {
-        max-height: 40px;
-        margin: 10px 0 0 10px;
+        h1 {
+            margin: 0;
+        }
+        svg {
+            height: 40px;
+            width: 220px;
+            margin: 10px 0 0 10px;
+        }
+
+        @media (min-width: map-get($grid-breakpoints, md)) {
+            flex-direction: row;
+            justify-content: space-between;
+            h1 {
+                order: 1;
+            }
+            >a {
+                order: 2;
+            }
+        }
     }
 }
