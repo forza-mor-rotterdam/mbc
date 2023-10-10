@@ -58,11 +58,11 @@ To only run the docker container use:
 ```
 
 This will start a webserver.
-Authorize via the Django admin: http://mbc.mor.local:8003/admin/
+Authorize via the Django admin: http://mbc.mor.local:8001/admin/
 You can login with the following credentials:
   - Email: admin@admin.com
   - Password: insecure
-You can view the website on http://mbc.mor.local:8003
+You can view the website on http://mbc.mor.local:8001
 
 ### Frontend
 
