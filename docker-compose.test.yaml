@@ -6,19 +6,16 @@ services:
       - "8001:8000"
     env_file:
       - .env.test
-    # volumes:
-    #   - ./app:/app
     depends_on:
       database:
         condition: service_healthy
     networks:
-      - mor_network
-    # command: ["bash", "/app/deploy/docker-entrypoint.development.sh"]
+      - mbc_network
 
   redis:
     image: redis
     networks:
-      - mor_network
+      - mbc_network
     ports:
       - "6379"
 
@@ -35,8 +32,8 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - mor_network
+      - mbc_network
 
 networks:
-  mor_network:
+  mbc_network:
     external: true
