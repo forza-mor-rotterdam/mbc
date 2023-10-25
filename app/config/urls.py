@@ -28,7 +28,6 @@ urlpatterns = [
     path("api/v1/", include((router.urls, "app"), namespace="v1")),
     path("api-token-auth/", views.obtain_auth_token),
     path("oidc/", include("mozilla_django_oidc.urls")),
-    path("admin/", admin.site.urls),
     path("", root, name="root"),
     path("melding/aanmaken", melding_aanmaken, name="melding_aanmaken"),
     path(
@@ -61,8 +60,9 @@ urlpatterns = [
     ),
 ]
 
-if settings.OPENID_CONFIG and settings.OIDC_RP_CLIENT_ID:
+if settings.OIDC_ENABLED:
     urlpatterns += [
+        path("oidc/", include("mozilla_django_oidc.urls")),
         path(
             "admin/login/",
             RedirectView.as_view(
@@ -79,6 +79,11 @@ if settings.OPENID_CONFIG and settings.OIDC_RP_CLIENT_ID:
             ),
             name="admin_logout",
         ),
+        path("admin/", admin.site.urls),
+    ]
+else:
+    urlpatterns += [
+        path("admin/", admin.site.urls),
     ]
 
 if settings.DEBUG:
