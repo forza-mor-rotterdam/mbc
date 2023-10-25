@@ -124,7 +124,6 @@ class Command(BaseCommand):
             # Use password from environment variable, if provided.
 
             for user in users:
-                print(f"user: {user}")
                 username = user[0]
                 error_msg = self._validate_username(
                     username, verbose_field_name, database
