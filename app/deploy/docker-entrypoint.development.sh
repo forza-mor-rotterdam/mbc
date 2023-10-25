@@ -26,6 +26,10 @@ if ! python manage.py createsuperuser --noinput; then
     echo "Superuser creation failed or already exists."
 fi
 
+# Create users for app to app communication
+echo Create users
+python manage.py createusers --noinput || true
+
 # Log a message indicating the script has completed
 echo "Docker development entrypoint script has completed."
 

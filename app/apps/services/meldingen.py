@@ -95,7 +95,6 @@ class MeldingenService:
         return headers
 
     def do_request(self, url, method="get", data={}, raw_response=True, stream=False):
-
         action: Request = getattr(requests, method)
         action_params: dict = {
             "url": self.get_url(url),
