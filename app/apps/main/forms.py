@@ -7,7 +7,6 @@ from django.utils import timezone
 
 
 class MeldingAanmakenForm(forms.Form):
-
     specifiek_graf = forms.ChoiceField(
         widget=forms.RadioSelect(
             attrs={
@@ -249,7 +248,7 @@ class MeldingAanmakenForm(forms.Form):
     def get_verbose_value_from_field(self, fieldname, value):
         if hasattr(self.fields.get(fieldname), "choices"):
             choices_lookup = {c[0]: c[1] for c in self.fields[fieldname].choices}
-            if type(value) == list:
+            if isinstance(value, list):
                 return [choices_lookup.get(v, v) for v in value]
             return choices_lookup.get(value, value)
         return value
