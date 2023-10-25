@@ -66,8 +66,7 @@ class Command(BaseCommand):
                 ):
                     raise CommandError(
                         "Required field '%s' specifies a many-to-many "
-                        "relation through model, which is not supported."
-                        % field_name
+                        "relation through model, which is not supported." % field_name
                     )
                 else:
                     parser.add_argument(
@@ -89,9 +88,7 @@ class Command(BaseCommand):
         return super().execute(*args, **options)
 
     def password_exists_for_username_var(self, env_var):
-        return os.environ.get(
-            f"{env_var.replace('_USERNAME', '_PASSWORD')}", "____"
-        )
+        return os.environ.get(f"{env_var.replace('_USERNAME', '_PASSWORD')}", "____")
 
     def handle(self, *args, **options):
         username = options[self.UserModel.USERNAME_FIELD]
@@ -137,9 +134,9 @@ class Command(BaseCommand):
                     continue
                 user_data[PASSWORD_FIELD] = user[1]
                 user_data[self.UserModel.USERNAME_FIELD] = username
-                self.UserModel._default_manager.db_manager(
-                    database
-                ).create_user(**user_data)
+                self.UserModel._default_manager.db_manager(database).create_user(
+                    **user_data
+                )
             if options["verbosity"] >= 1:
                 self.stdout.write("Users created successfully.")
 
@@ -205,9 +202,9 @@ class Command(BaseCommand):
         """Validate username. If invalid, return a string error message."""
         if self.username_is_unique:
             try:
-                self.UserModel._default_manager.db_manager(
-                    database
-                ).get_by_natural_key(username)
+                self.UserModel._default_manager.db_manager(database).get_by_natural_key(
+                    username
+                )
             except self.UserModel.DoesNotExist:
                 pass
             else:
