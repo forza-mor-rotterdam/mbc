@@ -6,7 +6,6 @@ from rest_framework.response import Response
 
 
 class SignaalViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-
     lookup_field = "uuid"
     queryset = Signaal.objects.all()
 
@@ -24,7 +23,6 @@ class SignaalViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         url_path="melding-afgesloten",
     )
     def melding_afgesloten(self, request, uuid):
-
         Signaal.acties.melding_afgesloten(self.get_object())
 
         return Response(
