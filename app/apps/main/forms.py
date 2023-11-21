@@ -33,6 +33,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "size": "10",
             }
         ),
         label="Grafnummer",
@@ -42,6 +43,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "size": "10",
             }
         ),
         label="Vak",
@@ -69,7 +71,11 @@ class MeldingAanmakenForm(forms.Form):
     )
 
     toelichting = forms.CharField(
-        widget=forms.Textarea(),
+        widget=forms.Textarea(
+            attrs={
+                "size": "5000",
+            }
+        ),
         label="Toelichting",
         required=True,
     )
@@ -98,6 +104,7 @@ class MeldingAanmakenForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
+                "size": "100",
             }
         ),
         label="Naam",
@@ -110,6 +117,7 @@ class MeldingAanmakenForm(forms.Form):
                 "type": "tel",
                 "class": "form-control",
                 "data-request-target": "phoneField",
+                "size": "17",
             }
         ),
         label="Telefoonnummer",
@@ -311,22 +319,22 @@ class MeldingAanmakenForm(forms.Form):
 
         post_data = {
             "melder": {
-                "naam": data.get("naam_melder"),
+                "naam": data.get("naam_melder", "")[:100],
                 "email": data.get("email_melder"),
-                "telefoonnummer": data.get("telefoon_melder"),
+                "telefoonnummer": data.get("telefoon_melder", "")[:17],
             },
             "origineel_aangemaakt": now.isoformat(),
             "onderwerpen": self.get_onderwerp_urls(data.get("categorie", [])),
-            "omschrijving_kort": data.get("toelichting", "")[:200],
-            "omschrijving": data.get("toelichting", ""),
+            "omschrijving_kort": data.get("toelichting", "")[:500],
+            "omschrijving": data.get("toelichting", "")[:5000],
             "meta": data,
             "meta_uitgebreid": labels,
             "graven": [
                 {
                     "plaatsnaam": "Rotterdam",
                     "begraafplaats": data.get("begraafplaats"),
-                    "grafnummer": data.get("grafnummer"),
-                    "vak": data.get("vak"),
+                    "grafnummer": data.get("grafnummer", "")[:10],
+                    "vak": data.get("vak", "")[:10],
                 },
             ],
         }
