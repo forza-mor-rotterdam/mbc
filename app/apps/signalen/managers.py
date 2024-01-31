@@ -42,7 +42,7 @@ class SignaalManager(models.Manager):
                         request=request,
                     ),
                     "bron_id": "B&C Service formulier",
-                    "bron_signaal_id": signaal.uuid,
+                    "bron_signaal_id": str(signaal.uuid),
                 }
             )
             signaal_response = MeldingenService().signaal_aanmaken(
