@@ -289,7 +289,7 @@ class MeldingAanmakenForm(forms.Form):
 
     def get_onderwerp_urls(self, onderwerp_ids):
         return [
-            c
+            {"bron_url": c}
             for c in Categorie.objects.all()
             .filter(pk__in=onderwerp_ids)
             .values_list("onderwerp", flat=True)
