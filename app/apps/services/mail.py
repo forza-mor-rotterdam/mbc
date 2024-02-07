@@ -159,9 +159,12 @@ class MailService:
         )
         begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
 
-        bijlagen_flat = reversed(
-            [b.get("afbeelding") for b in bijlagen if b.get("afbeelding")]
-        )
+        bijlagen_flat = [
+            url
+            for url in reversed(
+                [b.get("afbeelding") for b in bijlagen if b.get("afbeelding")]
+            )
+        ]
         logger.info(f"Signaal: {signaal}")
         logger.info(f"Bijlage urls: {bijlagen_flat}")
         logger.info(f"Melding data: {json.dumps(melding, indent=4)}")
