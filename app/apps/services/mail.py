@@ -1,10 +1,13 @@
+import json
 import logging
 import os.path
 import re
 
 import magic
 from apps.main.models import Begraafplaats, Categorie
+from apps.main.utils import get_bijlagen
 from apps.services.meldingen import MeldingenService
+from apps.services.onderwerpen import OnderwerpenService
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMultiAlternatives, SafeMIMEMultipart
@@ -149,33 +152,32 @@ class MailService:
             melding = MeldingenService().melding_ophalen_met_signaal_url(
                 signaal.meldingen_signaal_url
             )
+        bijlagen = get_bijlagen(melding)
         send_to = []
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
         )
         begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
 
-        melding_bijlagen = [
-            [
-                b.get("afbeelding")
-                for b in (
-                    meldinggebeurtenis.get("taakgebeurtenis", {}).get("bijlagen", [])
-                    if meldinggebeurtenis.get("taakgebeurtenis")
-                    else []
-                )
-            ]
-            for meldinggebeurtenis in melding.get("meldinggebeurtenissen", [])
+        bijlagen_flat = [
+            url
+            for url in reversed(
+                [b.get("afbeelding") for b in bijlagen if b.get("afbeelding")]
+            )
         ]
-        bijlagen_flat = [b for bl in melding_bijlagen for b in bl if b is not None]
-
+        logger.info(f"Signaal: {signaal}")
+        logger.info(f"Bijlage urls: {bijlagen_flat}")
+        logger.info(f"Melding data: {json.dumps(melding, indent=4)}")
         email_context = {
             "melding": melding,
             "begraafplaats": begraafplaats,
             "signaal": signaal,
             "onderwerpen": ", ".join(
-                [o.get("naam") for o in melding.get("onderwerpen", [])]
+                [
+                    OnderwerpenService().get_onderwerp(o).get("name")
+                    for o in melding.get("onderwerpen", [])
+                ]
             ),
-            "melding_bijlagen": melding_bijlagen,
             "bijlagen": [b.split("/")[-1].replace(" ", "_") for b in bijlagen_flat],
         }
         if begraafplaats.email:
