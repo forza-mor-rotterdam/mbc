@@ -182,9 +182,6 @@ class MeldingAanmakenForm(forms.Form):
             for m in list(Begraafplaats.objects.all().values_list("pk", "naam"))
         ]
 
-    def get_begraafplaats_naam(self, begraafplaats):
-        return Begraafplaats.objects.filter(pk=begraafplaats).first().naam
-
     def get_alle_medewerker_choices(self):
         return [("", "Selecteer een medewerker")] + [
             (str(m[0]), m[1])
@@ -335,9 +332,7 @@ class MeldingAanmakenForm(forms.Form):
             "graven": [
                 {
                     "plaatsnaam": "Rotterdam",
-                    "begraafplaats": self.get_begraafplaats_naam(
-                        data.get("begraafplaats")
-                    ),
+                    "begraafplaats": data.get("begraafplaats"),
                     "grafnummer": data.get("grafnummer", "")[:10],
                     "vak": data.get("vak", "")[:10],
                 },
