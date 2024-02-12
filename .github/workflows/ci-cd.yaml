@@ -43,6 +43,7 @@ jobs:
 
   deploy-acc:
     name: Acceptance release
+    environment: acc
     if: github.ref == 'refs/heads/develop'
     needs: docker-build-and-test
     runs-on: ubuntu-latest
@@ -82,17 +83,17 @@ jobs:
       - name: Start rollout on k8s platform
         uses: actions-hub/kubectl@master
         env:
-          KUBE_HOST: ${{ secrets.KUBE_HOST }}
-          KUBE_CERTIFICATE: ${{ secrets.KUBE_CERTIFICATE }}
+          KUBE_HOST: ${{ vars.KUBE_HOST }}
+          KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout restart deployment/app --namespace=mbc-acc
+          args: rollout restart deployment/app --namespace=${{ vars.KUBE_NAMESPACE }}
 
       - name: Status rollout on k8s platform
         uses: actions-hub/kubectl@master
         env:
-          KUBE_HOST: ${{ secrets.KUBE_HOST }}
-          KUBE_CERTIFICATE: ${{ secrets.KUBE_CERTIFICATE }}
+          KUBE_HOST: ${{ vars.KUBE_HOST }}
+          KUBE_CERTIFICATE: ${{ vars.KUBE_CERTIFICATE }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
         with:
-          args: rollout status deployment/app --namespace=mbc-acc
+          args: rollout status deployment/app --namespace=${{ vars.KUBE_NAMESPACE }}
