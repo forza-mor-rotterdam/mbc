@@ -18,13 +18,13 @@ body.show-modal {
     @include bodyModal();
 
     .modal.show {
-        @include modalVisible()
+        @include modalVisible();
     }
 }
 
 body.show-modal--first-filter {
     .modal--first-filter {
-        @include modalVisible()
+        @include modalVisible();
     }
 }
 
@@ -103,5 +103,4 @@ body.show-modal--first-filter {
         opacity: 0;
         display: none;
     }
-
 }
