@@ -1,0 +1,59 @@
+.badge {
+    display: inline-block;
+    padding: 0 8px;
+    color: $white;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 20px;
+    margin-right: 4px;
+
+    &--lightblue {
+        background-color: $blue-light;
+    }
+
+    &--darkblue {
+        background-color: $blue-dark;
+    }
+
+    &--green {
+        background-color: $greenblue;
+    }
+
+    &--red {
+        background-color: $red-tint02;
+    }
+
+    &--yellow {
+        background-color: $warning;
+        color: $black;
+    }
+}
+
+.badge--unread-count {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 20px;
+    font-weight: 700;
+    border-radius: 50%;
+    color: $white;
+    background-color: $red-tint02;
+    transform: translateY(-50%);
+}
+
+.container--env {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 200;
+
+    .badge {
+        height: 48px;
+        line-height: 48px;
+        font-size: 20px;
+    }
+}

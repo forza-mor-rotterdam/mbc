@@ -27,4 +27,5 @@ def general_settings(context):
         "LOGOUT_URL": reverse("oidc_logout"),
         "LOGIN_URL": f"{reverse('oidc_authentication_init')}?next={absolute(context).get('FULL_URL')}",
         "GIT_SHA": settings.GIT_SHA,
+        "APP_ENV": settings.APP_ENV,
     }
