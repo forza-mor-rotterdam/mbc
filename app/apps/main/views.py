@@ -6,6 +6,7 @@ from apps.services.meldingen import MeldingenService
 from apps.signalen.models import Signaal
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.cache import cache
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -31,6 +32,12 @@ def http_500(request):
 @login_required
 def root(request):
     return redirect(reverse("melding_aanmaken"))
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def clear_melding_token_from_cache(request):
+    cache.delete("meldingen_token")
+    return HttpResponse("melding_token removed from cache")
 
 
 @login_required
