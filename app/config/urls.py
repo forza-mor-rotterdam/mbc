@@ -1,4 +1,5 @@
 from apps.main.views import (
+    clear_melding_token_from_cache,
     http_404,
     http_500,
     melding_aangemaakt_email,
@@ -27,6 +28,11 @@ router.register(r"signaal", SignaalViewSet, basename="signaal")
 urlpatterns = [
     path("api/v1/", include((router.urls, "app"), namespace="v1")),
     path("api-token-auth/", views.obtain_auth_token),
+    path(
+        "admin/clear-melding-token-from-cache/",
+        clear_melding_token_from_cache,
+        name="clear_melding_token_from_cache",
+    ),
     path("oidc/", include("mozilla_django_oidc.urls")),
     path("", root, name="root"),
     path("melding/aanmaken", melding_aanmaken, name="melding_aanmaken"),
