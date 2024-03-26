@@ -3,6 +3,7 @@ import logging
 import jwt
 from django.conf import settings
 from django.urls import reverse
+from django.utils import timezone
 from utils.diversen import absolute
 
 logger = logging.getLogger(__name__)
@@ -16,6 +17,13 @@ def general_settings(context):
     except Exception:
         logger.error("oidc_id_token is niet valide")
 
+    deploy_date_formatted = None
+    if settings.DEPLOY_DATE:
+        deploy_date = timezone.datetime.strptime(
+            settings.DEPLOY_DATE, "%d-%m-%Y-%H-%M-%S"
+        )
+        deploy_date_formatted = deploy_date.strftime("%d-%m-%Y %H:%M:%S")
+
     return {
         "MELDINGEN_URL": settings.MELDINGEN_URL,
         "DEBUG": settings.DEBUG,
@@ -28,4 +36,5 @@ def general_settings(context):
         "LOGIN_URL": f"{reverse('oidc_authentication_init')}?next={absolute(context).get('FULL_URL')}",
         "GIT_SHA": settings.GIT_SHA,
         "APP_ENV": settings.APP_ENV,
+        "DEPLOY_DATE": deploy_date_formatted,
     }
