@@ -325,8 +325,7 @@ class MeldingAanmakenForm(forms.Form):
             },
             "origineel_aangemaakt": now.isoformat(),
             "onderwerpen": self.get_onderwerp_urls(data.get("categorie", [])),
-            "omschrijving_kort": data.get("toelichting", "")[:500],
-            "omschrijving": data.get("toelichting", "")[:5000],
+            "omschrijving_melder": data.get("toelichting", "")[:500],
             "meta": data,
             "meta_uitgebreid": labels,
             "graven": [
