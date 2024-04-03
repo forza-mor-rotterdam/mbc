@@ -64,7 +64,7 @@ class MeldingenService:
         return f"{self._api_base_url}{self.relatieve_url(url)}"
 
     def haal_token(self):
-        meldingen_token = cache.get("meldingen_token2")
+        meldingen_token = cache.get("meldingen_token")
         if not meldingen_token:
             email = settings.MELDINGEN_USERNAME
             try:

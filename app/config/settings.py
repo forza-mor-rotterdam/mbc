@@ -17,6 +17,7 @@ SECRET_KEY = os.environ.get(
 )
 
 GIT_SHA = os.getenv("GIT_SHA")
+DEPLOY_DATE = os.getenv("DEPLOY_DATE", "")
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 DEBUG = ENVIRONMENT == "development"
 
@@ -34,6 +35,7 @@ DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1,.mor.local"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
 INSTALLED_APPS = (
+    "apps.health",
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
     "django.contrib.sessions",
@@ -55,7 +57,6 @@ INSTALLED_APPS = (
     "health_check.db",
     "health_check.contrib.migrations",
     # Apps
-    "apps.health",
     "apps.rotterdam_formulier_html",
     "apps.main",
     "apps.signalen",
@@ -289,7 +290,7 @@ MELDINGEN_API_HEALTH_CHECK_URL = os.getenv(
 MELDINGEN_TOKEN_API = os.getenv(
     "MELDINGEN_TOKEN_API", f"{MELDINGEN_URL}/api-token-auth/"
 )
-MELDINGEN_TOKEN_TIMEOUT = 60 * 5
+MELDINGEN_TOKEN_TIMEOUT = 60 * 60
 MELDINGEN_USERNAME = os.getenv("MELDINGEN_USERNAME")
 MELDINGEN_PASSWORD = os.getenv("MELDINGEN_PASSWORD")
 
@@ -303,9 +304,11 @@ WEBPACK_LOADER = {
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update.js", r".+\.map"],
         "LOADER_CLASS": "webpack_loader.loader.WebpackLoader",
-        "STATS_FILE": "/static/webpack-stats.json"
-        if not DEBUG
-        else "/app/frontend/public/build/webpack-stats.json",
+        "STATS_FILE": (
+            "/static/webpack-stats.json"
+            if not DEBUG
+            else "/app/frontend/public/build/webpack-stats.json"
+        ),
     }
 }
 
@@ -410,3 +413,5 @@ if OPENID_CONFIG and OIDC_RP_CLIENT_ID:
     LOGIN_REDIRECT_URL_FAILURE = "/"
     LOGOUT_REDIRECT_URL = OIDC_OP_LOGOUT_ENDPOINT
     LOGIN_URL = "/oidc/authenticate/"
+
+APP_ENV = os.getenv("APP_ENV", "productie")  # acceptatie/test/productie
