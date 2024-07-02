@@ -20,4 +20,4 @@ django-session-timeout-joinup==1.0.0
 
 # tests
 requests_mock
-model-bakery==1.3.2
+model-bakery==1.4.0
