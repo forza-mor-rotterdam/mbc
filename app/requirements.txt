@@ -1,9 +1,9 @@
-Django==3.2.16
+Django==4.2.11
 django-filter==22.1
-djangorestframework==3.13.1
+djangorestframework==3.15.1
 drf-spectacular==0.26.0
-uWSGI==2.0.22
-psycopg2-binary==2.9.5
+uWSGI==2.0.25.1
+psycopg2>=2.9.5
 django-webpack-loader==1.7.0
 requests
 debugpy
@@ -20,4 +20,4 @@ django-session-timeout-joinup==1.0.0
 
 # tests
 requests_mock
-model-bakery==1.4.0
+model-bakery==1.18.2

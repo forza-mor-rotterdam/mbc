@@ -21,7 +21,10 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app/
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update \
+    && apt-get dist-upgrade -y \
+    && apt-get autoremove -y \
+    && apt-get install --no-install-recommends -y \
     build-essential \
     python-dev \
     curl \
@@ -34,6 +37,8 @@ RUN apt-get update && apt-get install -y \
     libgeotiff-dev \
     libwebp6 \
     proj-bin \
+    libmagic1 \
+    libpq-dev \
     git \
     locales \
     && pip install --upgrade pip \
