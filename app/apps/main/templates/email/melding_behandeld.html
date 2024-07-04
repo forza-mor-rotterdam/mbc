@@ -256,7 +256,11 @@
                         <p>
                             <strong>Foto van het resultaat</strong>
                         </p>
-                        {% for bijlage in bijlagen %}<img src="cid:{{ bijlage }}" width="300" alt="bijlage" />{% endfor %}
+                        {% for bijlage in bijlagen %}
+                            <p>
+                                <img src="cid:{{ bijlage }}" width="300" alt="bijlage" />
+                            </p>
+                        {% endfor %}
                     </td>
                 </tr>
             {% endif %}
