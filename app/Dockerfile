@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     libgeotiff-dev \
     libwebp6 \
     proj-bin \
+    libpq-dev \
     git \
     locales \
     && pip install --upgrade pip \
