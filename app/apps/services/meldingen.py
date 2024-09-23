@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 
 import requests
+import urllib3
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
@@ -77,6 +78,9 @@ class MeldingenService:
                     "username": email,
                     "password": settings.MELDINGEN_PASSWORD,
                 },
+                headers={
+                    "user-agent": urllib3.util.SKIP_HEADER,
+                },
             )
             if token_response.status_code == 200:
                 meldingen_token = token_response.json().get("token")
@@ -91,7 +95,10 @@ class MeldingenService:
         return meldingen_token
 
     def get_headers(self):
-        headers = {"Authorization": f"Token {self.haal_token()}"}
+        headers = {
+            "user-agent": urllib3.util.SKIP_HEADER,
+            "Authorization": f"Token {self.haal_token()}",
+        }
         return headers
 
     def do_request(self, url, method="get", data={}, raw_response=True, stream=False):
