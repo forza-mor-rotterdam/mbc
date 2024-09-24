@@ -158,7 +158,7 @@ class MeldingAanmakenForm(forms.Form):
     no_email = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={
-                "class": "form-check-input",
+                "class": "form-check-input margin-bottom",
                 "data-action": "change->request#toggleInputNoEmail",
             }
         ),
