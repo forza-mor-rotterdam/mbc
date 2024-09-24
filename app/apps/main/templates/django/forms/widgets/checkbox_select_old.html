@@ -1,11 +1,6 @@
 {% with id=widget.attrs.id %}
-    <div {% if id %}id="{{ id }}"{% endif %} class="form-row">
-        {% if not widget.attrs.hideLabel %}
-            <h3 class="label{% if widget.attrs.hasMoreInfo and widget.help_text %}has-more-info{% endif %}">
-                {{ field.label }}{{ widget.attrs.hideLabel }}
-            </h3>
-        {% endif %}
-        <ul {% if widget.attrs.class %}class="list--{{ widget.attrs.class }}"{% endif %}>
+    <div {% if id %}id="{{ id }}"{% endif %}>
+        <ul {% if widget.attrs.classList %}class="{{ widget.attrs.classList }}"{% endif %}>
             {% for group, options, index in widget.optgroups %}
                 {% if group %}
                     <li>
