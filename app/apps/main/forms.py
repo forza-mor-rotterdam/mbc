@@ -6,6 +6,24 @@ from django.core.files.storage import default_storage
 from django.utils import timezone
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
+
+
 class MeldingAanmakenForm(forms.Form):
     specifiek_graf = forms.ChoiceField(
         widget=forms.RadioSelect(
@@ -80,11 +98,12 @@ class MeldingAanmakenForm(forms.Form):
         required=True,
     )
 
-    fotos = forms.FileField(
-        widget=forms.widgets.FileInput(
+    fotos = MultipleFileField(
+        widget=MultipleFileInput(
             attrs={
                 "accept": ".jpg, .jpeg, .png, .heic",
                 "data-action": "change->request#updateImageDisplay",
+                "class": "file-upload-input",
             }
         ),
         label="Foto's",
@@ -139,7 +158,7 @@ class MeldingAanmakenForm(forms.Form):
     no_email = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={
-                "class": "form-check-input",
+                "class": "form-check-input margin-bottom",
                 "data-action": "change->request#toggleInputNoEmail",
             }
         ),
@@ -302,9 +321,9 @@ class MeldingAanmakenForm(forms.Form):
         labels = {
             k: {
                 "label": v.label,
-                "choices": {c[0]: c[1] for c in v.choices}
-                if hasattr(v, "choices")
-                else None,
+                "choices": (
+                    {c[0]: c[1] for c in v.choices} if hasattr(v, "choices") else None
+                ),
             }
             for k, v in self.fields.items()
         }
