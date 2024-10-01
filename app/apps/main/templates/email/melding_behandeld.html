@@ -20,8 +20,105 @@
         </noscript>
         <![endif]-->
         <style>
-            table, td, div, h1, p {font-family: Arial, sans-serif;}
-            {% comment %} table, td {border:2px solid #000000 !important;} {% endcomment %}
+            table, td, div, h1, p {
+                font-family: Arial, sans-serif;
+                color: #404B4F;
+            }
+            table {width: 100%;}
+            h2 {
+                font-size: 1.25rem;
+                margin-bottom: 0;
+            }
+            h2 img {
+                vertical-align: middle;
+            }
+            h3 {
+                margin-top: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            p {
+                margin-top: 0.5rem;
+            }
+            dd {
+                margin-left: 0;
+            }
+
+            a {
+                color: #00811f;
+            }
+            .p-20 {
+                padding: 20px;
+            }
+
+            .p-0-0-12 {
+                padding: 0 0 12px;
+            }
+
+            .p-0-20 {
+                padding: 0 20px;
+            }
+
+            .p-8-0-4 {
+                padding: 8px 0 4px;
+            }
+
+            .p-4-16 {
+                padding: 4px 16px;
+            }
+
+            .p-50-20 {
+                padding: 50px 20px;
+            }
+
+            .p-50-20-20 {
+                padding: 50px 20px 20px;
+            }
+
+            .p-20-20-40 {
+                padding: 20px 20px 40px;
+            }
+
+            .p-40-0-20 {
+                padding: 40px 0 20px;
+            }
+
+            .email-table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 0;
+                border-spacing: 0;
+                background: #eff4f6;
+            }
+
+            .email-presentation-table {
+                width: 100%;
+                max-width: 776px;
+                margin: 0 auto;
+                border-collapse: collapse;
+                border: 0;
+                border-spacing: 0;
+                background: #ffffff;
+            }
+
+            .email-border-bottom {
+                border-bottom: 1px solid #d3d3d3;
+            }
+
+            .email-border-top {
+                border-top: 8px solid #00811f;
+            }
+
+            .va-top {
+                vertical-align: top;
+            }
+
+            .m-0-0-12 {
+                margin: 0 0 12px;
+            }
+
+            .w-full {
+                width: 100%;
+            }
         </style>
     </head>
     <body class="no-margin no-padding">
@@ -159,7 +256,11 @@
                         <p>
                             <strong>Foto van het resultaat</strong>
                         </p>
-                        {% for bijlage in bijlagen %}<img src="cid:{{ bijlage }}" width="300" alt="bijlage" />{% endfor %}
+                        {% for bijlage in bijlagen %}
+                            <p>
+                                <img src="cid:{{ bijlage }}" width="300" alt="bijlage" />
+                            </p>
+                        {% endfor %}
                     </td>
                 </tr>
             {% endif %}

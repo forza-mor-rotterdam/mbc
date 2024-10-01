@@ -256,7 +256,9 @@ textarea {
 }
 
 .list--form-check-input,
-.list--form-radio-input {
+.list--form-radio-input,
+.list--form-check-input ul,
+.list--form-radio-input ul {
     @include list-clean();
     li {
         margin-bottom: 0.25rem;
@@ -383,7 +385,7 @@ textarea {
     }
 }
 
-#buttonFile {
+.btn-files {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -421,6 +423,15 @@ textarea {
 
     &.container__button {
         padding: $alert-padding-y 0;
+    }
+
+    .list--grouped {
+        font-weight: 700;
+        font-size: 1rem;
+        ul ul {
+            font-weight: 400;
+            margin: $input-padding-y 0;
+        }
     }
 }
 

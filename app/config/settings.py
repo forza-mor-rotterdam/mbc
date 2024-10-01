@@ -5,6 +5,7 @@ import sys
 from os.path import join
 
 import requests
+import urllib3
 
 locale.setlocale(locale.LC_ALL, "nl_NL.UTF-8")
 logger = logging.getLogger(__name__)
@@ -16,10 +17,18 @@ SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY", os.environ.get("SECRET_KEY", os.environ.get("APP_SECRET"))
 )
 
+# APP_ENV's
+PRODUCTIE = "productie"
+ACCEPTATIE = "acceptatie"
+TEST = "test"
+
+
 GIT_SHA = os.getenv("GIT_SHA")
 DEPLOY_DATE = os.getenv("DEPLOY_DATE", "")
 ENVIRONMENT = os.getenv("ENVIRONMENT")
+APP_ENV = os.getenv("APP_ENV", PRODUCTIE)  # acceptatie/test/productie
 DEBUG = ENVIRONMENT == "development"
+
 
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
@@ -35,6 +44,7 @@ DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1,.mor.local"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
 INSTALLED_APPS = (
+    "apps.main",
     "apps.health",
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
@@ -45,6 +55,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "django.contrib.gis",
     "django.contrib.postgres",
+    "django.forms",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
@@ -58,7 +69,6 @@ INSTALLED_APPS = (
     "health_check.contrib.migrations",
     # Apps
     "apps.rotterdam_formulier_html",
-    "apps.main",
     "apps.signalen",
     "apps.authenticatie",
 )
@@ -186,8 +196,8 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
-SESSION_COOKIE_NAME = "__Secure-sessionid" if not DEBUG else "sessionid"
-CSRF_COOKIE_NAME = "__Secure-csrftoken" if not DEBUG else "csrftoken"
+SESSION_COOKIE_NAME = "__Host-sessionid" if not DEBUG else "sessionid"
+CSRF_COOKIE_NAME = "__Host-csrftoken" if not DEBUG else "csrftoken"
 SESSION_COOKIE_SAMESITE = "Lax"  # Strict does not work well together with OIDC
 CSRF_COOKIE_SAMESITE = "Lax"  # Strict does not work well together with OIDC
 
@@ -223,6 +233,7 @@ CSP_CONNECT_SRC = ("'self'",) if not DEBUG else ("'self'", "ws:")
 
 
 # Template settings
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -363,7 +374,12 @@ OPENID_CONFIG_URI = os.getenv(
 )
 OPENID_CONFIG = {}
 try:
-    OPENID_CONFIG = requests.get(OPENID_CONFIG_URI).json()
+    OPENID_CONFIG = requests.get(
+        OPENID_CONFIG_URI,
+        headers={
+            "user-agent": urllib3.util.SKIP_HEADER,
+        },
+    ).json()
 except Exception as e:
     logger.error(f"OPENID_CONFIG FOUT, url: {OPENID_CONFIG_URI}, error: {e}")
 
@@ -402,7 +418,6 @@ if OPENID_CONFIG and OIDC_RP_CLIENT_ID:
         "apps.authenticatie.auth.OIDCAuthenticationBackend",
     ]
 
-    OIDC_OP_LOGOUT_URL_METHOD = "apps.authentication.views.provider_logout"
     ALLOW_LOGOUT_GET_METHOD = True
     OIDC_STORE_ID_TOKEN = True
     OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = int(
@@ -413,5 +428,3 @@ if OPENID_CONFIG and OIDC_RP_CLIENT_ID:
     LOGIN_REDIRECT_URL_FAILURE = "/"
     LOGOUT_REDIRECT_URL = OIDC_OP_LOGOUT_ENDPOINT
     LOGIN_URL = "/oidc/authenticate/"
-
-APP_ENV = os.getenv("APP_ENV", "productie")  # acceptatie/test/productie

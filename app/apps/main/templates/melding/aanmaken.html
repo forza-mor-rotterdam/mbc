@@ -17,7 +17,7 @@
         {% csrf_token %}
         <fieldset>
             {% include "snippets/legend.html" with title="Locatie" icon_name="pin_filled" only %}
-            {{ form.specifiek_graf|render_rotterdam_formulier }}
+            <div class="wrapper-horizontal">{{ form.specifiek_graf|render_rotterdam_formulier }}</div>
             {{ form.begraafplaats|render_rotterdam_formulier }}
             {{ form.vak|render_rotterdam_formulier }}
             {{ form.grafnummer|render_rotterdam_formulier }}
@@ -34,11 +34,12 @@
             {% include "snippets/legend.html" with title="Melder" icon_name="person" only %}
             {{ form.naam_melder|render_rotterdam_formulier }}
             {{ form.email_melder|render_rotterdam_formulier }}
-            {{ form.no_email|render_rotterdam_formulier }}
+            <div class="margin-bottom-2">{{ form.no_email|render_rotterdam_formulier }}</div>
             {{ form.telefoon_melder|render_rotterdam_formulier }}
-            {{ form.rechthebbende|render_rotterdam_formulier }}
-            {% comment %} {{ form.rechthebbende }} {% endcomment %}
-            {{ form.terugkoppeling_gewenst|render_rotterdam_formulier }}
+            <div class="wrapper-horizontal form-row">
+                <div id="id_rechthebbende">{{ form.rechthebbende|render_rotterdam_formulier }}</div>
+            </div>
+            <div class="wrapper-horizontal">{{ form.terugkoppeling_gewenst|render_rotterdam_formulier }}</div>
         </fieldset>
         <div class="form-row container__button">
             <button class="btn btn-action" type="submit">
