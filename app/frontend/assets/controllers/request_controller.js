@@ -20,6 +20,8 @@ export default class extends Controller {
   }
 
   connect() {
+    temp_files = {}
+    temp_filesArr = []
     this.aannemerFieldTarget.setAttribute('disabled', 'disabled')
     this.emailFieldTarget.setAttribute('required', true)
 
