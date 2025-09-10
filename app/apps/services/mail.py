@@ -106,7 +106,11 @@ class MailService:
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
         )
-        begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
+        begraafplaats = Begraafplaats.objects.filter(
+            id_productie=begraafplaats_id
+        ).first()
+        if not begraafplaats:
+            begraafplaats = Begraafplaats.objects.filter(id=begraafplaats_id).first()
         onderwerpen = signaal.formulier_data.get("meta", {}).get("categorie")
         onderwerpen_list = []
         for onderwerp in onderwerpen:
@@ -157,7 +161,11 @@ class MailService:
         begraafplaats_id = melding.get("locaties_voor_melding", [])[0].get(
             "begraafplaats"
         )
-        begraafplaats = Begraafplaats.objects.get(pk=begraafplaats_id)
+        begraafplaats = Begraafplaats.objects.filter(
+            id_productie=begraafplaats_id
+        ).first()
+        if not begraafplaats:
+            begraafplaats = Begraafplaats.objects.filter(id=begraafplaats_id).first()
 
         bijlagen_flat = [
             url
