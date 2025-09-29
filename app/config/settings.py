@@ -43,6 +43,8 @@ LANGUAGES = [("nl", "Dutch")]
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1,.mor.local"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
+ENABLE_DJANGO_ADMIN_LOGIN = os.getenv("ENABLE_DJANGO_ADMIN_LOGIN", False) in TRUE_VALUES
+
 INSTALLED_APPS = (
     "apps.main",
     "apps.health",
@@ -282,11 +284,13 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = int(
 
 
 # email settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "utils.mail.smtp_xoauth_backend.CustomEmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT", 25)
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_XOAUTH2_TOKEN_ENDPOINT = os.getenv("EMAIL_XOAUTH2_TOKEN_ENDPOINT")
+EMAIL_XOAUTH2_SCOPE = os.getenv("EMAIL_XOAUTH2_SCOPE")
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "0") in TRUE_VALUES
 EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "0") in TRUE_VALUES
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@forzamor.nl")
@@ -363,29 +367,37 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
+LOGIN_URL = "/login/"
+LOGOUT_URL = "/logout/"
+
 OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
 OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
 
 OIDC_REALM = os.getenv("OIDC_REALM")
 AUTH_BASE_URL = os.getenv("AUTH_BASE_URL")
+OPENID_CONFIG = {}
+OPENID_CONFIG_URI_DEFAULT = (
+    f"{AUTH_BASE_URL}/realms/{OIDC_REALM}/.well-known/openid-configuration"
+    if AUTH_BASE_URL and OIDC_REALM
+    else None
+)
 OPENID_CONFIG_URI = os.getenv(
     "OPENID_CONFIG_URI",
-    f"{AUTH_BASE_URL}/realms/{OIDC_REALM}/.well-known/openid-configuration",
+    OPENID_CONFIG_URI_DEFAULT,
 )
-OPENID_CONFIG = {}
-try:
-    OPENID_CONFIG = requests.get(
-        OPENID_CONFIG_URI,
-        headers={
-            "user-agent": urllib3.util.SKIP_HEADER,
-        },
-    ).json()
-except Exception as e:
-    logger.error(f"OPENID_CONFIG FOUT, url: {OPENID_CONFIG_URI}, error: {e}")
+if OPENID_CONFIG_URI:
+    try:
+        OPENID_CONFIG = requests.get(
+            OPENID_CONFIG_URI,
+            headers={
+                "user-agent": urllib3.util.SKIP_HEADER,
+            },
+        ).json()
+    except Exception as e:
+        raise Exception(f"OPENID_CONFIG FOUT, url: {OPENID_CONFIG_URI}, error: {e}")
 
-OIDC_ENABLED = False
-if OPENID_CONFIG and OIDC_RP_CLIENT_ID:
-    OIDC_ENABLED = True
+OIDC_ENABLED = OPENID_CONFIG and OIDC_RP_CLIENT_ID
+if OIDC_ENABLED:
     OIDC_VERIFY_SSL = os.getenv("OIDC_VERIFY_SSL", True) in TRUE_VALUES
     OIDC_USE_NONCE = os.getenv("OIDC_USE_NONCE", True) in TRUE_VALUES
 
@@ -427,4 +439,3 @@ if OPENID_CONFIG and OIDC_RP_CLIENT_ID:
     LOGIN_REDIRECT_URL = "/"
     LOGIN_REDIRECT_URL_FAILURE = "/"
     LOGOUT_REDIRECT_URL = OIDC_OP_LOGOUT_ENDPOINT
-    LOGIN_URL = "/oidc/authenticate/"

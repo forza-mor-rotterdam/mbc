@@ -2,6 +2,11 @@ from django.contrib.gis.db import models
 
 
 class Begraafplaats(models.Model):
+    id_productie = models.IntegerField(
+        unique=True,
+        null=True,
+        blank=True,
+    )
     naam = models.CharField(max_length=200)
     email = models.EmailField(
         null=True,

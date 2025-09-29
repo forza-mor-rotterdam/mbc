@@ -336,6 +336,7 @@ class MeldingAanmakenForm(forms.Form):
         for cf in choice_fields:
             data[cf] = self.get_verbose_value_from_field(cf, data[cf])
 
+        begraafplaats = Begraafplaats.objects.get(id=data.get("begraafplaats"))
         post_data = {
             "melder": {
                 "naam": data.get("naam_melder", "")[:100],
@@ -353,7 +354,9 @@ class MeldingAanmakenForm(forms.Form):
             "graven": [
                 {
                     "plaatsnaam": "Rotterdam",
-                    "begraafplaats": data.get("begraafplaats"),
+                    "begraafplaats": str(
+                        begraafplaats.id_productie or begraafplaats.id
+                    ),
                     "grafnummer": data.get("grafnummer", "")[:10],
                     "vak": data.get("vak", "")[:10],
                 },

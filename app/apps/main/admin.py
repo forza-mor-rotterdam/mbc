@@ -8,7 +8,8 @@ AdminSite.index_title = "Serviceformulierbeheer"
 
 
 class BegraafplaatsAdmin(admin.ModelAdmin):
-    list_display = ("naam", "begraafplaats_medewerkers")
+    list_display = ("id", "id_productie", "naam", "begraafplaats_medewerkers")
+    list_editable = ("id_productie",)
 
     def begraafplaats_medewerkers(self, obj):
         return ", ".join(list(obj.medewerkers.all().values_list("naam", flat=True)))
