@@ -190,7 +190,11 @@ class MailService:
         }
         if begraafplaats.email:
             send_to.append(begraafplaats.email)
-        if signaal.formulier_data.get("melder", {}).get("email"):
+        if (
+            signaal.formulier_data.get("melder", {}).get("email")
+            and signaal.formulier_data.get("meta", {}).get("terugkoppeling_gewenst")
+            == "Ja"
+        ):
             send_to.append(signaal.formulier_data.get("melder", {}).get("email"))
 
         text_template = get_template("email/melding_behandeld.txt")
